@@ -1,4 +1,6 @@
 # corona-virus-app
+Simple app that uses the corona virus API to get stats about
+the virus
 
 ## Project setup
 ```

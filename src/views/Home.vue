@@ -2,17 +2,17 @@
 <template>
   <div class="main">
     <h1>Home View</h1>
-    <hello-world></hello-world>
+    <carousel></carousel>
   </div>
 </template>
 
 <script>
-import HelloWorld from "../components/HelloWorld.vue";
+import carousel from "../components/Carousel.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+   carousel
   }
 };
 </script>

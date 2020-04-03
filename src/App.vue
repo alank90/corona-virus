@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="app">
     <header class="header">
       <h1 class="logo">
         <a href="#">Corona Virus Updates</a>

@@ -1,6 +1,6 @@
 // ========== /src/Home.vue ================== //
 <template>
-  <div class="main">
+  <div class="home">
     <h1>Home View</h1>
     <carousel></carousel>
   </div>

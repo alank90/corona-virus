@@ -68,10 +68,9 @@ export default {
   },
   methods: {
     playSlides() {
-      var slides = document.querySelectorAll("#slides .slide");
-      console.log(slides);
-      var currentSlide = 0;
-      var slideInterval = setInterval(nextSlide, 2000);
+      const slides = document.querySelectorAll("#slides .slide");
+      let currentSlide = 0;
+      let slideInterval = setInterval(nextSlide, 2000);
 
       function nextSlide() {
         slides[currentSlide].className = "slide";

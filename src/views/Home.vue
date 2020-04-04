@@ -2,17 +2,17 @@
 <template>
   <div class="home">
     <h1>Home View</h1>
-    <carousel></carousel>
+    <slideShow></slideShow>
   </div>
 </template>
 
 <script>
-import carousel from "../components/Carousel.vue";
+import slideShow from "../components/SlideShow.vue";
 
 export default {
   name: "App",
   components: {
-   carousel
+   slideShow
   }
 };
 </script>

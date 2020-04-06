@@ -1,7 +1,6 @@
 // ========== /src/Home.vue ================== //
 <template>
   <div class="home">
-    <h1>Home View</h1>
     <slideShow></slideShow>
   </div>
 </template>
@@ -12,12 +11,17 @@ import slideShow from "../components/SlideShow.vue";
 export default {
   name: "App",
   components: {
-   slideShow
+    slideShow
   }
 };
 </script>
 
 <style>
+body {
+  background: url("../assets/img/covid-7-lg.jpg") no-repeat fixed center
+    center/cover;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -25,10 +29,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-body {
-  background: url("../assets/img/covid-7-lg.jpg") no-repeat fixed center
-    center/cover;
 }
 </style>

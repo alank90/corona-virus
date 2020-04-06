@@ -1,23 +1,41 @@
 <template>
-  <div class="carousel">
+  <div>
     <h2>Life In The Corona Virus Age</h2>
-    <ul id="slides">
-      <li class="slide showing">
-        <figure>
-          <img :src="imgSource" alt="Slide Picture" />
-          <caption>{{ figCaption }}</caption>
-        </figure>
-      </li>
-    </ul>
+
+    <transition name="fade">
+      <figure class="slide" v-if="show">
+        <img :src="imgSource" alt="Slide Picture" />
+        <caption>{{ figCaption }}</caption>
+      </figure>
+    </transition>
   </div>
 </template>
 
 <script>
 export default {
   name: "slideShow",
+  mounted: function() {
+    this.playSlides();
+  },
+  methods: {
+    playSlides() {
+      this.imgSource = this.slides[this.currentSlide].image;
+      this.figCaption = this.slides[this.currentSlide].caption;
+      let slideInterval = setInterval(nextSlide.bind(this), 3500); // setInterval time should match css
+      // transition time to avoid slide from jumping on change
+
+      function nextSlide() {
+        this.show = !this.show; // State change triggers vue transition
+        this.currentSlide = (this.currentSlide + 1) % this.slides.length; // % is same as mod operator
+        this.imgSource = this.slides[this.currentSlide].image;
+        this.figCaption = this.slides[this.currentSlide].caption;
+      }
+    }
+  },
   data() {
     return {
       currentSlide: 0,
+      show: true,
       imgSource: "",
       figCaption: "",
       slides: [
@@ -42,7 +60,7 @@ export default {
         {
           image: require("@/assets/img/carousel/stock_market.jpg"),
           caption:
-            "A trader puts on his vest on an empty floor at the New York Stock Exchange after the closing bell on Wall Street in New York City on March 20. The New York Stock Exchange will close down the floor and will move temporarily to fully electronic trading on March 23 due to the coronavirus pandemic."
+            "A trader puts on his vest on an empty floor at the New York Stock Exchange after the closing bell on Wall Street in New York City on March 20."
         },
         {
           image: require("@/assets/img/carousel/nyc.jpg"),
@@ -62,22 +80,6 @@ export default {
         }
       ]
     };
-  },
-  mounted: function() {
-    this.playSlides();
-  },
-  methods: {
-    playSlides() {
-      this.imgSource = this.slides[this.currentSlide].image;
-      this.figCaption = this.slides[this.currentSlide].caption;
-      let slideInterval = setInterval(nextSlide.bind(this), 2000);
-
-      function nextSlide() {
-        this.currentSlide = (this.currentSlide + 1) % this.slides.length; // % is same as mod operator
-        this.imgSource = this.slides[this.currentSlide].image;
-        this.figCaption = this.slides[this.currentSlide].caption;
-      }
-    }
   }
 };
 </script>
@@ -88,42 +90,61 @@ essential styles:
 these make the slideshow work
 */
 
-#slides {
-  position: relative;
-  height: 300px;
-  padding: 0px;
-  margin: 0px;
-  list-style-type: none;
+h2 {
+  font-size: 1.8rem;
+  margin: 20px 0;
+  text-align: center;
 }
-
 .slide {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  z-index: 1;
-
-  -webkit-transition: opacity 1s;
-  -moz-transition: opacity 1s;
-  -o-transition: opacity 1s;
-  transition: opacity 1s;
+  position: relative;
+  max-width: 50%;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.showing {
-  opacity: 1;
-  z-index: 2;
+caption {
+  position: absolute;
+  bottom: 0;
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 12px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 3.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 
 /* =================================================
 non-essential styles:
 just for appearance; change whatever you want
 ================================================== */
-.slide {
-  font-size: 40px;
-  padding: 40px;
-  box-sizing: border-box;
+caption {
+  display: block;
+  font-size: 20px;
+  padding: 30px;
+
   color: #fff;
+}
+
+/* Media Queries */
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+
+  caption {
+    font-size: 18px;
+  }
 }
 </style>

@@ -9,7 +9,7 @@
 import slideShow from "../components/SlideShow.vue";
 
 export default {
-  name: "App",
+  name: "Home",
   components: {
     slideShow
   }

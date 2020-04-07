@@ -6,7 +6,7 @@
       </h1>
 
       <router-link class="router-link" to="/">Home</router-link>
-      <router-link class="router-link" to="/covid19">Covid-19</router-link>
+      <router-link class="router-link" to="/coronavirus">Covid-19 Queries</router-link>
       <router-link class="router-link" to="/johnhopkins">John Hopkins</router-link>
     </header>
 

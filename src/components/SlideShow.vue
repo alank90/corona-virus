@@ -95,11 +95,18 @@ h2 {
   margin: 20px 0;
   text-align: center;
 }
+
 .slide {
   position: relative;
-  max-width: 50%;
+  width: 101%;
+  max-height: 550px;
   margin: 0 auto;
   overflow: hidden;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
 
 caption {
@@ -112,11 +119,6 @@ caption {
   word-wrap: break-word;
   hyphens: auto;
   text-align: center;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
 }
 
 .fade-enter-active,

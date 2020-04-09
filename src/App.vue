@@ -217,9 +217,11 @@ a {
 }
 
 .logo a {
+  color: #a90302;
   padding: 10px 15px;
   text-transform: uppercase;
   font-weight: 700;
+  cursor: none;
 }
 
 .header {
@@ -241,7 +243,7 @@ a {
 .router-link {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #34495e;
+  color: #a90302;
   padding: 10px 15px;
   text-transform: uppercase;
   margin-top: 5px;

@@ -1,72 +1,156 @@
 <template>
-  <div class="coronavirus">
+  <div class="corona-virus">
     <h2>Query Database</h2>
 
-    <select id="countries">
-      <option value="united-states" selected>United States</option>
-      <option value="united-kingdom">United Kingdom</option>
-      <option value="canada">Canada</option>
-      <option value="china">China</option>
-      <option value="france">France</option>
-      <option value="germany">Germany</option>
-      <option value="greece">Greece</option>
-      <option value="hong-kong">Hong Kong</option>
-      <option value="india">India</option>
-      <option value="italy">Italy</option>
-      <option value="japan">Japan</option>
-      <option value="mexico">Mexico</option>
-      <option value="spain">Spain</option>
-    </select>
+    <label for="countries">
+      Select A Country:
+      <select class="select-css" v-model="selected" id="countries">
+        <option value="united-states" selected>United States</option>
+        <option value="united-kingdom">United Kingdom</option>
+        <option value="canada">Canada</option>
+        <option value="china">China</option>
+        <option value="france">France</option>
+        <option value="germany">Germany</option>
+        <option value="greece">Greece</option>
+        <option value="hong-kong">Hong Kong</option>
+        <option value="india">India</option>
+        <option value="italy">Italy</option>
+        <option value="japan">Japan</option>
+        <option value="mexico">Mexico</option>
+        <option value="spain">Spain</option>
+      </select>
+    </label>
 
-    <button class="myButton" @click="retrieveData">Get Case Summary</button>
+    <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
+
+    <display-query-results :propsCoronaVirusStats="coronaVirusStats"></display-query-results>
   </div>
+  <!-- ========== End .corona-virus ==================== -->
 </template>
 
 <script>
+import DisplayQueryResults from "@/components/displayQueryResults.vue";
+
 export default {
   name: "Coronavirus",
+  components: { "display-query-results": DisplayQueryResults },
+  data: function() {
+    return {
+      selected: "",
+      coronaVirusStats: {},
+      cumulativeVirusStats: {}
+    };
+  },
+  computed: {
+    yesterday: function() {
+      // create a date object using Date constructor
+      let dateObj = new Date();
+
+      // subtract one day from current time
+      dateObj.setHours(dateObj.getHours() - 4); // Correct for EST
+      dateObj.setDate(dateObj.getDate() - 1);
+      dateObj = dateObj.toISOString();
+      return dateObj;
+    }
+  },
   methods: {
-    retrieveData: function() {
-      fetch("https://api.covid19api.com/summary")
+    retrieveDataCountryTotal: function() {
+      fetch(
+        `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${this.yesterday}`
+      )
         .then(response => {
           return response.json();
         })
         .then(data => {
           console.log(data);
+          this.coronaVirusStats = data;
+          this.calculateTotals(this.coronaVirusStats);
         });
+    },
+    calculateTotals(apiDataArray) {
+      // Initialize Object
+      this.cumulativeVirusStats = {
+        Active: 0,
+        Confirmed: 0,
+        Date: "",
+        Deaths: 0,
+        Province: "",
+        Recovered: 0
+      };
+      
+      // Need to sum up all fields.
+      apiDataArray.forEach(element => {
+        this.cumulativeVirusStats.Active =
+          this.cumulativeVirusStats.Active + element.Active;
+        this.cumulativeVirusStatsConfirmed =
+          this.cumulativeVirusStats.Confirmed + element.Confirmed;
+        this.cumulativeVirusStats.Deaths =
+          this.cumulativeVirusStats.Deaths + element.Deaths;
+        this.cumulativeVirusStats.Recovered =
+          this.cumulativeVirusStats.Recovered + element.Recovered;
+      });
     }
   }
 };
 </script>
 
 <style scoped>
+div.corona-virus {
+  display: grid;
+}
+
 h2 {
   margin: 10px auto;
   font-size: 2rem;
   text-align: center;
 }
 
-select {
-  display: block;
-  width: 140px;
-  height: 35px;
-  padding: 4px;
-  margin: 15px auto;
-  border-radius: 4px;
-  box-shadow: 2px 2px 8px #999;
-  background: #eee;
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  cursor: pointer;
+label {
+  color: #db090b;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 20px auto;
+  width: 60%;
 }
 
-select:after {
-  content: "<>";
-  font: 11px "Consolas", monospace;
-  color: #666;
+.select-css {
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 700;
+  color: #444;
+  line-height: 1.1;
+  padding: 0.6em 1.4em 0.5em 0.8em;
+  width: 40%;
+  box-sizing: border-box;
+  border: 1px solid #aaa;
+  box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+  border-radius: 0.5em;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"),
+    linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+}
+.select-css::-ms-expand {
+  display: none;
+}
+.select-css:hover {
+  border-color: #888;
+}
+.select-css:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
+.select-css option {
+  font: 15px "Arial", monospace;
+  font-weight: normal;
 }
 
 .myButton {

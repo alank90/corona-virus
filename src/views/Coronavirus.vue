@@ -23,7 +23,10 @@
 
     <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
 
-    <display-query-results :propsCoronaVirusStats="coronaVirusStats"></display-query-results>
+    <display-query-results
+      :propsCumulativeCoronaVirusStats="cumulativeVirusStats"
+      :propsCoronaVirusStats="coronaVirusStats"
+    ></display-query-results>
   </div>
   <!-- ========== End .corona-virus ==================== -->
 </template>
@@ -77,7 +80,7 @@ export default {
         Province: "",
         Recovered: 0
       };
-      
+
       // Need to sum up all fields.
       apiDataArray.forEach(element => {
         this.cumulativeVirusStats.Active =
@@ -101,6 +104,7 @@ div.corona-virus {
 
 h2 {
   margin: 10px auto;
+  color: rgba(20, 1, 1, 0.788);
   font-size: 2rem;
   text-align: center;
 }

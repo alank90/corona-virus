@@ -252,7 +252,7 @@ a {
 .router-link:hover {
   -webkit-transform: rotateX(360deg);
   transform: rotateX(360deg);
-  color: #03111ffd;
+  color: #ca0e0e5e;
 }
 
 @media (max-width: 769px) {

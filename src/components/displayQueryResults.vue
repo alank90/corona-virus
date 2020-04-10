@@ -26,9 +26,36 @@
     </div>
     <div v-else-if="propsCumulativeCoronaVirusStats.Active === 0">No Active Cases</div>
 
-    <div v-if="propsCoronaVirusStats[0].CountryCode === 'US'">
-      <button class="button">Click to Query States</button>
+    <!-- =========== Markup for the States Table ================ -->
+    <div
+      v-if="Object.keys(propsCumulativeCoronaVirusStats).length !== 0 && propsCoronaVirusStats[0].CountryCode === 'US'"
+    >
+      <button @click="showStates=!showStates" class="button">Click to Display States</button>
+
+      <div v-if="showStates">
+        <table id="corona-virus-table">
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Active Cases</th>
+              <th>Confirmed</th>
+              <th>Deaths</th>
+              <th>Recovered</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="state in propsCoronaVirusStats">
+              <td>{{state.Province}}</td>
+              <td>{{state.Active}}</td>
+              <td>{{state.Confirmed}}</td>
+              <td>{{state.Deaths}}</td>
+              <td>{{state.Recovered}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+    <!-- =========== End of Markup for the States Table =========== -->
   </div>
   <!-- ======= End .display-results ======== -->
 </template>
@@ -38,6 +65,11 @@
 export default {
   name: "DisplayQueryResults",
   props: ["propsCoronaVirusStats", "propsCumulativeCoronaVirusStats"],
+  data: function() {
+    return {
+      showStates: false
+    };
+  },
   computed: {
     today: function() {
       // create a date object using Date constructor
@@ -51,7 +83,7 @@ export default {
 
 <style scoped>
 h2 {
-  color: #fff;
+  color: rgba(49, 2, 2, 0.966);
   text-align: center;
   font-family: fantasy;
   font-size: 1.6rem;
@@ -74,6 +106,10 @@ table th {
   color: #fff;
   padding: 8px;
   min-width: 30px;
+}
+
+table th:not(:last-child) {
+  border-right: solid 3px rgba(14, 0, 0, 0.459);
 }
 
 table td {

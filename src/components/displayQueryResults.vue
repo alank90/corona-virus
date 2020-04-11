@@ -30,9 +30,9 @@
     <div
       v-if="Object.keys(propsCumulativeCoronaVirusStats).length !== 0 && propsCoronaVirusStats[0].CountryCode === 'US'"
     >
-      <button @click="showStates=!showStates" class="button">Click to Display States</button>
+      <div @click="showStates" class="arrow">&#187;</div>
 
-      <div v-if="showStates">
+      <div v-if="visibility">
         <table id="corona-virus-table">
           <thead>
             <tr>
@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="state in propsCoronaVirusStats">
+            <tr v-for="state in propsCoronaVirusStats" :key="state.Province">
               <td>{{state.Province}}</td>
               <td>{{state.Active}}</td>
               <td>{{state.Confirmed}}</td>
@@ -67,7 +67,8 @@ export default {
   props: ["propsCoronaVirusStats", "propsCumulativeCoronaVirusStats"],
   data: function() {
     return {
-      showStates: false
+      visibility: false,
+      degrees: 90
     };
   },
   computed: {
@@ -76,6 +77,26 @@ export default {
       let dateObj = new Date();
       dateObj = dateObj.toISOString().substring(0, 10);
       return dateObj;
+    }
+  },
+  methods: {
+    showStates: function() {
+      this.visibility = !this.visibility;
+      const el = document.querySelector(".arrow");
+      if (this.visibility) {
+        // Arrow needs to shift up
+        console.log("arrow shift up");
+        el.style.transform = `rotate(${this.degrees}deg)`;
+        el.style.paddingBottom = "20px";
+        this.degrees -= 90;
+      } else {
+        // Shift arrow down and show table
+        el.style.transform = `rotate(${this.degrees}deg)`;
+        el.style.paddingBottom = "0";
+        this.degrees += 90;
+      }
+
+      //this.degrees += 180; // need to add 180 degees
     }
   }
 };
@@ -131,28 +152,18 @@ p {
   color: #005;
 }
 
-.button {
-  box-shadow: 3px 4px 0px 0px #8a2a21;
-  background: linear-gradient(to bottom, #b9090b 5%, #f24437 100%);
-  background-color: #b9090b;
-  border-radius: 18px;
-  border: 1px solid #d02718;
-  display: block;
+.arrow {
+  width: 75px;
+  color: #b9090b;
   margin: 10px auto;
+  font-size: 4rem;
+  font-weight: 700;
+  text-shadow: 3px 3px 0px #810e05;
   cursor: pointer;
-  color: #ffffff;
-  font-family: Trebuchet MS;
-  font-size: 15px;
-  padding: 10px 30px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #810e05;
+  transform-origin: center left;
+  transition: all 0.5s;
 }
-.button:hover {
-  background: linear-gradient(to bottom, #f24437 5%, #b9090b 100%);
-  background-color: #f24437;
-}
-.button:active {
-  position: relative;
-  top: 1px;
+.arrow:hover {
+  color: #f24437;
 }
 </style>

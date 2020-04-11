@@ -2,8 +2,8 @@
   <div class="display-results">
     <div v-if="Object.keys(propsCumulativeCoronaVirusStats).length !== 0">
       <h2>
-        {{propsCoronaVirusStats[0].Country}} Corona Virus Stats
-        as of {{today}}
+        {{ propsCoronaVirusStats[0].Country }} Corona Virus Stats as of
+        {{ today }}
       </h2>
       <table id="corona-virus-table">
         <thead>
@@ -16,21 +16,32 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{propsCumulativeCoronaVirusStats.Active}}</td>
-            <td>{{propsCumulativeCoronaVirusStats.Confirmed}}</td>
-            <td>{{propsCumulativeCoronaVirusStats.Deaths}}</td>
-            <td>{{propsCumulativeCoronaVirusStats.Recovered}}</td>
+            <td>{{ propsCumulativeCoronaVirusStats.Active }}</td>
+            <td>{{ propsCumulativeCoronaVirusStats.Confirmed }}</td>
+            <td>{{ propsCumulativeCoronaVirusStats.Deaths }}</td>
+            <td>{{ propsCumulativeCoronaVirusStats.Recovered }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-else-if="propsCumulativeCoronaVirusStats.Active === 0">No Active Cases</div>
+    <div v-else-if="propsCumulativeCoronaVirusStats.Active === 0">
+      No Active Cases
+    </div>
 
     <!-- =========== Markup for the States Table ================ -->
     <div
-      v-if="Object.keys(propsCumulativeCoronaVirusStats).length !== 0 && propsCoronaVirusStats[0].CountryCode === 'US'"
+      v-if="
+        Object.keys(propsCumulativeCoronaVirusStats).length !== 0 &&
+          propsCoronaVirusStats[0].CountryCode === 'US'
+      "
     >
-      <div @click="showStates" class="arrow">&#187;</div>
+      <div
+        @click="showStates"
+        class="arrow"
+        title="Click to See Breakdown by State"
+      >
+        &#187;
+      </div>
 
       <div v-if="visibility">
         <table id="corona-virus-table">
@@ -45,11 +56,11 @@
           </thead>
           <tbody>
             <tr v-for="state in propsCoronaVirusStats" :key="state.Province">
-              <td>{{state.Province}}</td>
-              <td>{{state.Active}}</td>
-              <td>{{state.Confirmed}}</td>
-              <td>{{state.Deaths}}</td>
-              <td>{{state.Recovered}}</td>
+              <td>{{ state.Province }}</td>
+              <td>{{ state.Active }}</td>
+              <td>{{ state.Confirmed }}</td>
+              <td>{{ state.Deaths }}</td>
+              <td>{{ state.Recovered }}</td>
             </tr>
           </tbody>
         </table>
@@ -59,7 +70,6 @@
   </div>
   <!-- ======= End .display-results ======== -->
 </template>
-
 
 <script>
 export default {
@@ -85,7 +95,6 @@ export default {
       const el = document.querySelector(".arrow");
       if (this.visibility) {
         // Arrow needs to shift up
-        console.log("arrow shift up");
         el.style.transform = `rotate(${this.degrees}deg)`;
         el.style.paddingBottom = "20px";
         this.degrees -= 90;

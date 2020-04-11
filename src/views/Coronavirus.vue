@@ -21,9 +21,15 @@
       </select>
     </label>
 
-    <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
+    <button class="myButton" @click="retrieveDataCountryTotal">
+      Get Case Summary
+    </button>
 
+    <div class="loading" v-show="loading">
+      <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
+    </div>
     <display-query-results
+      v-show="dataRetrieved"
       :propsCumulativeCoronaVirusStats="cumulativeVirusStats"
       :propsCoronaVirusStats="coronaVirusStats"
     ></display-query-results>
@@ -41,7 +47,9 @@ export default {
     return {
       selected: "",
       coronaVirusStats: {},
-      cumulativeVirusStats: {}
+      cumulativeVirusStats: {},
+      loading: false,
+      dataRetrieved: false
     };
   },
   computed: {
@@ -58,6 +66,9 @@ export default {
   },
   methods: {
     retrieveDataCountryTotal: function() {
+      this.loading = true;
+      if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
+
       fetch(
         `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${this.yesterday}`
       )
@@ -68,6 +79,8 @@ export default {
           console.log(data);
           this.coronaVirusStats = data;
           this.calculateTotals(this.coronaVirusStats);
+          this.loading = false;
+          this.dataRetrieved = true;
         });
     },
     calculateTotals(apiDataArray) {
@@ -180,5 +193,10 @@ label {
 .myButton:active {
   position: relative;
   top: 1px;
+}
+
+.loading {
+  width: 50px;
+  margin: 0 auto;
 }
 </style>

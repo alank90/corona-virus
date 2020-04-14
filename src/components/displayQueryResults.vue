@@ -24,9 +24,7 @@
         </tbody>
       </table>
     </div>
-    <div v-else-if="propsCumulativeCoronaVirusStats.Active === 0">
-      No Active Cases
-    </div>
+    <div v-else-if="propsCumulativeCoronaVirusStats.Active === 0">No Active Cases</div>
 
     <!-- =========== Markup for the States Table ================ -->
     <div
@@ -35,61 +33,24 @@
           propsCoronaVirusStats[0].CountryCode === 'US'
       "
     >
-      <div
-        @click="showStates"
-        class="hideTableArrow"
-        title="Click to See Breakdown by State"
-      >
-        &#187;
-      </div>
+      <div @click="showStates" class="hideTableArrow" title="Click to See Breakdown by State">&#187;</div>
 
       <div v-if="visibility">
         <table id="corona-virus-table">
           <thead>
             <tr @click="sortTable">
-              <th data-col-num="col1" data-col1="Province">
-                State
-
+              <th v-for="(col, index) in columns" :data-col-num="index" :data-col-name="col">
+                {{ col }}
                 <div
                   class="arrow"
-                  v-if="columnName == sortColumn"
+                  v-if="columnName == col"
                   v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
                 ></div>
               </th>
-              <th data-col-num="col2" data-col2="Active">
-                Active Cases
-                <div
-                  class="arrow"
-                  v-if="columnName == sortColumn"
-                  v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
-                ></div>
-              </th>
-              <th data-col-num="col3" data-col3="Confirmed">
-                Confirmed
-                <div
-                  class="arrow"
-                  v-if="columnName == sortColumn"
-                  v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
-                ></div>
-              </th>
-              <th data-col-num="col4" data-col4="Deaths">
-                Deaths
-                <div
-                  class="arrow"
-                  v-if="columnName == sortColumn"
-                  v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
-                ></div>
-              </th>
-              <th data-col-num="col5" data-col5="Recovered">
-                Recovered
-                <div
-                  class="arrow"
-                  v-if="columnName == sortColumn"
-                  v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
-                ></div>
-              </th>
+              <!-- === End v-for === -->
             </tr>
           </thead>
+
           <tbody>
             <tr v-for="state in propsCoronaVirusStats" :key="state.Province">
               <td>{{ state.Province }}</td>
@@ -118,7 +79,7 @@ export default {
       ascending: false,
       sortColumn: "",
       columnName: "",
-      Columns: ["1","2","3","4","5"]
+      columns: ["Province", "Active", "Confirmed", "Deaths", "Recovered"]
     };
   },
   computed: {
@@ -149,8 +110,7 @@ export default {
       e.preventDefault;
       const el = e.target;
       const columnNumber = el.dataset.colNum;
-      this.columnName = el.dataset[columnNumber];
-      console.log(columnNumber.substring(columnNumber.length - 1));
+      this.columnName = el.dataset.colName;
 
       if (this.sortColumn === this.columnName) {
         this.ascending = !this.ascending;
@@ -192,6 +152,11 @@ table {
   border-collapse: collapse;
   border: 3px solid #44475c;
   margin: 10px auto;
+}
+
+.row {
+  display: inline-block;
+  width: 35%;
 }
 
 table th {

@@ -1,6 +1,12 @@
 // ========== /src/Home.vue ================== //
 <template>
   <div class="home">
+    <ul @click="retrieveWorldWideTotals()">
+      World Totals:
+      <li>{{ totalWorldWideVirusStats.TotalConfirmed }}</li>
+      <li>{{ totalWorldWideVirusStats.TotalDeaths }}</li>
+      <li>{{ totalWorldWideVirusStats.TotalRecovered }}</li>
+    </ul>
     <slideShow></slideShow>
   </div>
 </template>
@@ -12,6 +18,23 @@ export default {
   name: "Home",
   components: {
     slideShow
+  },
+  data: function() {
+    return {
+      totalWorldWideVirusStats: {}
+    };
+  },
+  methods: {
+    retrieveWorldWideTotals: function() {
+      fetch(`https://api.covid19api.com/world/total`)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          this.totalWorldWideVirusStats = data;
+        });
+    }
   }
 };
 </script>

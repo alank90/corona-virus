@@ -21,9 +21,7 @@
       </select>
     </label>
 
-    <button class="myButton" @click="retrieveDataCountryTotal">
-      Get Case Summary
-    </button>
+    <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
 
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
@@ -76,7 +74,6 @@ export default {
           return response.json();
         })
         .then(data => {
-          console.log(data);
           this.coronaVirusStats = data;
           this.calculateTotals(this.coronaVirusStats);
           this.loading = false;

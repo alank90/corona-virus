@@ -39,8 +39,13 @@
         <table id="corona-virus-table">
           <thead>
             <tr @click="sortTable">
-              <th v-for="(col, index) in columns" :data-col-num="index" :data-col-name="col">
-                {{ col }}
+              <th
+                v-for="(col, index) in columns"
+                :data-col-num="index"
+                :data-col-name="col"
+                title="Click Header to Sort"
+              >
+                {{ col == 'Province' ? 'State' : col }}
                 <div
                   class="arrow"
                   v-if="columnName == col"
@@ -52,16 +57,24 @@
           </thead>
 
           <tbody>
-            <tr v-for="state in propsCoronaVirusStats" :key="state.Province">
-              <td>{{ state.Province }}</td>
-              <td>{{ state.Active }}</td>
-              <td>{{ state.Confirmed }}</td>
-              <td>{{ state.Deaths }}</td>
-              <td>{{ state.Recovered }}</td>
+            <tr v-for="state in get_rows()" :key="state.Province">
+              <td v-for="col in columns">{{ state[col] }}</td>
             </tr>
           </tbody>
         </table>
+
+        <!-- ======= Pagination Markup ===== -->
+        <div class="pagination">
+          <div
+            class="number"
+            v-for="i in num_pages()"
+            v-bind:class="[i == currentPage ? 'active' : '']"
+            v-on:click="change_page(i)"
+          >{{ i }}</div>
+        </div>
+        <!-- === End Pagination === -->
       </div>
+      <!-- ==== End v-if for visibility on state's table ===== -->
     </div>
     <!-- =========== End of Markup for the States Table =========== -->
   </div>
@@ -76,6 +89,8 @@ export default {
     return {
       visibility: false,
       degrees: 90,
+      currentPage: 1,
+      elementsPerPage: 20,
       ascending: false,
       sortColumn: "",
       columnName: "",
@@ -132,6 +147,25 @@ export default {
 
         return 0;
       });
+    },
+    num_pages: function num_pages() {
+      return Math.ceil(
+        this.propsCoronaVirusStats.length / this.elementsPerPage
+      );
+    },
+    get_rows: function get_rows() {
+      /* Changing pages is as simple as updating the field we added 
+      which stores the current page. We don’t need to worry about re-sorting 
+      or re-rendering the page, or even re-splitting the array into a new 
+      sub-array. If the method used to return a subset of the array uses the 
+      property "currentPage", then just by updating the value(via change_page()), 
+      everything will update automatically. Isn't Vue nice. Sssswwwweeeettttt */
+      let start = (this.currentPage - 1) * this.elementsPerPage;
+      let end = start + this.elementsPerPage;
+      return this.propsCoronaVirusStats.slice(start, end);
+    },
+    change_page: function change_page(page) {
+      this.currentPage = page; // Forces a rerender of state table to new page
     }
   }
 };
@@ -154,11 +188,6 @@ table {
   margin: 10px auto;
 }
 
-.row {
-  display: inline-block;
-  width: 35%;
-}
-
 table th {
   font-size: 1.3rem;
   text-transform: uppercase;
@@ -169,6 +198,9 @@ table th {
   min-width: 30px;
 }
 
+table th[data-col-name] {
+  cursor: pointer;
+}
 table th:not(:last-child) {
   border-right: solid 3px rgba(14, 0, 0, 0.459);
 }
@@ -183,8 +215,33 @@ table td {
 table td:last-child {
   border-right: none;
 }
+
 table tbody tr:nth-child(2n) td {
   background: rgba(241, 22, 22, 0.24);
+}
+
+table tr:hover {
+  background: rgba(248, 167, 167, 0.24);
+}
+
+.pagination {
+  font-family: "Open Sans", sans-serif;
+  text-align: right;
+  width: 750px;
+  padding: 8px;
+}
+.number {
+  display: inline-block;
+  padding: 4px 10px;
+  color: #fff;
+  border-radius: 4px;
+  background: #44475c;
+  margin: 0px 5px;
+  cursor: pointer;
+}
+.number:hover,
+.number.active {
+  background: #717699;
 }
 
 p {
@@ -194,9 +251,9 @@ p {
 
 .hideTableArrow {
   width: 75px;
-  color: #b9090b;
+  color: #d92b24;
   margin: 10px auto;
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 700;
   text-shadow: 3px 3px 0px #810e05;
   cursor: pointer;
@@ -204,7 +261,7 @@ p {
   transition: all 0.5s;
 }
 .hideTableArrow:hover {
-  color: #f24437;
+  color: #f79f98c7;
 }
 
 .arrow_down {

@@ -44,6 +44,7 @@
                 :data-col-num="index"
                 :data-col-name="col"
                 title="Click Header to Sort"
+                :key="index"
               >
                 {{ col == 'Province' ? 'State' : col }}
                 <div
@@ -58,7 +59,7 @@
 
           <tbody>
             <tr v-for="state in get_rows()" :key="state.Province">
-              <td v-for="col in columns">{{ state[col] }}</td>
+              <td v-for="col in columns" :key="col">{{ state[col] }}</td>
             </tr>
           </tbody>
         </table>
@@ -70,6 +71,7 @@
             v-for="i in num_pages()"
             v-bind:class="[i == currentPage ? 'active' : '']"
             v-on:click="change_page(i)"
+            :key="i"
           >{{ i }}</div>
         </div>
         <!-- === End Pagination === -->
@@ -148,12 +150,12 @@ export default {
         return 0;
       });
     },
-    num_pages: function num_pages() {
+    num_pages: function() {
       return Math.ceil(
         this.propsCoronaVirusStats.length / this.elementsPerPage
       );
     },
-    get_rows: function get_rows() {
+    get_rows: function () {
       /* Changing pages is as simple as updating the field we added 
       which stores the current page. We don’t need to worry about re-sorting 
       or re-rendering the page, or even re-splitting the array into a new 

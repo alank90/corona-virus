@@ -16,23 +16,34 @@ import slideShow from "../components/SlideShow.vue";
 export default {
   name: "Home",
   components: {
-    slideShow,
+    slideShow
   },
   data: function() {
     return {
-      totalWorldWideVirusStats: {},
+      totalWorldWideVirusStats: {}
     };
   },
   created: function retrieveWorldWideTotals() {
     fetch(`https://api.covid19api.com/world/total`)
-      .then((response) => {
+      .then(response => {
         return response.json();
       })
-      .then((data) => {
-        console.log(data);
+      .then(data => {
         this.totalWorldWideVirusStats = data;
+
+        if (typeof Intl === "undefined" || !Intl.NumberFormat) {
+          console.log("This browser doesn't support Intl.NumberFormat");
+        } else {
+          const nf = Intl.NumberFormat();
+          this.totalWorldWideVirusStats.TotalConfirmed = nf.format(
+            this.totalWorldWideVirusStats.TotalConfirmed
+          );
+          this.totalWorldWideVirusStats.TotalDeaths = nf.format(
+            this.totalWorldWideVirusStats.TotalDeaths
+          );
+        }
       });
-  },
+  }
 };
 </script>
 
@@ -64,8 +75,9 @@ ul {
   justify-content: space-around;
   max-width: 40%;
   margin: 5px 25px;
+  padding: 5px 15px;
   list-style-type: none;
-  background-color: rgba(248, 240, 240, 0.698);
+  background-color: rgba(255, 255, 255, 1);
 }
 
 li {

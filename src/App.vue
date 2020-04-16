@@ -2,11 +2,12 @@
   <div class="app">
     <header class="header">
       <h1 class="logo">
-        <a href="#">Corona Virus Updates</a>
+        <a href="#">Home for Corona Virus Information</a>
       </h1>
 
       <router-link class="router-link" to="/">Home</router-link>
-      <router-link class="router-link" to="/coronavirus">Covid-19 Queries</router-link>
+      <router-link class="router-link" to="/coronavirus">Covid-19 Stats by Country</router-link>
+      <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
       <router-link class="router-link" to="/johnhopkins">John Hopkins</router-link>
     </header>
 
@@ -189,8 +190,10 @@ input,
 select {
   vertical-align: middle;
 }
+/* ================================================= */
+/* ================= End CSS Reset ================= */
+/* ================================================= */
 
-/* ======== End CSS Reset ================= */
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -199,7 +202,9 @@ select {
   text-align: center;
   color: #2c3e50;
 }
-
+h1 a{
+  font-size: 1.8rem;
+}
 /* Navbar Stylings */
 h2,
 h3,

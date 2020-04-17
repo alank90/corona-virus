@@ -6,7 +6,7 @@
       </h1>
 
       <router-link class="router-link" to="/">Home</router-link>
-      <router-link class="router-link" to="/coronavirus">Covid-19 Stats by Country</router-link>
+      <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
       <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
       <router-link class="router-link" to="/johnhopkins">John Hopkins</router-link>
     </header>
@@ -203,7 +203,7 @@ select {
   color: #2c3e50;
 }
 h1 a{
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 /* Navbar Stylings */
 h2,

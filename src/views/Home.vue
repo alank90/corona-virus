@@ -47,7 +47,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body {
   background: url("../assets/img/covid-7-lg.jpg") no-repeat fixed center
     center/cover;

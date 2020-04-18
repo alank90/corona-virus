@@ -3,10 +3,13 @@
     <label for="search-input" id="search">
       Search:
       <input
+        @keypress.enter.prevent="submitSearch"
         type="search"
         class="input-css"
         id="search-input"
         name="q"
+        placeholder="Search Corona Virus..."
+        size="30"
         aria-label="Search through site content"
       />
     </label>
@@ -14,8 +17,37 @@
 </template>
 
 <script>
+// Import the EventBus.
+import { EventBus } from "../main.js";
+
 export default {
-  name: "search"
+  name: "search",
+  methods: {
+    submitSearch: function() {
+      const el = document.getElementById("search-input");
+      const queryString = el.value;
+
+      const domains =
+        "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
+      const excludeDomains = "foxnews.com,fox.com";
+
+      const url = `http://newsapi.org/v2/everything?q=${queryString}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=b7fb08c9f94f4898ae24c81664e9ae7c`;
+      // Just a little  different way of implementing fetch()
+      const req = new Request(url);
+      fetch(req)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const { articles, totalResults } = data;
+          // Send the event on a channel (searchResults) with a payload (article object)
+          let results = {};
+          results.articles = articles;
+          results.totalResults = totalResults;
+          EventBus.$emit("searchResults", results);
+        });
+    },
+  },
 };
 </script>
 
@@ -43,28 +75,20 @@ label {
   width: 45%;
   max-height: 30px;
   box-sizing: border-box;
-  border: 1px solid #aaa;
+  border: 2px solid #aaa;
   box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
-  border-radius: 0.5em;
+  border-radius: 8px;
   -moz-appearance: none;
   -webkit-appearance: none;
   background-color: #fff;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"),
-    linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
-  background-repeat: no-repeat, repeat;
-  background-position: right 0.7em top 50%, 0 0;
-  background-size: 0.65em auto, 100%;
 }
-.input-css::-ms-expand {
-  display: none;
-}
+
 .input-css:hover {
-  border-color: #888;
+  border: 2px solid rgba(161, 45, 45, 0.849);
 }
 .input-css:focus {
-  border-color: #aaa;
-  box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
-  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  border: 0px;
+  box-shadow: 0 0 1px 3px rgba(143, 7, 7, 0.788);
   color: #222;
   outline: none;
 }

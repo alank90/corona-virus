@@ -194,6 +194,10 @@ select {
 /* ================= End CSS Reset ================= */
 /* ================================================= */
 
+body {
+  background: url("assets/img/covid-7-lg.jpg") no-repeat fixed center
+    center/cover;
+}
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -202,9 +206,13 @@ select {
   text-align: center;
   color: #2c3e50;
 }
-h1 a{
-  font-size: 1.6rem;
+
+h1 {
+  margin: 0 10px;
 }
+  h1 a {
+    font-size: 1.6rem;
+  }
 /* Navbar Stylings */
 h2,
 h3,

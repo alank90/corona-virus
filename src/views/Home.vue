@@ -48,11 +48,6 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background: url("../assets/img/covid-7-lg.jpg") no-repeat fixed center
-    center/cover;
-}
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -16,8 +16,14 @@
   </div>
 </template>
 
+<script>
+import '@/assets/css/styles.css';
+export default {
+  
+}
+</script>
+
 <style>
-@import url('/src/assets/css/reset.css');
 body {
   background: url("assets/img/covid-7-lg.jpg") no-repeat fixed center
     center/cover;

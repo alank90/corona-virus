@@ -12,8 +12,9 @@
         size="30"
         aria-label="Search through site content"
       />
-
-      <input @click="submitSearch" type="button" class="button" value="Search" />
+      <span class="arrow">
+        <input @click="submitSearch" type="button" class="button" value="Search" required />
+      </span>
     </form>
   </div>
 </template>
@@ -61,20 +62,16 @@ export default {
 
 form {
   width: 500px;
-  margin: 10px auto;
+  margin: 50px auto;
 }
 
 .search-input-box {
-  font-size: 1.3rem;
   font-weight: 700;
+  padding: 8px 15px;
   color: rgba(243, 226, 226, 0.527);
-  padding: 2px 15px;
-  background: rgba(50, 50, 50, 0.4);
-  border: 0px solid #dbdbdb;
   width: 45%;
   box-sizing: border-box;
   border: 2px solid #aaa;
-  border-radius: 8px;
 }
 
 .search-input-box:hover {
@@ -89,17 +86,35 @@ form {
 }
 
 .button {
-  font-size: 1.1rem;
   position: relative;
-  padding: 4px 15px;
-  left: 3px;
-  border: 2px solid #207cca;
-  background-color: #207cca;
+  padding: 6px 15px;
+  left: -8px;
+  background-color: #ca3420;
   color: #fafafa;
 }
 .button:hover {
   background-color: #fafafa;
   color: #207cca;
+}
+
+.arrow {
+  position: relative;
+  left: -8px;
+  background-color: #ca3420;
+  padding: 7px 15px;
+}
+.arrow::after {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  border-color: rgba(32, 124, 202, 0);
+  border-right-color: #ca3420;
+  border-width: 10px;
+  margin-top: -10px;
 }
 
 ::-webkit-input-placeholder {

@@ -24,20 +24,21 @@ npm run build
 ## Notes
 
 To use Google Fonts:
-When using VueJS, Google Fonts Webpack Plugin is the way.
+When using VueJS, either just add a link in head section of /public/index.html or you can import the font with Google Fonts Webpack Plugin this way:
 
 Here's the [plugin](https://www.npmjs.com/package/google-fonts-webpack-plugin), it's really easy to set it up and works like a charm.
 
 `npm i google-fonts-webpack-plugin -D`
 
-Go to your **/webpack.config.js** and add the following lines:
+Go to your **/vue.config.js** and add the following lines:
 
-``` 
+```
 const GoogleFontsPlugin = require("google-fonts-webpack-plugin")
 
 module.exports = {
     entry: './src/app.js',
     /* ... */
+    configureWebPack: {
     plugins: [
         new GoogleFontsPlugin({
             fonts: [
@@ -52,11 +53,11 @@ module.exports = {
 Now you can use Google Fonts anywhere inside your VueJS project e.g.
 
 p {
-    font-family: 'Libre Baskerville'
+font-family: 'Libre Baskerville'
 }
 
- To apply stylings globally put css rules in **App.js** :)
+To apply stylings globally put css rules in **App.js** :)
 
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
+See [Configuration Reference](https://cli.vuejs.org/config/).

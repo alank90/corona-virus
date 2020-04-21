@@ -129,10 +129,8 @@ label {
 
 .select-css {
   font-size: 16px;
-  font-family: sans-serif;
   font-weight: 700;
   color: #444;
-  line-height: 1.1;
   padding: 0.6em 1.4em 0.5em 0.8em;
   width: 40%;
   box-sizing: border-box;
@@ -177,7 +175,6 @@ label {
   margin: 10px auto;
   cursor: pointer;
   color: #ffffff;
-  font-family: Trebuchet MS;
   font-size: 19px;
   padding: 10px 30px;
   text-decoration: none;

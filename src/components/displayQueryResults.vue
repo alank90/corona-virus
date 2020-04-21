@@ -177,13 +177,11 @@ export default {
 h2 {
   color: rgba(49, 2, 2, 0.966);
   text-align: center;
-  font-family: fantasy;
   font-size: 1.6rem;
   margin: 25px 5px 25px 5px;
 }
 
 table {
-  font-family: "Open Sans", sans-serif;
   width: 750px;
   border-collapse: collapse;
   border: 3px solid #44475c;
@@ -227,7 +225,6 @@ table tr:hover {
 }
 
 .pagination {
-  font-family: "Open Sans", sans-serif;
   text-align: right;
   width: 750px;
   padding: 8px;

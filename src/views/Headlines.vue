@@ -173,7 +173,6 @@ img {
 
 /* Pagination Stylings */
 .pagination {
-  font-family: "Open Sans", sans-serif;
   text-align: right;
   width: 750px;
   padding: 8px;

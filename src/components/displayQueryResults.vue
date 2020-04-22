@@ -136,7 +136,7 @@ export default {
         this.sortColumn = this.columnName;
       }
       // Need to do redefine these variables because
-      // vue's "this" is not same scope as Array.Prototype .sort function
+      // vue's "this" is not same scope as Array.Prototype.sort function
       let ascending = this.ascending;
       let columnName = this.columnName;
 

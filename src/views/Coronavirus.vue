@@ -31,23 +31,32 @@
       :propsCumulativeCoronaVirusStats="cumulativeVirusStats"
       :propsCoronaVirusStats="coronaVirusStats"
     ></display-query-results>
+
+    <display-graph :propsChartData="coronaVirusStats"></display-graph>
   </div>
   <!-- ========== End .corona-virus ==================== -->
 </template>
 
 <script>
 import DisplayQueryResults from "@/components/displayQueryResults.vue";
+import DisplayGraph from "@/components/displayGraph.vue";
 
 export default {
   name: "Coronavirus",
-  components: { "display-query-results": DisplayQueryResults },
+  components: {
+    "display-query-results": DisplayQueryResults,
+    "display-graph": DisplayGraph
+  },
   data: function() {
     return {
       selected: "",
-      coronaVirusStats: {},
+      coronaVirusStats: { type: Object, default: null },
       cumulativeVirusStats: {},
       loading: false,
-      dataRetrieved: false
+      dataRetrieved: false,
+      // Chart Objects
+      chartData: {},
+      chartOptions: {}
     };
   },
   computed: {

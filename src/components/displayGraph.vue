@@ -1,14 +1,8 @@
-<template>
-  <div class="display-graph">
-    <h2 @click="sortChartData">
-      Display Graph
-      <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
-    </h2>
-  </div>
-</template>
 
 <script>
 import { Bar } from "vue-chartjs";
+// Import the EventBus.
+import { EventBus } from "../main.js";
 
 export default {
   name: "displayGraph",
@@ -16,31 +10,60 @@ export default {
   props: ["propsChartData"],
   data: function() {
     return {
-      options: {}
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      },
+      chartData: {
+        labels: ["New York", "New Jersey", "Florida", "Michigan", "California"],
+        datasets: [
+          {
+            label: "# of Deaths",
+            data: [4655, 3344, 1255, 988, 782],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)"
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)"
+            ],
+            borderWidth: 1
+          }
+        ]
+      }
     };
   },
-  methods: {
-    sortChartData: function() {
-      // Need to do redefine these variables because
-      // vue's "this" is not same scope as Array.Prototype.sort function
-      let Deaths = this.propsChartData.Deaths;
-      console.log(`Deaths = ${this.propsChartData[0].Deaths}`);
+  computed: {
+    topRankedStates_Provinces: function() {
       this.propsChartData.sort(function(a, b) {
-        if (a[Deaths] > b[Deaths]) {
-          return -1;
-        } else if (a[Deaths] < b[Deaths]) {
-          return 1;
-        }
-
-        return 0;
+        return (a.Deaths - b.Deaths) * -1; // sorts descending
       });
+
+      return this.propsChartData.slice(0, 5);
     }
+  },
+
+  mounted: function() {
+    // The eventbus carries manual search data from Search.vue
+    // back to its parent component Headlines.vue
+    EventBus.$on("display-graph", data => {
+      this.renderChart(this.chartData, this.options);
+    });
   }
 };
 </script>
 
-<style scoped>
-h2 {
-  text-align: center;
-}
-</style>

@@ -32,7 +32,11 @@
       :propsCoronaVirusStats="coronaVirusStats"
     ></display-query-results>
 
-    <display-graph :propsChartData="coronaVirusStats"></display-graph>
+    <h2 @click="displayGraph">
+      Display Graph
+      <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
+      <display-graph :propsChartData="coronaVirusStats"></display-graph>
+    </h2>
   </div>
   <!-- ========== End .corona-virus ==================== -->
 </template>
@@ -40,6 +44,8 @@
 <script>
 import DisplayQueryResults from "@/components/displayQueryResults.vue";
 import DisplayGraph from "@/components/displayGraph.vue";
+// Import the EventBus.
+import { EventBus } from "../main.js";
 
 export default {
   name: "Coronavirus",
@@ -111,6 +117,9 @@ export default {
         this.cumulativeVirusStats.Recovered =
           this.cumulativeVirusStats.Recovered + element.Recovered;
       });
+    },
+    displayGraph: function() {
+      EventBus.$emit("display-graph", "clicked");
     }
   }
 };

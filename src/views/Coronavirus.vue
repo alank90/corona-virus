@@ -32,10 +32,12 @@
       :propsCoronaVirusStats="coronaVirusStats"
     ></display-query-results>
 
-    <h2 @click="displayGraph">
+    <h2 @click="displayGraph" class="display-graph" title="Click to Display Graph">
       Display Graph
       <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
-      <display-graph :propsChartData="coronaVirusStats"></display-graph>
+      <div class="chart-container">
+        <display-graph :propsCoronaVirusStats="coronaVirusStats"></display-graph>
+      </div>
     </h2>
   </div>
   <!-- ========== End .corona-virus ==================== -->
@@ -59,10 +61,7 @@ export default {
       coronaVirusStats: { type: Object, default: null },
       cumulativeVirusStats: {},
       loading: false,
-      dataRetrieved: false,
-      // Chart Objects
-      chartData: {},
-      chartOptions: {}
+      dataRetrieved: false
     };
   },
   computed: {
@@ -135,6 +134,14 @@ h2 {
   color: rgba(20, 1, 1, 0.788);
   font-size: 2rem;
   text-align: center;
+}
+h2.display-graph {
+  cursor: pointer;
+  max-width: 60%;
+}
+.chart-container {
+  width: 1000px;
+  height: 800px;
 }
 
 label {

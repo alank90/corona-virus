@@ -3,58 +3,79 @@
 
 export default function constructChartData(topRankedStates_Provinces) {
   let labels = [];
-  let data = [];
 
-  console.log(`${topRankedStates_Provinces}`);
+  let totalActive = {
+    label: "Total Active Cases",
+    data: [],
+    backgroundColor: "rgba(240, 255, 25, 0.6)",
+    borderColor: "rgba(33, 5, 1, 1)",
+    borderWidth: 1,
+    yAxisID: "y-axis-active",
+  };
+
+  let totalDeaths = {
+    label: "Total # of Deaths",
+    data: [],
+    backgroundColor: "rgba(255, 35, 10, 0.6)",
+    borderColor: "rgba(33, 5, 1, 1)",
+    borderWidth: 1,
+    yAxisID: "y-axis-deaths",
+  };
 
   topRankedStates_Provinces.forEach((item) => {
     labels.push(item.Province);
-    data.push(item.Deaths);
+    totalDeaths.data.push(item.Deaths);
+    totalActive.data.push(item.Active);
   });
-  console.log(labels);
+
+  let chartData = {
+    labels: labels,
+    datasets: [totalActive, totalDeaths],
+  };
 
   let options = {
     responsive: true,
     maintainAspectRatio: false,
+    legend: {
+      labels: {
+        // This more specific font property overrides the global property
+        fontSize: 24,
+        fontStyle: "bold",
+        fontColor: "black",
+      },
+    },
     scales: {
       yAxes: [
         {
+          id: "y-axis-active",
+          type: "linear",
+          position: "left",
+        },
+        {
+          id: "y-axis-deaths",
+          type: "linear",
+          position: "right",
+        },
+        {
+          ticks: {
+            beginAtZero: false,
+            fontSize: 20,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          barPercentage: 1,
+          categoryPercentage: 0.6,
           ticks: {
             beginAtZero: true,
+            fontSize: 18,
+            fontColor: "rgb(77,255,77)",
           },
         },
       ],
     },
   };
 
-  let chartData = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Total # of Deaths",
-        data: data,
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(75, 192, 192, 0.6)",
-          "rgba(153, 80, 155, 0.6)",
-          "rgba(55, 102, 255, 0.6)",
-          "rgba(99, 102, 255, 0.6)",
-          "rgba(153, 22, 255, 0.6)",
-          "rgba(14, 99, 255, 0.6)",
-          "rgba(255, 0, 0, 0.6)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
   return { chartData: chartData, options: options };
 }

@@ -61,7 +61,8 @@ export default {
       coronaVirusStats: { type: Object, default: null },
       cumulativeVirusStats: {},
       loading: false,
-      dataRetrieved: false
+      dataRetrieved: false,
+      test: { type: Object, default: null }
     };
   },
   computed: {
@@ -81,18 +82,22 @@ export default {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
 
-      fetch(
-        `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${this.yesterday}`
-      )
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          this.coronaVirusStats = data;
-          this.calculateTotals(this.coronaVirusStats);
-          this.loading = false;
-          this.dataRetrieved = true;
-        });
+      // Multiple fetches
+      Promise.all([
+        fetch(
+          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${this.yesterday}`
+        ).then(res => (res.ok && res.json()) || Promise.reject(res)),
+        fetch(
+          `https://api.covid19api.com/live/country/south-africa/status/confirmed/date/2020-03-21T13:13:30Z`
+        ).then(res => (res.ok && res.json()) || Promise.reject(res))
+      ]).then(data => {
+        // handle data array here
+        this.coronaVirusStats = data[0];
+        this.calculateTotals(this.coronaVirusStats);
+        this.loading = false;
+        this.dataRetrieved = true;
+        console.log(data[1]);
+      });
     },
     calculateTotals(apiDataArray) {
       // Initialize Object

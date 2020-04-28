@@ -1,8 +1,8 @@
 <template>
   <div class="display-results">
-    <div v-if="Object.keys(propsCumulativeCoronaVirusStats).length !== 0">
+    <div v-if="Object.keys(propsCumulativeCoronaVirusStatsTotal).length !== 0">
       <h2>
-        {{ propsCoronaVirusStats[0].Country }} Corona Virus Stats as of
+        {{ propsCoronaVirusStatsTotal[0].Country }} Corona Virus Stats as of
         {{ today }}
       </h2>
       <table id="corona-virus-table">
@@ -16,21 +16,21 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ propsCumulativeCoronaVirusStats.Active }}</td>
-            <td>{{ propsCumulativeCoronaVirusStats.Confirmed }}</td>
-            <td>{{ propsCumulativeCoronaVirusStats.Deaths }}</td>
-            <td>{{ propsCumulativeCoronaVirusStats.Recovered }}</td>
+            <td>{{ propsCumulativeCoronaVirusStatsTotal.Active }}</td>
+            <td>{{ propsCumulativeCoronaVirusStatsTotal.Confirmed }}</td>
+            <td>{{ propsCumulativeCoronaVirusStatsTotal.Deaths }}</td>
+            <td>{{ propsCumulativeCoronaVirusStatsTotal.Recovered }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-else-if="propsCumulativeCoronaVirusStats.Active === 0">No Active Cases</div>
+    <div v-else-if="propsCumulativeCoronaVirusStatsTotal.Active === 0">No Active Cases</div>
 
     <!-- =========== Markup for the States Table ================ -->
     <div
       v-if="
-        Object.keys(propsCumulativeCoronaVirusStats).length !== 0 &&
-          propsCoronaVirusStats[0].CountryCode === 'US'
+        Object.keys(propsCumulativeCoronaVirusStatsTotal).length !== 0 &&
+          propsCoronaVirusStatsTotal[0].CountryCode === 'US'
       "
     >
       <div @click="showStates" class="hideTableArrow" title="Click to See Breakdown by State">&#187;</div>
@@ -86,7 +86,7 @@
 <script>
 export default {
   name: "DisplayQueryResults",
-  props: ["propsCoronaVirusStats", "propsCumulativeCoronaVirusStats"],
+  props: ["propsCoronaVirusStatsTotal", "propsCumulativeCoronaVirusStatsTotal"],
   data: function() {
     return {
       visibility: false,
@@ -140,7 +140,7 @@ export default {
       let ascending = this.ascending;
       let columnName = this.columnName;
 
-      this.propsCoronaVirusStats.sort(function(a, b) {
+      this.propsCoronaVirusStatsTotal.sort(function(a, b) {
         if (a[columnName] > b[columnName]) {
           return ascending ? 1 : -1;
         } else if (a[columnName] < b[columnName]) {
@@ -152,7 +152,7 @@ export default {
     },
     num_pages: function() {
       return Math.ceil(
-        this.propsCoronaVirusStats.length / this.elementsPerPage
+        this.propsCoronaVirusStatsTotal.length / this.elementsPerPage
       );
     },
     get_rows: function () {
@@ -164,7 +164,7 @@ export default {
       everything will update automatically. Isn't Vue nice. Sssswwwweeeettttt */
       let start = (this.currentPage - 1) * this.elementsPerPage;
       let end = start + this.elementsPerPage;
-      return this.propsCoronaVirusStats.slice(start, end);
+      return this.propsCoronaVirusStatsTotal.slice(start, end);
     },
     change_page: function change_page(page) {
       this.currentPage = page; // Forces a rerender of state table to new page

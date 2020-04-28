@@ -27,16 +27,27 @@
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
     </div>
     <display-query-results
+      v-if="coronaVirusStatsTotal.length > 0"
       v-show="dataRetrieved"
-      :propsCumulativeCoronaVirusStats="cumulativeVirusStats"
-      :propsCoronaVirusStats="coronaVirusStats"
+      :propsCumulativeCoronaVirusStatsTotal="cumulativeVirusStatsTotal"
+      :propsCoronaVirusStatsTotal="coronaVirusStatsTotal"
     ></display-query-results>
 
     <h2 @click="displayGraph" class="display-graph" title="Click to Display Graph">
       Display Graph
       <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
       <div class="chart-container">
-        <display-graph :propsCoronaVirusStats="coronaVirusStats"></display-graph>
+        <display-graph
+          v-if="coronaVirusStatsTotal.length > 0"
+          :propsCoronaVirusStats="coronaVirusStatsTotal"
+        ></display-graph>
+      </div>
+
+      <div class="chart-container">
+        <display-graph
+          v-if="coronaVirusStatsLastWeek.length > 0"
+          :propsCoronaVirusStats="coronaVirusStatsLastWeek"
+        ></display-graph>
       </div>
     </h2>
   </div>
@@ -46,6 +57,8 @@
 <script>
 import DisplayQueryResults from "@/components/displayQueryResults.vue";
 import DisplayGraph from "@/components/displayGraph.vue";
+import createDates from "../modules/createDates.js";
+
 // Import the EventBus.
 import { EventBus } from "../main.js";
 
@@ -58,50 +71,43 @@ export default {
   data: function() {
     return {
       selected: "",
-      coronaVirusStats: { type: Object, default: null },
-      cumulativeVirusStats: {},
+      coronaVirusStatsTotal: { type: Object, default: null },
+      coronaVirusStatsLastWeek: { type: Object, default: null },
+      cumulativeVirusStatsTotal: { type: Object, default: null },
       loading: false,
-      dataRetrieved: false,
-      test: { type: Object, default: null }
+      dataRetrieved: false
     };
-  },
-  computed: {
-    yesterday: function() {
-      // create a date object using Date constructor
-      let dateObj = new Date();
-
-      // subtract one day from current time
-      dateObj.setHours(dateObj.getHours() - 4); // Correct for EST
-      dateObj.setDate(dateObj.getDate() - 1);
-      dateObj = dateObj.toISOString();
-      return dateObj;
-    }
   },
   methods: {
     retrieveDataCountryTotal: function() {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
+      const { yesterday, lastWeek } = createDates();
 
       // Multiple fetches
       Promise.all([
         fetch(
-          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${this.yesterday}`
+          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${yesterday}`
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
-          `https://api.covid19api.com/live/country/south-africa/status/confirmed/date/2020-03-21T13:13:30Z`
+          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${lastWeek}`
         ).then(res => (res.ok && res.json()) || Promise.reject(res))
       ]).then(data => {
         // handle data array here
-        this.coronaVirusStats = data[0];
-        this.calculateTotals(this.coronaVirusStats);
+        this.coronaVirusStatsTotal = data[0];
+        this.coronaVirusStatsLastWeek = data[1];
+
+        this.cumulativeVirusStatsTotal = this.calculateTotals(
+          this.coronaVirusStatsTotal
+        );
+        console.log(this.coronaVirusStatsLastWeek);
         this.loading = false;
         this.dataRetrieved = true;
-        console.log(data[1]);
       });
     },
     calculateTotals(apiDataArray) {
       // Initialize Object
-      this.cumulativeVirusStats = {
+      let cumulativeVirusStats = {
         Active: 0,
         Confirmed: 0,
         Date: "",
@@ -112,15 +118,17 @@ export default {
 
       // Need to sum up all fields.
       apiDataArray.forEach(element => {
-        this.cumulativeVirusStats.Active =
-          this.cumulativeVirusStats.Active + element.Active;
-        this.cumulativeVirusStatsConfirmed =
-          this.cumulativeVirusStats.Confirmed + element.Confirmed;
-        this.cumulativeVirusStats.Deaths =
-          this.cumulativeVirusStats.Deaths + element.Deaths;
-        this.cumulativeVirusStats.Recovered =
-          this.cumulativeVirusStats.Recovered + element.Recovered;
+        cumulativeVirusStats.Active =
+          cumulativeVirusStats.Active + element.Active;
+        cumulativeVirusStats.Confirmed =
+          cumulativeVirusStats.Confirmed + element.Confirmed;
+        cumulativeVirusStats.Deaths =
+          cumulativeVirusStats.Deaths + element.Deaths;
+        cumulativeVirusStats.Recovered =
+          cumulativeVirusStats.Recovered + element.Recovered;
       });
+
+      return cumulativeVirusStats;
     },
     displayGraph: function() {
       EventBus.$emit("display-graph", "clicked");

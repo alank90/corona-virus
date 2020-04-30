@@ -6,7 +6,7 @@ export default function createDates() {
   let today = dateObj;
   let yesterday = dateObj;
   let lastWeek = dateObj;
-
+  
   today.setHours(yesterday.getHours() - 4); // Correct for EST
   today = today.toISOString();
 
@@ -19,5 +19,9 @@ export default function createDates() {
   lastWeek.setDate(lastWeek.getDate() - 6);
   lastWeek = lastWeek.toISOString();
 
-  return { today: today, yesterday: yesterday, lastWeek: lastWeek };
+  return {
+    today: today,
+    yesterday: yesterday,
+    lastWeek: lastWeek,
+  };
 }

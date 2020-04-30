@@ -26,28 +26,30 @@
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
     </div>
+    <div v-if="coronaVirusStatsTotal.length === 0" class="no-responses">Sorry. No Results Available.</div>
     <display-query-results
-      v-if="coronaVirusStatsTotal.length > 0"
+      v-else-if="coronaVirusStatsTotal.length > 0"
       v-show="dataRetrieved"
       :propsCumulativeCoronaVirusStatsTotal="cumulativeVirusStatsTotal"
       :propsCoronaVirusStatsTotal="coronaVirusStatsTotal"
     ></display-query-results>
 
-    <h2 @click="displayGraph" class="display-graph" title="Click to Display Graph">
+    <h2 @click="displayGraphTotals" class="display-graph" title="Click to Display Graph">
       Display Graph
       <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
+      <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
       <div class="chart-container">
-        <display-graph
+        <display-graph-totals
           v-if="coronaVirusStatsTotal.length > 0"
-          :propsCoronaVirusStats="coronaVirusStatsTotal"
-        ></display-graph>
+          :propsCoronaVirusStatsTotal="coronaVirusStatsTotal"
+        ></display-graph-totals>
       </div>
 
       <div class="chart-container">
-        <display-graph
-          v-if="coronaVirusStatsLastWeek.length > 0"
-          :propsCoronaVirusStats="coronaVirusStatsLastWeek"
-        ></display-graph>
+        <display-graph-confirmed
+          v-if="coronaVirusStatsConfirmed.length > 0"
+          :propsCoronaVirusStatsConfirmed="coronaVirusStatsConfirmed"
+        ></display-graph-confirmed>
       </div>
     </h2>
   </div>
@@ -56,7 +58,8 @@
 
 <script>
 import DisplayQueryResults from "@/components/displayQueryResults.vue";
-import DisplayGraph from "@/components/displayGraph.vue";
+import DisplayGraphTotals from "@/components/displayGraphTotals.vue";
+import DisplayGraphConfirmed from "@/components/displayGraphConfirmed.vue";
 import createDates from "../modules/createDates.js";
 
 // Import the EventBus.
@@ -66,16 +69,18 @@ export default {
   name: "Coronavirus",
   components: {
     "display-query-results": DisplayQueryResults,
-    "display-graph": DisplayGraph
+    "display-graph-totals": DisplayGraphTotals,
+    "display-graph-confirmed": DisplayGraphConfirmed
   },
   data: function() {
     return {
       selected: "",
       coronaVirusStatsTotal: { type: Object, default: null },
-      coronaVirusStatsLastWeek: { type: Object, default: null },
+      coronaVirusStatsConfirmed: { type: Object, default: null },
       cumulativeVirusStatsTotal: { type: Object, default: null },
       loading: false,
-      dataRetrieved: false
+      dataRetrieved: false,
+      showMessage: false
     };
   },
   methods: {
@@ -83,7 +88,7 @@ export default {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
       const { yesterday, lastWeek } = createDates();
-
+      console.log(yesterday);
       // Multiple fetches
       Promise.all([
         fetch(
@@ -95,12 +100,11 @@ export default {
       ]).then(data => {
         // handle data array here
         this.coronaVirusStatsTotal = data[0];
-        this.coronaVirusStatsLastWeek = data[1];
-
+        this.coronaVirusStatsConfirmed = data[1];
         this.cumulativeVirusStatsTotal = this.calculateTotals(
           this.coronaVirusStatsTotal
         );
-        console.log(this.coronaVirusStatsLastWeek);
+
         this.loading = false;
         this.dataRetrieved = true;
       });
@@ -130,8 +134,9 @@ export default {
 
       return cumulativeVirusStats;
     },
-    displayGraph: function() {
-      EventBus.$emit("display-graph", "clicked");
+    displayGraphTotals: function() {
+      EventBus.$emit("display-graph-totals", "clicked");
+      if (this.coronaVirusStatsTotal.length === 0) this.showMessage = true;
     }
   }
 };
@@ -151,6 +156,10 @@ h2 {
 h2.display-graph {
   cursor: pointer;
   max-width: 60%;
+}
+.no-responses {
+  text-align: center;
+  font-size: 1.4rem;
 }
 .chart-container {
   width: 1000px;

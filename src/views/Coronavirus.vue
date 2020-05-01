@@ -89,10 +89,16 @@ export default {
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
       const { yesterday, lastWeek } = createDates();
       console.log(yesterday);
+
+      var requestOptions = {
+        method: "GET",
+        redirect: "follow"
+      };
       // Multiple fetches
       Promise.all([
         fetch(
-          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${yesterday}`
+          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/2020-04-27T13:13:30Z`,
+          requestOptions
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
           `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${lastWeek}`

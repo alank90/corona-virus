@@ -1,9 +1,9 @@
 <template>
   <div class="display-results">
-    <div v-if="Object.keys(propsCumulativeCoronaVirusStatsTotal).length !== 0">
+    <div v-if="Object.keys(propsCountryVirusStatsTotal).length !== 0">
       <h2>
-        {{ propsCoronaVirusStatsTotal[0].Country }} Corona Virus Stats as of
-        {{ today }}
+        {{ propsCoronaFetchedData[0].country }} Corona Virus Stats as of
+        {{ propsCoronaFetchedData[0].date }}
       </h2>
       <table id="corona-virus-table">
         <thead>
@@ -16,21 +16,21 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ propsCumulativeCoronaVirusStatsTotal.Active }}</td>
-            <td>{{ propsCumulativeCoronaVirusStatsTotal.Confirmed }}</td>
-            <td>{{ propsCumulativeCoronaVirusStatsTotal.Deaths }}</td>
-            <td>{{ propsCumulativeCoronaVirusStatsTotal.Recovered }}</td>
+            <td>{{ propsCountryVirusStatsTotal.active }}</td>
+            <td>{{ propsCountryVirusStatsTotal.confirmed }}</td>
+            <td>{{ propsCountryVirusStatsTotal.deaths }}</td>
+            <td>{{ propsCountryVirusStatsTotal.recovered }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-else-if="propsCumulativeCoronaVirusStatsTotal.Active === 0">No Active Cases</div>
+    <div v-else-if="propsCountryVirusStatsTotal.active === 0">No Active Cases</div>
 
     <!-- =========== Markup for the States Table ================ -->
     <div
       v-if="
-        Object.keys(propsCumulativeCoronaVirusStatsTotal).length !== 0 &&
-          propsCoronaVirusStatsTotal[0].CountryCode === 'US'
+        Object.keys(propsCountryVirusStatsTotal).length !== 0 &&
+          propsCoronaFetchedData[0].country === 'USA'
       "
     >
       <div @click="showStates" class="hideTableArrow" title="Click to See Breakdown by State">&#187;</div>
@@ -58,7 +58,7 @@
           </thead>
 
           <tbody>
-            <tr v-for="state in get_rows()" :key="state.Province">
+            <tr v-for="state in get_rows()" :key="state.province">
               <td v-for="col in columns" :key="col">{{ state[col] }}</td>
             </tr>
           </tbody>
@@ -86,7 +86,7 @@
 <script>
 export default {
   name: "DisplayQueryResults",
-  props: ["propsCoronaVirusStatsTotal", "propsCumulativeCoronaVirusStatsTotal"],
+  props: ["propsCoronaFetchedData", "propsCountryVirusStatsTotal"],
   data: function() {
     return {
       visibility: false,
@@ -96,7 +96,7 @@ export default {
       ascending: false,
       sortColumn: "",
       columnName: "",
-      columns: ["Province", "Active", "Confirmed", "Deaths", "Recovered"]
+      columns: ["province", "active", "confirmed", "deaths", "recovered"]
     };
   },
   computed: {
@@ -140,7 +140,7 @@ export default {
       let ascending = this.ascending;
       let columnName = this.columnName;
 
-      this.propsCoronaVirusStatsTotal.sort(function(a, b) {
+      this.propsCoronaFetchedData[0].provinces.sort(function(a, b) {
         if (a[columnName] > b[columnName]) {
           return ascending ? 1 : -1;
         } else if (a[columnName] < b[columnName]) {
@@ -152,10 +152,10 @@ export default {
     },
     num_pages: function() {
       return Math.ceil(
-        this.propsCoronaVirusStatsTotal.length / this.elementsPerPage
+        this.propsCoronaFetchedData[0].provinces.length / this.elementsPerPage
       );
     },
-    get_rows: function () {
+    get_rows: function() {
       /* Changing pages is as simple as updating the field we added 
       which stores the current page. We don’t need to worry about re-sorting 
       or re-rendering the page, or even re-splitting the array into a new 
@@ -164,7 +164,8 @@ export default {
       everything will update automatically. Isn't Vue nice. Sssswwwweeeettttt */
       let start = (this.currentPage - 1) * this.elementsPerPage;
       let end = start + this.elementsPerPage;
-      return this.propsCoronaVirusStatsTotal.slice(start, end);
+      console.log(this.propsCoronaFetchedData[0].provinces.slice(start, end));
+      return this.propsCoronaFetchedData[0].provinces.slice(start, end);
     },
     change_page: function change_page(page) {
       this.currentPage = page; // Forces a rerender of state table to new page

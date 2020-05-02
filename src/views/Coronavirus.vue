@@ -5,7 +5,7 @@
     <label for="countries">
       Select A Country:
       <select class="select-css" v-model="selected" id="countries">
-        <option value="united-states" selected>United States</option>
+        <option value="USA" selected>United States</option>
         <option value="united-kingdom">United Kingdom</option>
         <option value="canada">Canada</option>
         <option value="china">China</option>
@@ -26,12 +26,15 @@
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
     </div>
-    <div v-if="coronaVirusStatsTotal.length === 0" class="no-responses">Sorry. No Results Available.</div>
+    <div
+      v-if="coronaVirusFetchedData.length === 0"
+      class="no-responses"
+    >Sorry. No Results Available.</div>
     <display-query-results
-      v-else-if="coronaVirusStatsTotal.length > 0"
+      v-else-if="coronaVirusFetchedData.length > 0"
       v-show="dataRetrieved"
-      :propsCumulativeCoronaVirusStatsTotal="cumulativeVirusStatsTotal"
-      :propsCoronaVirusStatsTotal="coronaVirusStatsTotal"
+      :propsCountryVirusStatsTotal="countryVirusStatsTotal"
+      :propsCoronaFetchedData="coronaVirusFetchedData"
     ></display-query-results>
 
     <h2 @click="displayGraphTotals" class="display-graph" title="Click to Display Graph">
@@ -40,8 +43,8 @@
       <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
       <div class="chart-container">
         <display-graph-totals
-          v-if="coronaVirusStatsTotal.length > 0"
-          :propsCoronaVirusStatsTotal="coronaVirusStatsTotal"
+          v-if="coronaVirusFetchedData.length > 0"
+          :propsCoronaVirusStatsTotal="coronaVirusFetchedData"
         ></display-graph-totals>
       </div>
 
@@ -75,9 +78,9 @@ export default {
   data: function() {
     return {
       selected: "",
-      coronaVirusStatsTotal: { type: Object, default: null },
+      coronaVirusFetchedData: { type: Object, default: null },
       coronaVirusStatsConfirmed: { type: Object, default: null },
-      cumulativeVirusStatsTotal: { type: Object, default: null },
+      countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
       dataRetrieved: false,
       showMessage: false
@@ -87,28 +90,32 @@ export default {
     retrieveDataCountryTotal: function() {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
-      const { yesterday, lastWeek } = createDates();
+      const { yesterday, lastWeek, today } = createDates();
       console.log(yesterday);
 
-      var requestOptions = {
-        method: "GET",
-        redirect: "follow"
-      };
       // Multiple fetches
       Promise.all([
         fetch(
-          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/2020-04-27T13:13:30Z`,
-          requestOptions
+          `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${yesterday}&name=${this.selected}`,
+          {
+            method: "GET",
+            headers: {
+              "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+              "x-rapidapi-key":
+                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+            }
+          }
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
           `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${lastWeek}`
         ).then(res => (res.ok && res.json()) || Promise.reject(res))
       ]).then(data => {
         // handle data array here
-        this.coronaVirusStatsTotal = data[0];
+        this.coronaVirusFetchedData = data[0];
         this.coronaVirusStatsConfirmed = data[1];
-        this.cumulativeVirusStatsTotal = this.calculateTotals(
-          this.coronaVirusStatsTotal
+
+        this.countryVirusStatsTotal = this.calculateTotals(
+          this.coronaVirusFetchedData
         );
 
         this.loading = false;
@@ -116,33 +123,33 @@ export default {
       });
     },
     calculateTotals(apiDataArray) {
+      const { provinces } = apiDataArray[0];
+      console.log(provinces);
       // Initialize Object
       let cumulativeVirusStats = {
-        Active: 0,
-        Confirmed: 0,
-        Date: "",
-        Deaths: 0,
-        Province: "",
-        Recovered: 0
+        active: 0,
+        confirmed: 0,
+        deaths: 0,
+        recovered: 0
       };
 
       // Need to sum up all fields.
-      apiDataArray.forEach(element => {
-        cumulativeVirusStats.Active =
-          cumulativeVirusStats.Active + element.Active;
-        cumulativeVirusStats.Confirmed =
-          cumulativeVirusStats.Confirmed + element.Confirmed;
-        cumulativeVirusStats.Deaths =
-          cumulativeVirusStats.Deaths + element.Deaths;
-        cumulativeVirusStats.Recovered =
-          cumulativeVirusStats.Recovered + element.Recovered;
+      provinces.forEach(element => {
+        cumulativeVirusStats.active =
+          cumulativeVirusStats.active + element.active;
+        cumulativeVirusStats.confirmed =
+          cumulativeVirusStats.confirmed + element.confirmed;
+        cumulativeVirusStats.deaths =
+          cumulativeVirusStats.deaths + element.deaths;
+        cumulativeVirusStats.recovered =
+          cumulativeVirusStats.recovered + element.recovered;
       });
 
       return cumulativeVirusStats;
     },
     displayGraphTotals: function() {
       EventBus.$emit("display-graph-totals", "clicked");
-      if (this.coronaVirusStatsTotal.length === 0) this.showMessage = true;
+      if (this.coronaVirusFetchedData.length === 0) this.showMessage = true;
     }
   }
 };

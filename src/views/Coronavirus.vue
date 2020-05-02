@@ -6,18 +6,18 @@
       Select A Country:
       <select class="select-css" v-model="selected" id="countries">
         <option value="USA" selected>United States</option>
-        <option value="united-kingdom">United Kingdom</option>
-        <option value="canada">Canada</option>
-        <option value="china">China</option>
-        <option value="france">France</option>
-        <option value="germany">Germany</option>
-        <option value="greece">Greece</option>
-        <option value="hong-kong">Hong Kong</option>
-        <option value="india">India</option>
-        <option value="italy">Italy</option>
-        <option value="japan">Japan</option>
-        <option value="mexico">Mexico</option>
-        <option value="spain">Spain</option>
+        <option value="UK">United Kingdom</option>
+        <option value="Canada">Canada</option>
+        <option value="China">China</option>
+        <option value="France">France</option>
+        <option value="Germany">Germany</option>
+        <option value="Greece">Greece</option>
+        <option value="Hong-kong">Hong Kong</option>
+        <option value="India">India</option>
+        <option value="Italy">Italy</option>
+        <option value="Japan">Japan</option>
+        <option value="Mexico">Mexico</option>
+        <option value="Spain">Spain</option>
       </select>
     </label>
 

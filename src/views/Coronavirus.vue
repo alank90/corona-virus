@@ -50,8 +50,8 @@
 
       <div class="chart-container">
         <display-graph-confirmed
-          v-if="coronaVirusStatsConfirmed.length > 0"
-          :propsCoronaVirusStatsConfirmed="coronaVirusStatsConfirmed"
+          v-if="coronaVirusStatsLastWeek.length > 0"
+          :propscoronaVirusStatsLastWeek="coronaVirusStatsLastWeek"
         ></display-graph-confirmed>
       </div>
     </h2>
@@ -79,7 +79,7 @@ export default {
     return {
       selected: "",
       coronaVirusFetchedData: { type: Object, default: null },
-      coronaVirusStatsConfirmed: { type: Object, default: null },
+      coronaVirusStatsLastWeek: { type: Object, default: null },
       countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
       dataRetrieved: false,
@@ -91,9 +91,8 @@ export default {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
       const { yesterday, lastWeek, today } = createDates();
-      console.log(yesterday);
-
-      // Multiple fetches
+      
+      // Multiple fetches for stats yesterday and last week
       Promise.all([
         fetch(
           `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${yesterday}&name=${this.selected}`,
@@ -107,13 +106,23 @@ export default {
           }
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
-          `https://api.covid19api.com/live/country/${this.selected}/status/confirmed/date/${lastWeek}`
+          `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${lastWeek}&name=${this.selected}`,
+          {
+            method: "GET",
+            headers: {
+              "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+              "x-rapidapi-key":
+                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+            }
+          }
         ).then(res => (res.ok && res.json()) || Promise.reject(res))
       ]).then(data => {
-        // handle data array here
+        // handle data array here. First all data for yesterday put into FetchedData
         this.coronaVirusFetchedData = data[0];
-        this.coronaVirusStatsConfirmed = data[1];
-
+        // Next, virus values for last week to be used to compare confirmed cases change from last week
+        // to yesterday. This will be passed to display-graph-confirmed component as a prop.
+        this.coronaVirusStatsLastWeek = data[1];
+        // Need to sum up provinces.* values to get totals for USA
         this.countryVirusStatsTotal = this.calculateTotals(
           this.coronaVirusFetchedData
         );

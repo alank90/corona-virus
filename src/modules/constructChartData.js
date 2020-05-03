@@ -1,9 +1,10 @@
 /* This a native JS module that constructs the data and options object that used in the
-   vue-chart.js renderChart(data, options) call in the display-graph component.  */
+   vue-chart.js renderChart(data, options) call in the display-graph-totals component.  */
 
 export default function constructChartData(topRankedStates_Provinces) {
   let labels = [];
 
+  // Construct two objects for the options for the datasets
   let totalActive = {
     label: "Total Active Cases",
     data: [],
@@ -22,17 +23,22 @@ export default function constructChartData(topRankedStates_Provinces) {
     yAxisID: "y-axis-deaths",
   };
 
+  // Construct two datasets from the topRankedStates_Provinces array
   topRankedStates_Provinces.forEach((item) => {
-    labels.push(item.Province);
-    totalDeaths.data.push(item.Deaths);
-    totalActive.data.push(item.Active);
+    labels.push(item.province);
+    totalDeaths.data.push(item.deaths);
+    totalActive.data.push(item.active);
   });
 
+  // Create an object with values from previous object's we created above.
+  // This will be fed into the Chart.js render function to create our chart
   let chartData = {
     labels: labels,
     datasets: [totalActive, totalDeaths],
   };
-
+  // This will also be fed into render function. It is a straight up object
+  // using structure taken from Chart.js site. All property values were manually
+  // entered.
   let options = {
     responsive: true,
     maintainAspectRatio: false,

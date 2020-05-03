@@ -164,7 +164,6 @@ export default {
       everything will update automatically. Isn't Vue nice. Sssswwwweeeettttt */
       let start = (this.currentPage - 1) * this.elementsPerPage;
       let end = start + this.elementsPerPage;
-      console.log(this.propsCoronaFetchedData[0].provinces.slice(start, end));
       return this.propsCoronaFetchedData[0].provinces.slice(start, end);
     },
     change_page: function change_page(page) {

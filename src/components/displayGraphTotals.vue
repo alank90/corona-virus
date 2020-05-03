@@ -14,12 +14,15 @@ export default {
     return {};
   },
   computed: {
+    // First, create a computed property of the top ten ranked states by deaths
+    // from the provinces array
     topRankedStates_Provinces: function() {
-      this.propsCoronaVirusStatsTotal.sort(function(a, b) {
-        return (a.Deaths - b.Deaths) * -1; // sorts descending
+      const provinces = this.propsCoronaVirusStatsTotal[0].provinces;
+      provinces.sort(function(a, b) {
+        return (a.deaths - b.deaths) * -1; // sorts descending
       });
       // Take Top 10 Entries
-      return this.propsCoronaVirusStatsTotal.slice(0, 10);
+      return provinces.slice(0, 10);
     } /* ,
     topRankedWeekToWeekComparison: function() {
       const topConfirmedCasesToday = [];
@@ -47,7 +50,7 @@ export default {
 
   mounted: function() {
     const { today, lastWeek } = createDates();
-
+    console.log(today, lastWeek);
     // The eventbus carries manual search data from Search.vue
     // back to its parent component Headlines.vue
     EventBus.$on("display-graph-totals", data => {

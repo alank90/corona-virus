@@ -5,35 +5,28 @@ const { yesterday, lastWeek } = createDates();
 export default {
   name: "displayGraphConfirmed",
   extends: Bar,
-  props: ["propsCoronaVirusStatsConfirmed"],
+  props: ["propscoronaVirusStatsLastWeek"],
   data: function() {
     return {
-      topConfirmedCasesToday: [],
-      topConfirmedCasesLastWeek: []
+      topTenConfirmedCasesToday: []
     };
   },
   computed: {
-    topConfirmedStates_Provinces: function() {
-      // This property constructs an array of the Top Ten States of confirmed cases today
+    topTenConfirmedStates_ProvincesLastWeek: function() {
+      // This property constructs an array of the Top Ten States of confirmed cases from yesterday
+      const provinces = this.propscoronaVirusStatsLastWeek[0].provinces;
 
-      // First, extract all the elements from today into an array
-      // and then sort by confirmed cases and take the top ten.
-      this.propsCoronaVirusStatsConfirmed.forEach(element => {
-        if (element.Date.slice(0, 10) == yesterday.slice(0, 10)) {
-          this.topConfirmedCasesToday.push(element);
-        }
+      // First, let's sort top ten entires in the array
+      provinces.sort(function(a, b) {
+        return (a.confirmed - b.confirmed) * -1; // sort descending
       });
 
-      // Now let's sort top ten entires in the array
-      this.topConfirmedCasesToday.sort(function(a, b) {
-        return (a.Confirmed - b.Confirmed) * -1; // sort descending
-      });
       // And return top ten entries from the array
-      return this.topConfirmedCasesToday.slice(0, 10);
+      return provinces.slice(0, 10);
     }
   },
-  mounted: function topTenConfirmedlastWeek(topConfirmedStates_Provinces) {
-    let lastWeekCopy = lastWeek.slice(0, 10);
+  mounted: function topTenConfirmedYesterday() {
+    // let lastWeekCopy = lastWeek.slice(0, 10);
     // lastWeekSliced needs one day added to it because of
     // pecularity in Covid API. When you ask for a from specific
     // date the API returns one less day. i.e. a from date of 4-22 will return
@@ -44,9 +37,9 @@ export default {
     lastWeekSliced = lastWeekSliced.toISOString().slice(0, 10);
 
     // Here we iterate thru the confirmed cases for today and find the
-    // matching element in propsCoronaVirusStatsConfirmed
+    // matching element in propscoronaVirusStatsLastWeek
     this.topConfirmedStates_Provinces.forEach(elementToday => {
-      this.propsCoronaVirusStatsConfirmed.forEach(elementInPropsConfirmed => {
+      this.propscoronaVirusStatsLastWeek.forEach(elementInPropsConfirmed => {
         // Check if today's element is a match pair for last week's State Confirmed
         // cases and if so push onto our topTenConfirmedLastWeek array
 
@@ -54,7 +47,7 @@ export default {
           elementInPropsConfirmed.Province == elementToday.Province &&
           elementInPropsConfirmed.Date.slice(0, 10) == lastWeekSliced
         ) {
-          this.topConfirmedCasesLastWeek.push(elementInPropsConfirmed);
+          // this.topConfirmedCasesLastWeek.push(elementInPropsConfirmed);
         }
       });
     });

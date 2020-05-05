@@ -1,7 +1,9 @@
 /* This a native JS module that constructs the data and options object that used in the
    vue-chart.js renderChart(data, options) call in the display-graph-totals component.  */
 
-export default function constructChartData(topRankedStates_Provinces) {
+export default function constructChartDataForGraphTotals(
+  topRankedStates_Provinces
+) {
   let labels = [];
 
   // Construct two objects for the options for the datasets

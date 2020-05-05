@@ -1,15 +1,16 @@
 <script>
 import { Bar } from "vue-chartjs";
 import createDates from "@/modules/createDates.js";
-const { yesterday, lastWeek } = createDates();
+// Import the EventBus.
+import { EventBus } from "../main.js";
+import constructChartDataForConfirmedCases from "../modules/constructChartDataForConfirmedCases.js";
+
 export default {
   name: "displayGraphConfirmed",
   extends: Bar,
   props: ["propsCoronaVirusStatsLastWeek", "propsCoronaVirusStatsYesterday"],
   data: function() {
-    return {
-      topTenConfirmedCasesToday: [],
-    };
+    return {};
   },
   computed: {
     topTenConfirmedStates_ProvincesYesterday: function() {
@@ -24,33 +25,37 @@ export default {
       // And return top ten entries from the array
       return provinces.slice(0, 10);
     },
-  },
-  mounted: function topTenConfirmedYesterday() {
-    // let lastWeekCopy = lastWeek.slice(0, 10);
-    // lastWeekSliced needs one day added to it because of
-    // pecularity in Covid API. When you ask for a from specific
-    // date the API returns one less day. i.e. a from date of 4-22 will return
-    // dates starting at 4-23. Crazy right!
-    /*  lastWeekCopy = Date.parse(lastWeekCopy);
-    let lastWeekSliced = new Date(lastWeekCopy);
-    lastWeekSliced.setDate(lastWeekSliced.getDate() + 1);
-    lastWeekSliced = lastWeekSliced.toISOString().slice(0, 10);
- */
-    // Here we iterate thru the confirmed cases for today and find the
-    // matching element in propscoronaVirusStatsLastWeek
-    /* this.topConfirmedStates_Provinces.forEach((elementToday) => {
-      this.propscoronaVirusStatsLastWeek.forEach((elementInPropsConfirmed) => {
-        // Check if today's element is a match pair for last week's State Confirmed
-        // cases and if so push onto our topTenConfirmedLastWeek array
+    topTenConfirmedStates_ProvincesLastWeek: function() {
+      let topTenConfirmedCasesLastWeek = [];
+      const provinces = this.propsCoronaVirusStatsLastWeek[0].provinces;
+      // Here we iterate thru the confirmed cases for yesterday and find the
+      // matching element in propsCoronaVirusStatsLastWeek[0].provinces array
 
-        if (
-          elementInPropsConfirmed.Province == elementToday.Province &&
-          elementInPropsConfirmed.Date.slice(0, 10) == lastWeekSliced
-        ) {
-          // this.topConfirmedCasesLastWeek.push(elementInPropsConfirmed);
+      this.topTenConfirmedStates_ProvincesYesterday.forEach(
+        elementYesterday => {
+          provinces.forEach(elementLastWeek => {
+            // Check if yesterday's element is a match pair for last week's State Confirmed
+            // cases and if so push onto our topTenConfirmedLastWeek array
+            if (elementLastWeek.province == elementYesterday.province) {
+              topTenConfirmedCasesLastWeek.push(elementLastWeek);
+            }
+          });
         }
-      });
-    });*/
+      );
+      return topTenConfirmedCasesLastWeek;
+    }
   },
+  mounted: function() {
+    // The eventbus carries notification that Display
+    // back to its parent component Headlines.vue
+    EventBus.$on("display-graphs", data => {
+      const { chartData, options } = constructChartDataForConfirmedCases(
+        this.topTenConfirmedStates_ProvincesYesterday,
+        this.topTenConfirmedStates_ProvincesLastWeek
+      );
+
+      this.renderChart(chartData, options);
+    });
+  }
 };
 </script>

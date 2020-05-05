@@ -18,19 +18,19 @@
         <option value="Japan">Japan</option>
         <option value="Mexico">Mexico</option>
         <option value="Spain">Spain</option>
+        <option value="Sweden">Sweden</option>
       </select>
     </label>
 
-    <button class="myButton" @click="retrieveDataCountryTotal">
-      Get Case Summary
-    </button>
+    <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
 
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
     </div>
-    <div v-if="coronaVirusFetchedData.length === 0" class="no-responses">
-      Sorry. No Results Available.
-    </div>
+    <div
+      v-if="coronaVirusFetchedData.length === 0"
+      class="no-responses"
+    >Sorry. No Results Available.</div>
     <display-query-results
       v-else-if="coronaVirusFetchedData.length > 0"
       v-show="dataRetrieved"
@@ -38,13 +38,10 @@
       :propsCoronaFetchedData="coronaVirusFetchedData"
     ></display-query-results>
 
-    <h2
-      @click="displayGraphTotals"
-      class="display-graph"
-      title="Click to Display Graph"
-    >
+    <h2 @click="displayGraphs" class="display-graph" title="Click to Display Graph">
       Display Graph
       <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
+
       <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
       <div class="chart-container">
         <display-graph-totals
@@ -79,17 +76,17 @@ export default {
   components: {
     "display-query-results": DisplayQueryResults,
     "display-graph-totals": DisplayGraphTotals,
-    "display-graph-confirmed": DisplayGraphConfirmed,
+    "display-graph-confirmed": DisplayGraphConfirmed
   },
   data: function() {
     return {
-      selected: "",
+      selected: { type: String, default: "" },
       coronaVirusFetchedData: { type: Object, default: null },
       coronaVirusStatsLastWeek: { type: Object, default: null },
       countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
       dataRetrieved: false,
-      showMessage: false,
+      showMessage: false
     };
   },
   methods: {
@@ -107,10 +104,10 @@ export default {
             headers: {
               "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
               "x-rapidapi-key":
-                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
-            },
+                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+            }
           }
-        ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
+        ).then(res => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
           `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${lastWeek}&name=${this.selected}`,
           {
@@ -118,11 +115,11 @@ export default {
             headers: {
               "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
               "x-rapidapi-key":
-                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
-            },
+                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+            }
           }
-        ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
-      ]).then((data) => {
+        ).then(res => (res.ok && res.json()) || Promise.reject(res))
+      ]).then(data => {
         // handle data array here. First all data for yesterday put into FetchedData
         this.coronaVirusFetchedData = data[0];
         // Next, virus values for last week to be used to compare confirmed cases change from last week
@@ -145,11 +142,11 @@ export default {
         active: 0,
         confirmed: 0,
         deaths: 0,
-        recovered: 0,
+        recovered: 0
       };
 
       // Need to sum up all fields.
-      provinces.forEach((element) => {
+      provinces.forEach(element => {
         cumulativeVirusStats.active =
           cumulativeVirusStats.active + element.active;
         cumulativeVirusStats.confirmed =
@@ -162,11 +159,11 @@ export default {
 
       return cumulativeVirusStats;
     },
-    displayGraphTotals: function() {
-      EventBus.$emit("display-graph-totals", "clicked");
+    displayGraphs: function() {
+      EventBus.$emit("display-graphs", "clicked");
       if (this.coronaVirusFetchedData.length === 0) this.showMessage = true;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -192,6 +189,7 @@ h2.display-graph {
 .chart-container {
   width: 1000px;
   height: 800px;
+  margin-bottom: -30%;
 }
 
 label {

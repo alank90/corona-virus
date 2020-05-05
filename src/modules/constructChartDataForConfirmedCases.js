@@ -15,6 +15,7 @@ export default function constructChartDataForConfirmedCases(
     backgroundColor: "rgba(25, 25, 240, 0.6)",
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
+    maxBarThickness: 30
   };
 
   let topConfirmedCasesLastWeek = {
@@ -23,6 +24,7 @@ export default function constructChartDataForConfirmedCases(
     backgroundColor: "rgba(100, 240, 25, 0.6)",
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
+    maxBarThickness: 30
   };
 
   // Construct two datasets from the topTenConfirmedStatesYesterday & topTenConfirmedStatesLastWeek array's

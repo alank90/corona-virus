@@ -14,6 +14,7 @@ export default function constructChartDataForGraphTotals(
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
     yAxisID: "y-axis-active",
+    maxBarThickness: 30
   };
 
   let totalDeaths = {
@@ -23,6 +24,7 @@ export default function constructChartDataForGraphTotals(
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
     yAxisID: "y-axis-deaths",
+    maxBarThickness: 30
   };
 
   // Construct two datasets from the topRankedStates_Provinces array

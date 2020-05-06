@@ -174,6 +174,10 @@ export default {
 </script>
 
 <style scoped>
+.display-results {
+  width: 90vw;
+  max-width: 1290px;
+}
 
 h2 {
   color: rgba(49, 2, 2, 0.966);
@@ -183,7 +187,6 @@ h2 {
 }
 
 table {
-  width: 750px;
   border-collapse: collapse;
   border: 3px solid #44475c;
   margin: 10px auto;

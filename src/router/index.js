@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Coronavirus from "../views/Coronavirus.vue";
 import Headlines from "../views/Headlines.vue";
+import Resources from "../views/Resources.vue";
 
 Vue.use(VueRouter);
 
@@ -21,9 +22,14 @@ const routes = [
     component: Coronavirus,
   },
   {
-    path: "/Headlines",
+    path: "/headlines",
     name: "Headlines",
     component: Headlines,
+  },
+  {
+    path: "/resources",
+    name: "Resources",
+    component: Resources,
   },
   {
     path: "/about",

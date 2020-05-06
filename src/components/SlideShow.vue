@@ -98,7 +98,7 @@ h2 {
 
 .slide {
   position: relative;
-  width: 101%;
+  width: 100%;
   max-height: 550px;
   margin: 0 auto;
   overflow: hidden;

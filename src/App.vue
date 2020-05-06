@@ -8,7 +8,7 @@
       <router-link class="router-link" to="/">Home</router-link>
       <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
       <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
-      <router-link class="router-link" to="/johnhopkins">John Hopkins</router-link>
+      <router-link class="router-link" to="/resources">Resources</router-link>
     </header>
 
     <!-- ========== Views for App will be rendered here ========== -->
@@ -17,10 +17,8 @@
 </template>
 
 <script>
-import '@/assets/css/styles.css';
-export default {
-  
-}
+import "@/assets/css/styles.css";
+export default {};
 </script>
 
 <style>
@@ -37,20 +35,29 @@ body {
 }
 
 /* ========== Global Stylings ======= */
-h1, h2, h3 {
-  font-family: 'Libre Baskerville', serif;
+h1,
+h2,
+h3 {
+  font-family: "Libre Baskerville", serif;
 }
 
-p, li, a, ul, button, caption, input, label {
-  font-family: 'Amiri', serif;
+p,
+li,
+a,
+ul,
+button,
+caption,
+input,
+label {
+  font-family: "Amiri", serif;
 }
 
 h1 {
   margin: 0 10px;
 }
-  h1 a {
-    font-size: 1.6rem;
-  }
+h1 a {
+  font-size: 1.6rem;
+}
 /* Navbar Stylings */
 h2,
 h3,

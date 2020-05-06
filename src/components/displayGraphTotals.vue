@@ -37,6 +37,15 @@ export default {
 
       this.renderChart(chartData, options);
     });
+  },
+  watch: {
+    propsCoronaVirusStatsTotal: function(newProps, oldProps) {
+      const { chartData, options } = constructChartDataForGraphTotals(
+        this.topRankedStates_Provinces
+      );
+
+      this.renderChart(chartData, options);
+    }
   }
 };
 </script>

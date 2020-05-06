@@ -3,9 +3,12 @@
   <div class="home">
     <ul>
       Global:
-      <li>Total {{ totalWorldWideVirusStats.TotalConfirmed }}</li>
-      <li>Deaths {{ totalWorldWideVirusStats.TotalDeaths }}</li>
+      <li>Total {{ totalWorldWideVirusStats.confirmed }}</li>
+      <li>Deaths {{ totalWorldWideVirusStats.deaths }}</li>United States:
+      <li>Total: {{ totalUSAVirusStats.confirmed }}</li>
+      <li>Deaths: {{ totalUSAVirusStats.deaths }}</li>
     </ul>
+
     <slideShow></slideShow>
   </div>
 </template>
@@ -20,29 +23,55 @@ export default {
   },
   data: function() {
     return {
-      totalWorldWideVirusStats: {}
+      totalWorldWideVirusStats: {},
+      totalUSAVirusStats: {}
     };
   },
   created: function retrieveWorldWideTotals() {
-    fetch(`https://api.covid19api.com/world/total`)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        this.totalWorldWideVirusStats = data;
-
-        if (typeof Intl === "undefined" || !Intl.NumberFormat) {
-          console.log("This browser doesn't support Intl.NumberFormat");
-        } else {
-          const nf = Intl.NumberFormat();
-          this.totalWorldWideVirusStats.TotalConfirmed = nf.format(
-            this.totalWorldWideVirusStats.TotalConfirmed
-          );
-          this.totalWorldWideVirusStats.TotalDeaths = nf.format(
-            this.totalWorldWideVirusStats.TotalDeaths
-          );
+    // Multiple fetches for stats for World & USA
+    Promise.all([
+      fetch("https://covid-19-data.p.rapidapi.com/totals?format=json", {
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+          "x-rapidapi-key": "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
         }
-      });
+      }).then(res => (res.ok && res.json()) || Promise.reject(res)),
+      fetch(
+        "https://covid-19-data.p.rapidapi.com/country?format=json&name=usa",
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+            "x-rapidapi-key":
+              "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+          }
+        }
+      ).then(res => (res.ok && res.json()) || Promise.reject(res))
+    ]).then(data => {
+      // handle data array here from multiple fetches here.
+      this.totalWorldWideVirusStats = data[0][0];
+      this.totalUSAVirusStats = data[1][0];
+      console.log(this.totalWorldWideVirusStats);
+      if (typeof Intl === "undefined" || !Intl.NumberFormat) {
+        console.log("This browser doesn't support Intl.NumberFormat");
+      } else {
+        const nf = Intl.NumberFormat();
+        this.totalWorldWideVirusStats.confirmed = nf.format(
+          this.totalWorldWideVirusStats.confirmed
+        );
+        this.totalWorldWideVirusStats.deaths = nf.format(
+          this.totalWorldWideVirusStats.deaths
+        );
+
+        this.totalUSAVirusStats.confirmed = nf.format(
+          this.totalUSAVirusStats.confirmed
+        );
+        this.totalUSAVirusStats.deaths = nf.format(
+          this.totalUSAVirusStats.deaths
+        );
+      }
+    });
   }
 };
 </script>
@@ -56,22 +85,24 @@ export default {
   margin-top: 60px;
 }
 
-ul,
-li {
-  font-size: 1.6rem;
-  color: #a90302;
-}
-
 ul {
   display: flex;
+  font-size: 1.8rem;
   flex-wrap: nowrap;
   justify-content: space-around;
-  max-width: 40%;
+  color: #2c3e50;
   margin: 5px 25px;
   padding: 5px 15px;
   list-style-type: none;
   background-color: rgba(255, 255, 255, 1);
 }
+
+li {
+  font-size: 1.6rem;
+  color: #a90302;
+}
+
+
 
 li {
   margin: 0 10px;

@@ -38,7 +38,12 @@
       :propsCoronaFetchedData="coronaVirusFetchedData"
     ></display-query-results>
 
-    <h2 @click="displayGraphs" class="display-graph" title="Click to Display Graph">
+    <h2
+      @click="displayGraphs"
+      v-show="dataRetrieved"
+      class="display-graph"
+      title="Click to Display Graph"
+    >
       Display Graph
       <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
 

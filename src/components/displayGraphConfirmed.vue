@@ -56,6 +56,16 @@ export default {
 
       this.renderChart(chartData, options);
     });
+  },
+  watch: {
+    propsCoronaVirusStatsYesterday: function() {
+      const { chartData, options } = constructChartDataForConfirmedCases(
+        this.topTenConfirmedStates_ProvincesYesterday,
+        this.topTenConfirmedStates_ProvincesLastWeek
+      );
+
+      this.renderChart(chartData, options);
+    }
   }
 };
 </script>

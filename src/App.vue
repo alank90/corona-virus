@@ -98,7 +98,7 @@ a {
   padding: 10px 15px;
   text-transform: uppercase;
   margin-top: 5px;
-  transition: 0.8s;
+  transition: 1s;
 }
 .router-link:hover {
   -webkit-transform: rotateX(360deg);

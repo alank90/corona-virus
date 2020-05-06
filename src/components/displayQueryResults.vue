@@ -174,6 +174,7 @@ export default {
 </script>
 
 <style scoped>
+
 h2 {
   color: rgba(49, 2, 2, 0.966);
   text-align: center;

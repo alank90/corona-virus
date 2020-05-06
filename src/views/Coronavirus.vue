@@ -22,15 +22,16 @@
       </select>
     </label>
 
-    <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
+    <button class="myButton" @click="retrieveDataCountryTotal">
+      Get Case Summary
+    </button>
 
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
     </div>
-    <div
-      v-if="coronaVirusFetchedData.length === 0"
-      class="no-responses"
-    >Sorry. No Results Available.</div>
+    <div v-if="coronaVirusFetchedData.length === 0" class="no-responses">
+      Sorry. No Results Available.
+    </div>
     <display-query-results
       v-else-if="coronaVirusFetchedData.length > 0"
       v-show="dataRetrieved"
@@ -81,7 +82,7 @@ export default {
   components: {
     "display-query-results": DisplayQueryResults,
     "display-graph-totals": DisplayGraphTotals,
-    "display-graph-confirmed": DisplayGraphConfirmed
+    "display-graph-confirmed": DisplayGraphConfirmed,
   },
   data: function() {
     return {
@@ -91,7 +92,7 @@ export default {
       countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
       dataRetrieved: false,
-      showMessage: false
+      showMessage: false,
     };
   },
   methods: {
@@ -109,10 +110,10 @@ export default {
             headers: {
               "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
               "x-rapidapi-key":
-                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
-            }
+                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
+            },
           }
-        ).then(res => (res.ok && res.json()) || Promise.reject(res)),
+        ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
           `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${lastWeek}&name=${this.selected}`,
           {
@@ -120,11 +121,11 @@ export default {
             headers: {
               "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
               "x-rapidapi-key":
-                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
-            }
+                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
+            },
           }
-        ).then(res => (res.ok && res.json()) || Promise.reject(res))
-      ]).then(data => {
+        ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
+      ]).then((data) => {
         // handle data array here. First all data for yesterday put into FetchedData
         this.coronaVirusFetchedData = data[0];
         // Next, virus values for last week to be used to compare confirmed cases change from last week
@@ -147,11 +148,11 @@ export default {
         active: 0,
         confirmed: 0,
         deaths: 0,
-        recovered: 0
+        recovered: 0,
       };
 
       // Need to sum up all fields.
-      provinces.forEach(element => {
+      provinces.forEach((element) => {
         cumulativeVirusStats.active =
           cumulativeVirusStats.active + element.active;
         cumulativeVirusStats.confirmed =
@@ -167,13 +168,13 @@ export default {
     displayGraphs: function() {
       EventBus.$emit("display-graphs", "clicked");
       if (this.coronaVirusFetchedData.length === 0) this.showMessage = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-div.corona-virus {
+.corona-virus {
   display: grid;
 }
 

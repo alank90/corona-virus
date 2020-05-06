@@ -2,9 +2,10 @@
 <template>
   <div class="home">
     <ul>
-      Global:
+      <li class="title">Global:</li>
       <li>Total {{ totalWorldWideVirusStats.confirmed }}</li>
-      <li>Deaths {{ totalWorldWideVirusStats.deaths }}</li>United States:
+      <li>Deaths {{ totalWorldWideVirusStats.deaths }}</li>
+      <li class="title">United States:</li>
       <li>Total: {{ totalUSAVirusStats.confirmed }}</li>
       <li>Deaths: {{ totalUSAVirusStats.deaths }}</li>
     </ul>
@@ -19,12 +20,12 @@ import slideShow from "../components/SlideShow.vue";
 export default {
   name: "Home",
   components: {
-    slideShow
+    slideShow,
   },
   data: function() {
     return {
       totalWorldWideVirusStats: {},
-      totalUSAVirusStats: {}
+      totalUSAVirusStats: {},
     };
   },
   created: function retrieveWorldWideTotals() {
@@ -34,9 +35,10 @@ export default {
         method: "GET",
         headers: {
           "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-          "x-rapidapi-key": "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
-        }
-      }).then(res => (res.ok && res.json()) || Promise.reject(res)),
+          "x-rapidapi-key":
+            "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
+        },
+      }).then((res) => (res.ok && res.json()) || Promise.reject(res)),
       fetch(
         "https://covid-19-data.p.rapidapi.com/country?format=json&name=usa",
         {
@@ -44,11 +46,11 @@ export default {
           headers: {
             "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
             "x-rapidapi-key":
-              "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
-          }
+              "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
+          },
         }
-      ).then(res => (res.ok && res.json()) || Promise.reject(res))
-    ]).then(data => {
+      ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
+    ]).then((data) => {
       // handle data array here from multiple fetches here.
       this.totalWorldWideVirusStats = data[0][0];
       this.totalUSAVirusStats = data[1][0];
@@ -72,7 +74,7 @@ export default {
         );
       }
     });
-  }
+  },
 };
 </script>
 
@@ -90,21 +92,21 @@ ul {
   font-size: 1.8rem;
   flex-wrap: nowrap;
   justify-content: space-around;
-  color: #2c3e50;
+  
   margin: 5px 25px;
   padding: 5px 15px;
   list-style-type: none;
   background-color: rgba(255, 255, 255, 1);
 }
-
-li {
-  font-size: 1.6rem;
-  color: #a90302;
+.title {
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-
-
 li {
+  font-size: 1.4rem;
+  color: #a90302;
   margin: 0 10px;
 }
 </style>

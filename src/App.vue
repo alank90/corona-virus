@@ -1,9 +1,7 @@
 <template>
   <div class="app">
     <header class="header">
-      <h1 class="logo">
-        <a href="#">Home for Corona Virus Information</a>
-      </h1>
+      <h1 class="logo">Corona Virus Pandemic</h1>
 
       <router-link class="router-link" to="/">Home</router-link>
       <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
@@ -54,10 +52,9 @@ label {
 
 h1 {
   margin: 0 10px;
-}
-h1 a {
   font-size: 1.6rem;
 }
+
 /* Navbar Stylings */
 h2,
 h3,
@@ -71,20 +68,15 @@ a {
 
 .logo {
   flex-basis: 60%;
-  font-size: 1.45em;
-}
-
-.logo a {
-  color: #a90302;
-  padding: 10px 15px;
-  text-transform: uppercase;
-  font-weight: 700;
-  cursor: none;
+  font-size: 1.9rem;
+  font-weight: 550;
+  margin: 20px 0 0 20px;
 }
 
 .header {
   display: flex;
   flex-direction: row;
+  align-items: baseline;
   margin: 0 -10px;
   justify-content: space-around;
   padding-top: 0.5rem;
@@ -99,18 +91,35 @@ a {
 }
 
 .router-link {
+  position: relative;
+  text-decoration: none;
   font-size: 1.3rem;
   font-weight: 600;
   color: #a90302;
   padding: 10px 15px;
   text-transform: uppercase;
   margin-top: 5px;
-  transition: 1s;
 }
 .router-link:hover {
-  -webkit-transform: rotateX(360deg);
-  transform: rotateX(360deg);
   color: #ca0e0e5e;
+}
+
+.router-link:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.router-link:hover:before {
+  visibility: visible;
+  transform: scaleX(1);
 }
 
 @media (max-width: 769px) {

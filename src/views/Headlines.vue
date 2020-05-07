@@ -159,6 +159,7 @@ li a:hover {
 li span {
   display: block;
   color: rgb(37, 33, 33);
+  line-height: 1.6;
   text-decoration: black underline 2px;
 }
 

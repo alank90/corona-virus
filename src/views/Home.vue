@@ -78,20 +78,11 @@ export default {
 </script>
 
 <style scoped>
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
 ul {
   display: flex;
   font-size: 1.8rem;
   flex-wrap: nowrap;
   justify-content: space-around;
-
   margin: 5px 25px;
   padding: 5px 15px;
   list-style-type: none;

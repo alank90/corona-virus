@@ -98,8 +98,9 @@ h2 {
 
 .slide {
   position: relative;
-  width: 100%;
-  max-height: 550px;
+  width: 102%;
+  height: auto;
+  max-height: 500px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -137,14 +138,12 @@ caption {
   display: block;
   font-size: 20px;
   padding: 30px;
-
   color: #fff;
 }
 
 /* Media Queries */
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
-
   caption {
     font-size: 18px;
   }

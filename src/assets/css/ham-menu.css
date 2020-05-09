@@ -1,0 +1,61 @@
+/* [ON BIG SCREEN] */
+/* Wrapper */
+#hamnav {
+  width: 100%;
+  margin-left: 15%;
+}
+
+/* Hide Hamburger */
+#hamnav label,
+#hamburger {
+  display: none;
+}
+
+/* [ON SMALL SCREENS] */
+@media screen and (max-width: 768px) {
+  #hamitems {
+    background: rgba(58, 1, 1, 0.274);
+  }
+
+  #hamnav {
+    margin-left: 7%;
+  }
+
+  /* Show Hamburger Icon */
+  #hamnav label {
+    display: inline-block;
+    color: white;
+    background: #aa1515;
+    font-style: normal;
+    font-size: 1.5rem;
+    padding: 12px;
+  }
+
+  /* Break down menu items into vertical */
+  /* Note: tag router-link gets converted to an <a> tag
+     by vue router */
+  #hamitems a {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    border-top: 1px solid #333;
+  }
+
+  /* Toggle Show/Hide Menu */
+  #hamitems {
+    display: none;
+  }
+  #hamnav input:checked ~ #hamitems {
+    display: block;
+  }
+
+  #hamitems .router-link:before {
+    width: 35%;
+  }
+  #hamitems .router-link:first-child:before {
+    width: 15%;
+  }
+  #hamitems .router-link:last-child:before {
+    width: 20%;
+  }
+}

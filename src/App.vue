@@ -1,12 +1,18 @@
 <template>
   <div class="app">
     <header class="header">
-      <h1 class="logo">Corona Virus Pandemic</h1>
-
-      <router-link class="router-link" to="/">Home</router-link>
-      <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
-      <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
-      <router-link class="router-link" to="/resources">Resources</router-link>
+      <h1 class="logo">The Corona Virus Pandemic Source</h1>
+      <nav id="hamnav">
+        <!-- [The Hamburger] -->
+        <label for="hamburger">&#9776;</label>
+        <input type="checkbox" id="hamburger" />
+        <div id="hamitems">
+          <router-link class="router-link" to="/">Home</router-link>
+          <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
+          <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
+          <router-link class="router-link" to="/resources">Resources</router-link>
+        </div>
+      </nav>
     </header>
 
     <!-- ========== Views for App will be rendered here ========== -->
@@ -16,6 +22,7 @@
 
 <script>
 import "@/assets/css/styles.css";
+import "@/assets/css/ham-menu.css";
 export default {};
 </script>
 
@@ -67,10 +74,10 @@ a {
 }
 
 .logo {
-  flex-basis: 60%;
-  font-size: 1.9rem;
+  flex-basis: 75%;
+  font-size: 2.1rem;
   font-weight: 550;
-  margin: 20px 0 0 20px;
+  margin: 20px 0 0 35px;
 }
 
 .header {
@@ -109,7 +116,7 @@ a {
   position: absolute;
   width: 100%;
   height: 2px;
-  bottom: 0;
+  bottom: 15px;
   left: 0;
   background-color: #000;
   visibility: hidden;

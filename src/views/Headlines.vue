@@ -1,7 +1,7 @@
 <template>
   <div class="headlines">
     <h1>
-      <span class="text-shadow underline">Latest News Headlines</span>
+      <span class="headlines">Latest News Headlines</span>
       <search></search>
     </h1>
 
@@ -115,18 +115,14 @@ h1 {
   margin: 5px 15px;
 }
 
-span.underline {
+span.headlines {
   flex-basis: 50%;
-}
-
-.text-shadow {
-  text-shadow: -2px -2px white, -2px 2px white, 2px -2px white, 2px 2px white;
-}
-
-.underline {
+  height: 2.5rem;
   background-size: 1px 1em;
   box-shadow: inset 0 -0.175em #a90302, inset 0 -0.2em #000;
-  display: inline;
+  display: inline-block;
+  text-shadow: -2px -2px rgb(235, 214, 214), -2px 2px rgb(235, 214, 214),
+    2px -2px rgb(235, 214, 214), 2px 2px rgb(235, 214, 214);
 }
 
 ul {

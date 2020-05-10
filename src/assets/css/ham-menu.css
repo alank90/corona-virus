@@ -1,8 +1,13 @@
 /* [ON BIG SCREEN] */
 /* Wrapper */
 #hamnav {
-  width: 100%;
   margin-left: 15%;
+  width: 100vw;
+}
+
+#hamitems {
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 /* Hide Hamburger */

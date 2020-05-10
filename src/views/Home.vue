@@ -20,12 +20,12 @@ import slideShow from "../components/SlideShow.vue";
 export default {
   name: "Home",
   components: {
-    slideShow
+    slideShow,
   },
   data: function() {
     return {
       totalWorldWideVirusStats: {},
-      totalUSAVirusStats: {}
+      totalUSAVirusStats: {},
     };
   },
   created: function retrieveWorldWideTotals() {
@@ -35,9 +35,10 @@ export default {
         method: "GET",
         headers: {
           "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-          "x-rapidapi-key": "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
-        }
-      }).then(res => (res.ok && res.json()) || Promise.reject(res)),
+          "x-rapidapi-key":
+            "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
+        },
+      }).then((res) => (res.ok && res.json()) || Promise.reject(res)),
       fetch(
         "https://covid-19-data.p.rapidapi.com/country?format=json&name=usa",
         {
@@ -45,11 +46,11 @@ export default {
           headers: {
             "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
             "x-rapidapi-key":
-              "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
-          }
+              "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6",
+          },
         }
-      ).then(res => (res.ok && res.json()) || Promise.reject(res))
-    ]).then(data => {
+      ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
+    ]).then((data) => {
       // handle data array here from multiple fetches here.
       this.totalWorldWideVirusStats = data[0][0];
       this.totalUSAVirusStats = data[1][0];
@@ -73,7 +74,7 @@ export default {
         );
       }
     });
-  }
+  },
 };
 </script>
 
@@ -98,5 +99,15 @@ li {
   font-size: 1.4rem;
   color: #a90302;
   margin: 0 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 0.6rem;
+  }
+
+  li {
+    font-size: 0.8rem;
+  }
 }
 </style>

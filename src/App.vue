@@ -8,9 +8,15 @@
         <input type="checkbox" id="hamburger" />
         <div id="hamitems">
           <router-link class="router-link" to="/">Home</router-link>
-          <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
-          <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
-          <router-link class="router-link" to="/resources">Resources</router-link>
+          <router-link class="router-link" to="/coronavirus"
+            >Stats by Country</router-link
+          >
+          <router-link class="router-link" to="/headlines"
+            >Latest Headlines</router-link
+          >
+          <router-link class="router-link" to="/resources"
+            >Resources</router-link
+          >
         </div>
       </nav>
     </header>
@@ -84,7 +90,8 @@ a {
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin: 0 -10px;
+  max-width: 100vw;
+  margin: 0;
   justify-content: space-around;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -100,7 +107,7 @@ a {
 .router-link {
   position: relative;
   text-decoration: none;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #a90302;
   padding: 10px 15px;
@@ -116,7 +123,7 @@ a {
   position: absolute;
   width: 100%;
   height: 2px;
-  bottom: 15px;
+  bottom: 10px;
   left: 0;
   background-color: #000;
   visibility: hidden;

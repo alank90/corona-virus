@@ -8,6 +8,12 @@ the virus
 ```
 npm install
 ```
+You will also need to add an .env file in the root of the project and add your API keys. Seeing as we use vue-cli3 no need for dotenv, just add api keys to .env in the format:
+```
+VUE_APP_SOME_KEY_FOR_NEWS=MY_API_KEY
+VUE_APP_SOME_OTHER_KEY_FOR_STATS=MY_OTHER_KEY
+```
+[See Vue-cli3 page on Environment Variables](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)
 
 ### Compiles and hot-reloads for development
 

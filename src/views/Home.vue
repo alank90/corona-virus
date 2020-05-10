@@ -54,7 +54,7 @@ export default {
       // handle data array here from multiple fetches here.
       this.totalWorldWideVirusStats = data[0][0];
       this.totalUSAVirusStats = data[1][0];
-      console.log(this.totalWorldWideVirusStats);
+      
       if (typeof Intl === "undefined" || !Intl.NumberFormat) {
         console.log("This browser doesn't support Intl.NumberFormat");
       } else {

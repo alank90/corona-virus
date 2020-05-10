@@ -102,6 +102,7 @@ export default {
       const { yesterday, lastWeek, today } = createDates();
 
       // Multiple fetches for stats yesterday and last week
+      const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
       Promise.all([
         fetch(
           `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${yesterday}&name=${this.selected}`,
@@ -109,8 +110,7 @@ export default {
             method: "GET",
             headers: {
               "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-              "x-rapidapi-key":
-                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+              "x-rapidapi-key": rapid_api_key
             }
           }
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
@@ -120,8 +120,7 @@ export default {
             method: "GET",
             headers: {
               "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-              "x-rapidapi-key":
-                "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+              "x-rapidapi-key": rapid_api_key
             }
           }
         ).then(res => (res.ok && res.json()) || Promise.reject(res))

@@ -48,11 +48,12 @@ export default {
   },
   created: function retrieveHeadlines() {
     const queryString = "corona virus";
+    const api_key = process.env.VUE_APP_NEWS_API_KEY;
     const domains =
       "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
     const excludeDomains = "foxnews.com,fox.com";
 
-    const url = `http://newsapi.org/v2/everything?q=${queryString}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=b7fb08c9f94f4898ae24c81664e9ae7c`;
+    const url = `http://newsapi.org/v2/everything?q=${queryString}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${api_key}`;
     // Just a little  different way of implementing fetch()
     const req = new Request(url);
     fetch(req)

@@ -1,6 +1,6 @@
 <template>
   <div class="resources-view">
-    <h1>List of Corona Virus Resources</h1>
+    <h1>List of Coronavirus Resources</h1>
     <ul>
       <li>
         <a href="#https://coronavirus.jhu.edu/map.html" target="_blank">John Hopkins Resource Center</a>
@@ -9,13 +9,13 @@
         <a
           href="https://www.nytimes.com/news-event/coronavirus"
           target="_blank"
-        >NY Times Corona Virus Coverage</a>
+        >NY Times Coronavirus Coverage</a>
       </li>
       <li>
         <a
           href="https://www.washingtonpost.com/coronavirus/"
           target="_blank"
-        >Washington Post Corona Virus Coverage</a>
+        >Washington Post Coronavirus Coverage</a>
       </li>
       <li>
         <a

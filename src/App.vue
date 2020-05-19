@@ -1,22 +1,16 @@
 <template>
   <div class="app">
     <header class="header">
-      <h1 class="logo">The Corona Virus Pandemic Source</h1>
+      <h1 class="logo">The Coronavirus Pandemic Source</h1>
       <nav id="hamnav">
         <!-- [The Hamburger] -->
         <label for="hamburger">&#9776;</label>
         <input type="checkbox" id="hamburger" />
         <div id="hamitems">
           <router-link class="router-link" to="/">Home</router-link>
-          <router-link class="router-link" to="/coronavirus"
-            >Stats by Country</router-link
-          >
-          <router-link class="router-link" to="/headlines"
-            >Latest Headlines</router-link
-          >
-          <router-link class="router-link" to="/resources"
-            >Resources</router-link
-          >
+          <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
+          <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
+          <router-link class="router-link" to="/resources">Resources</router-link>
         </div>
       </nav>
     </header>

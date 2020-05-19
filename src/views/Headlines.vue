@@ -6,7 +6,7 @@
     </h1>
 
     <ul>
-      <li v-for="article in articles" :key="article.url">
+      <li v-for="(article, index) in articles" :key="article.index">
         <span class="source">{{ article.source.name }}</span>
         {{ article.title }}
         <img :src="article.urlToImage" alt="Article Photo" />
@@ -30,6 +30,7 @@
 
 <script>
 import search from "../components/Search";
+import createDates from "../modules/createDates.js";
 // Import the EventBus.
 import { EventBus } from "../main.js";
 
@@ -40,20 +41,22 @@ export default {
   },
   data: function() {
     return {
-      articles: {},
+      articles: [],
       currentPage: 1,
       totalResults: 0,
       pageSize: 15
     };
   },
   created: function retrieveHeadlines() {
-    const queryString = "corona virus";
+    // This function() runs on page render and populates page on initial view
+    const queryString = "coronavirus covid-19";
+    const { lastWeek } = createDates();
     const api_key = process.env.VUE_APP_NEWS_API_KEY;
     const domains =
       "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
     const excludeDomains = "foxnews.com,fox.com";
 
-    const url = `http://newsapi.org/v2/everything?q=${queryString}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${api_key}`;
+    const url = `http://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${api_key}`;
     // Just a little  different way of implementing fetch()
     const req = new Request(url);
     fetch(req)
@@ -63,7 +66,11 @@ export default {
       .then(data => {
         const { articles, totalResults } = data;
         this.articles = articles;
-        this.totalResults = totalResults;
+        if (totalResults > 100) {
+          this.totalResults = 100;
+        } else {
+          this.totalResults = totalResults;
+        }
       });
   },
   mounted: function manualSearchEvent() {
@@ -71,7 +78,11 @@ export default {
     // back to its parent component Headlines.vue
     EventBus.$on("searchResults", manualSearch => {
       this.articles = manualSearch.articles;
-      this.totalResults = manualSearch.totalResults;
+      if (manualSearch.totalResults > 100) {
+        this.totalResults = 100;
+      } else {
+        this.totalResults = manualSearch.totalResults;
+      }
     });
   },
   methods: {
@@ -80,7 +91,7 @@ export default {
     },
     changePage: function(page) {
       this.currentPage = page;
-      const queryString = "corona virus";
+      const queryString = "coronavirus";
       const domains =
         "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
       const excludeDomains = "foxnews.com,fox.com";

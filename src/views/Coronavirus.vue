@@ -28,6 +28,7 @@
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
     </div>
+    <p v-if="networkTrouble">Sorry. Unable to retrieve data at this time.</p>
     <div
       v-if="coronaVirusFetchedData.length === 0"
       class="no-responses"
@@ -92,6 +93,7 @@ export default {
       countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
       dataRetrieved: false,
+      networkTrouble: false,
       showMessage: false
     };
   },
@@ -124,20 +126,26 @@ export default {
             }
           }
         ).then(res => (res.ok && res.json()) || Promise.reject(res))
-      ]).then(data => {
-        // handle data array here. First all data for yesterday put into FetchedData
-        this.coronaVirusFetchedData = data[0];
-        // Next, virus values for last week to be used to compare confirmed cases change from last week
-        // to yesterday. This will be passed to display-graph-confirmed component as a prop.
-        this.coronaVirusStatsLastWeek = data[1];
-        // Need to sum up provinces.* values to get totals for USA
-        this.countryVirusStatsTotal = this.calculateTotals(
-          this.coronaVirusFetchedData
-        );
+      ])
+        .then(data => {
+          // handle data array here. First all data for yesterday put into FetchedData
+          this.coronaVirusFetchedData = data[0];
+          // Next, virus values for last week to be used to compare confirmed cases change from last week
+          // to yesterday. This will be passed to display-graph-confirmed component as a prop.
+          this.coronaVirusStatsLastWeek = data[1];
+          // Need to sum up provinces.* values to get totals for USA
+          this.countryVirusStatsTotal = this.calculateTotals(
+            this.coronaVirusFetchedData
+          );
 
-        this.loading = false;
-        this.dataRetrieved = true;
-      });
+          this.loading = false;
+          this.dataRetrieved = true;
+        })
+        .catch(err => {
+          console.error("There was problem retrieving data.", err);
+          this.loading = false;
+          this.networkTrouble = true;
+        });
     },
     calculateTotals(apiDataArray) {
       const { provinces } = apiDataArray[0];

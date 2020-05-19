@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Life In The Corona Virus Age</h2>
+    <h2>Life In The Age of Coronavirus</h2>
 
     <transition name="fade">
       <figure class="slide" v-if="show">

@@ -51,12 +51,12 @@ export default {
     // This function() runs on page render and populates page on initial view
     const queryString = "coronavirus covid-19";
     const { lastWeek } = createDates();
-    const api_key = process.env.VUE_APP_NEWS_API_KEY;
+    const news_api_key = process.env.VUE_APP_NEWS_API_KEY;
     const domains =
       "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
     const excludeDomains = "foxnews.com,fox.com";
 
-    const url = `http://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${api_key}`;
+    const url = `http://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
     // Just a little  different way of implementing fetch()
     const req = new Request(url);
     fetch(req)

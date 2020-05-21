@@ -105,6 +105,7 @@ export default {
 
       // Multiple fetches for stats yesterday and last week
       const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
+
       Promise.all([
         fetch(
           `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${yesterday}&name=${this.selected}`,

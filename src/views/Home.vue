@@ -30,12 +30,14 @@ export default {
   },
   created: function retrieveWorldWideTotals() {
     // Multiple fetches for stats for World & USA
+    const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
+    console.log(rapid_api_key);
     Promise.all([
       fetch("https://covid-19-data.p.rapidapi.com/totals?format=json", {
         method: "GET",
         headers: {
           "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-          "x-rapidapi-key": "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+          "x-rapidapi-key": rapid_api_key
         }
       }).then(res => (res.ok && res.json()) || Promise.reject(res)),
       fetch(
@@ -44,8 +46,7 @@ export default {
           method: "GET",
           headers: {
             "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-            "x-rapidapi-key":
-              "9dec5a52c8msh3cacbb8feb21b54p18cf22jsn6f95168693d6"
+            "x-rapidapi-key": rapid_api_key
           }
         }
       ).then(res => (res.ok && res.json()) || Promise.reject(res))

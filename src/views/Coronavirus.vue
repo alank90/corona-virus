@@ -30,13 +30,12 @@
     </div>
     <p v-if="networkTrouble">Sorry. Unable to retrieve data at this time.</p>
     <div
-      v-if="coronaVirusFetchedData.length === 0"
+      v-if="Object.keys(coronaVirusFetchedData).length === 0"
       class="no-responses"
     >Sorry. No Results Available.</div>
     <display-query-results
-      v-else-if="coronaVirusFetchedData.length > 0"
+      v-else-if="Object.keys(coronaVirusFetchedData).length > 0"
       v-show="dataRetrieved"
-      :propsCountryVirusStatsTotal="countryVirusStatsTotal"
       :propsCoronaFetchedData="coronaVirusFetchedData"
     ></display-query-results>
 
@@ -100,7 +99,7 @@ export default {
   methods: {
     retrieveDataCountryTotal: function() {
       this.loading = true;
-      if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there
+      if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there are any
       const { yesterday, lastWeek, today } = createDates();
 
       // Multiple fetches for stats yesterday and last week
@@ -108,21 +107,21 @@ export default {
 
       Promise.all([
         fetch(
-          `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${yesterday}&name=${this.selected}`,
+          `https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_iso_alpha_2.php?alpha2=${this.selected}`,
           {
             method: "GET",
             headers: {
-              "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+              "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
               "x-rapidapi-key": rapid_api_key
             }
           }
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
         fetch(
-          `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${lastWeek}&name=${this.selected}`,
+          `https://coronavirus-monitor.p.rapidapi.com/coronavirus/history_by_particular_country_by_date.php?country=${this.selected}&date=${lastWeek}`,
           {
             method: "GET",
             headers: {
-              "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+              "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
               "x-rapidapi-key": rapid_api_key
             }
           }
@@ -130,14 +129,15 @@ export default {
       ])
         .then(data => {
           // handle data array here. First all data for yesterday put into FetchedData
-          this.coronaVirusFetchedData = data[0];
+          this.coronaVirusFetchedData = data[0].latest_stat_by_country[0];
           // Next, virus values for last week to be used to compare confirmed cases change from last week
           // to yesterday. This will be passed to display-graph-confirmed component as a prop.
-          this.coronaVirusStatsLastWeek = data[1];
+          this.coronaVirusStatsLastWeek = data[1].stat_by_country[0];
+          console.log(this.coronaVirusStatsLastWeek.total_deaths);
           // Need to sum up provinces.* values to get totals for USA
-          this.countryVirusStatsTotal = this.calculateTotals(
+          /* this.countryVirusStatsTotal = this.calculateTotals(
             this.coronaVirusFetchedData
-          );
+          ); */
 
           this.loading = false;
           this.dataRetrieved = true;
@@ -148,7 +148,7 @@ export default {
           this.networkTrouble = true;
         });
     },
-    calculateTotals(apiDataArray) {
+    /* calculateTotals(apiDataArray) {
       const { provinces } = apiDataArray[0];
 
       // Initialize Object
@@ -172,7 +172,7 @@ export default {
       });
 
       return cumulativeVirusStats;
-    },
+    }, */
     displayGraphs: function() {
       EventBus.$emit("display-graphs", "clicked");
       if (this.coronaVirusFetchedData.length === 0) this.showMessage = true;

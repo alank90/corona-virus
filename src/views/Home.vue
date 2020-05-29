@@ -3,11 +3,11 @@
   <div class="home">
     <ul>
       <li class="title">Global:</li>
-      <li>Total {{ totalWorldWideVirusStats.confirmed }}</li>
-      <li>Deaths {{ totalWorldWideVirusStats.deaths }}</li>
+      <li>Total {{ totalWorldWideVirusStats.total_cases }}</li>
+      <li>Deaths {{ totalWorldWideVirusStats.total_deaths }}</li>
       <li class="title">United States:</li>
-      <li>Total: {{ totalUSAVirusStats.confirmed }}</li>
-      <li>Deaths: {{ totalUSAVirusStats.deaths }}</li>
+      <li>Total: {{ totalUSAVirusStats.total_cases }}</li>
+      <li>Deaths: {{ totalUSAVirusStats.total_deaths }}</li>
     </ul>
 
     <slideShow></slideShow>
@@ -31,49 +31,34 @@ export default {
   created: function retrieveWorldWideTotals() {
     // Multiple fetches for stats for World & USA
     const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
-    console.log(rapid_api_key);
+    
     Promise.all([
-      fetch("https://covid-19-data.p.rapidapi.com/totals?format=json", {
-        method: "GET",
-        headers: {
-          "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-          "x-rapidapi-key": rapid_api_key
-        }
-      }).then(res => (res.ok && res.json()) || Promise.reject(res)),
       fetch(
-        "https://covid-19-data.p.rapidapi.com/country?format=json&name=usa",
+        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
         {
           method: "GET",
           headers: {
-            "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+            "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+            "x-rapidapi-key": rapid_api_key
+          }
+        }
+      ).then(res => (res.ok && res.json()) || Promise.reject(res)),
+      fetch(
+        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_iso_alpha_2.php?alpha2=usa",
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
             "x-rapidapi-key": rapid_api_key
           }
         }
       ).then(res => (res.ok && res.json()) || Promise.reject(res))
     ])
       .then(data => {
+        console.log(data);
         // handle data array here from multiple fetches here.
-        this.totalWorldWideVirusStats = data[0][0];
-        this.totalUSAVirusStats = data[1][0];
-
-        if (typeof Intl === "undefined" || !Intl.NumberFormat) {
-          console.log("This browser doesn't support Intl.NumberFormat");
-        } else {
-          const nf = Intl.NumberFormat();
-          this.totalWorldWideVirusStats.confirmed = nf.format(
-            this.totalWorldWideVirusStats.confirmed
-          );
-          this.totalWorldWideVirusStats.deaths = nf.format(
-            this.totalWorldWideVirusStats.deaths
-          );
-
-          this.totalUSAVirusStats.confirmed = nf.format(
-            this.totalUSAVirusStats.confirmed
-          );
-          this.totalUSAVirusStats.deaths = nf.format(
-            this.totalUSAVirusStats.deaths
-          );
-        }
+        this.totalWorldWideVirusStats = data[0];
+        this.totalUSAVirusStats = data[1].latest_stat_by_country[0];
       })
       .catch(err => {
         console.error("There was problem retrieving data.", err);

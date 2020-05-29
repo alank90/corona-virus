@@ -1,36 +1,36 @@
 <template>
   <div class="display-results">
-    <div v-if="Object.keys(propsCountryVirusStatsTotal).length !== 0">
+    <div v-if="Object.keys(propsCoronaFetchedData).length !== 0">
       <h2>
-        {{ propsCoronaFetchedData[0].country }} Corona Virus Stats as of
-        {{ propsCoronaFetchedData[0].date }}
+        {{ propsCoronaFetchedData.country_name }} Corona Virus Stats as of
+        {{ propsCoronaFetchedData.record_date_pure }}
       </h2>
       <table id="corona-virus-table">
         <thead>
           <tr>
-            <th>Active Cases</th>
-            <th>Confirmed</th>
+            <th>New Cases</th>
+            <th>Total Cases</th>
             <th>Deaths</th>
-            <th>Recovered</th>
+            <th>Deaths per Million</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{{ propsCountryVirusStatsTotal.active }}</td>
-            <td>{{ propsCountryVirusStatsTotal.confirmed }}</td>
-            <td>{{ propsCountryVirusStatsTotal.deaths }}</td>
-            <td>{{ propsCountryVirusStatsTotal.recovered }}</td>
+            <td>{{ propsCoronaFetchedData.new_cases }}</td>
+            <td>{{ propsCoronaFetchedData.total_cases }}</td>
+            <td>{{ propsCoronaFetchedData.total_deaths }}</td>
+            <td>{{ propsCoronaFetchedData.deaths_per1m }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-else-if="propsCountryVirusStatsTotal.active === 0">No Active Cases</div>
+    <div v-else-if="propsCoronaFetchedData.active === 0">No Active Cases</div>
 
     <!-- =========== Markup for the States Table ================ -->
     <div
       v-if="
-        Object.keys(propsCountryVirusStatsTotal).length !== 0 &&
-          propsCoronaFetchedData[0].country === 'USA'
+        Object.keys(propsCoronaFetchedData).length !== 0 &&
+          propsCoronaFetchedData.country_name === 'USA'
       "
     >
       <div @click="showStates" class="hideTableArrow" title="Click to See Breakdown by State">&#187;</div>
@@ -86,7 +86,7 @@
 <script>
 export default {
   name: "DisplayQueryResults",
-  props: ["propsCoronaFetchedData", "propsCountryVirusStatsTotal"],
+  props: ["propsCoronaFetchedData"],
   data: function() {
     return {
       visibility: false,

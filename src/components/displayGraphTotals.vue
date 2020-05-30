@@ -9,20 +9,20 @@ import constructChartDataForGraphTotals from "../modules/constructChartDataForGr
 export default {
   name: "displayGraphTotals",
   extends: Bar,
-  props: ["propsCoronaVirusStatsTotal"],
+  props: ["propscoronaVirusFetchedUSATodayByState"],
   data: function() {
     return {};
   },
   computed: {
     // First, create a computed property of the top ten ranked states by deaths
-    // from the provinces array
-    topRankedStates_Provinces: function() {
-      const provinces = this.propsCoronaVirusStatsTotal[0].provinces;
-      provinces.sort(function(a, b) {
-        return (a.deaths - b.deaths) * -1; // sorts descending
+    // from the propscoronaVirusFetchedUSATodayByState array
+    topRankedStates: function() {
+      const states = this.propscoronaVirusFetchedUSATodayByState;
+      states.sort(function(a, b) {
+        return (a.death - b.death) * -1; // sorts descending
       });
       // Take Top 10 Entries
-      return provinces.slice(0, 10);
+      return states.slice(0, 10);
     }
   },
   mounted: function() {
@@ -32,16 +32,16 @@ export default {
     // back to its parent component Headlines.vue
     EventBus.$on("display-graphs", data => {
       const { chartData, options } = constructChartDataForGraphTotals(
-        this.topRankedStates_Provinces
+        this.topRankedStates
       );
 
       this.renderChart(chartData, options);
     });
   },
   watch: {
-    propsCoronaVirusStatsTotal: function(newProps, oldProps) {
+    propscoronaVirusFetchedUSATodayByState: function(newProps, oldProps) {
       const { chartData, options } = constructChartDataForGraphTotals(
-        this.topRankedStates_Provinces
+        this.topRankedStates
       );
 
       this.renderChart(chartData, options);

@@ -37,6 +37,7 @@
       v-else-if="Object.keys(coronaVirusFetchedData).length > 0"
       v-show="dataRetrieved"
       :propsCoronaFetchedData="coronaVirusFetchedData"
+      :propscoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
     ></display-query-results>
 
     <h2
@@ -51,18 +52,18 @@
       <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
       <div class="chart-container">
         <display-graph-totals
-          v-if="coronaVirusFetchedData.length > 0"
-          :propsCoronaVirusStatsTotal="coronaVirusFetchedData"
+          v-if="coronaVirusFetchedUSATodayByState.length > 0"
+          :propscoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
         ></display-graph-totals>
       </div>
 
-      <div class="chart-container">
+      <!-- <div class="chart-container">
         <display-graph-confirmed
           v-if="coronaVirusStatsLastWeek.length > 0"
           :propsCoronaVirusStatsLastWeek="coronaVirusStatsLastWeek"
           :propsCoronaVirusStatsYesterday="coronaVirusFetchedData"
         ></display-graph-confirmed>
-      </div>
+      </div> -->
     </h2>
   </div>
   <!-- ========== End .corona-virus ==================== -->
@@ -88,6 +89,8 @@ export default {
     return {
       selected: { type: String, default: "" },
       coronaVirusFetchedData: { type: Object, default: null },
+      coronaVirusFetchedUSATodayByState: { type: Object, default: null },
+      coronaVirusFetchedUSALastWeekByState: { type: Object, default: null },
       coronaVirusStatsLastWeek: { type: Object, default: null },
       countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
@@ -125,7 +128,11 @@ export default {
               "x-rapidapi-key": rapid_api_key
             }
           }
-        ).then(res => (res.ok && res.json()) || Promise.reject(res))
+        ).then(res => (res.ok && res.json()) || Promise.reject(res)),
+        // Fetch State info from covidtracking.com end point for both yesterday and last week.
+        fetch(`https://covidtracking.com/api/v1/states/current.json`).then(
+          res => (res.ok && res.json()) || Promise.reject(res)
+        )
       ])
         .then(data => {
           // handle data array here. First all data for yesterday put into FetchedData
@@ -133,11 +140,9 @@ export default {
           // Next, virus values for last week to be used to compare confirmed cases change from last week
           // to yesterday. This will be passed to display-graph-confirmed component as a prop.
           this.coronaVirusStatsLastWeek = data[1].stat_by_country[0];
-          console.log(this.coronaVirusStatsLastWeek.total_deaths);
-          // Need to sum up provinces.* values to get totals for USA
-          /* this.countryVirusStatsTotal = this.calculateTotals(
-            this.coronaVirusFetchedData
-          ); */
+          // Lastly, handle data retrieved for States from covidtracking.com
+          this.coronaVirusFetchedUSATodayByState = data[2];
+          console.log(this.coronaVirusFetchedUSATodayByState);
 
           this.loading = false;
           this.dataRetrieved = true;
@@ -148,31 +153,6 @@ export default {
           this.networkTrouble = true;
         });
     },
-    /* calculateTotals(apiDataArray) {
-      const { provinces } = apiDataArray[0];
-
-      // Initialize Object
-      let cumulativeVirusStats = {
-        active: 0,
-        confirmed: 0,
-        deaths: 0,
-        recovered: 0
-      };
-
-      // Need to sum up all fields.
-      provinces.forEach(element => {
-        cumulativeVirusStats.active =
-          cumulativeVirusStats.active + element.active;
-        cumulativeVirusStats.confirmed =
-          cumulativeVirusStats.confirmed + element.confirmed;
-        cumulativeVirusStats.deaths =
-          cumulativeVirusStats.deaths + element.deaths;
-        cumulativeVirusStats.recovered =
-          cumulativeVirusStats.recovered + element.recovered;
-      });
-
-      return cumulativeVirusStats;
-    }, */
     displayGraphs: function() {
       EventBus.$emit("display-graphs", "clicked");
       if (this.coronaVirusFetchedData.length === 0) this.showMessage = true;

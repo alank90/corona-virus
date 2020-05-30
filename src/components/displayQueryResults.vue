@@ -9,17 +9,29 @@
         <thead>
           <tr>
             <th>New Cases</th>
+            <th>Active Cases</th>
             <th>Total Cases</th>
+            <th>Total Cases/Million</th>
+            <th>Total Tests/Million</th>
+            <th>Critical Patients</th>
+            <th>New Deaths</th>
             <th>Deaths</th>
-            <th>Deaths per Million</th>
+            <th>Deaths/ Million</th>
+            <th>Total Recovered</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{{ propsCoronaFetchedData.new_cases }}</td>
+            <td>{{ propsCoronaFetchedData.active_cases }}</td>
             <td>{{ propsCoronaFetchedData.total_cases }}</td>
+            <td>{{ propsCoronaFetchedData.total_cases_per1m }}</td>
+            <td>{{ propsCoronaFetchedData.total_tests_per1m }}</td>
+            <td>{{ propsCoronaFetchedData.serious_critical }}</td>
+            <td>{{ propsCoronaFetchedData.new_deaths }}</td>
             <td>{{ propsCoronaFetchedData.total_deaths }}</td>
             <td>{{ propsCoronaFetchedData.deaths_per1m }}</td>
+            <td>{{ propsCoronaFetchedData.total_recovered }}</td>
           </tr>
         </tbody>
       </table>
@@ -29,7 +41,7 @@
     <!-- =========== Markup for the States Table ================ -->
     <div
       v-if="
-        Object.keys(propsCoronaFetchedData).length !== 0 &&
+        Object.keys(propscoronaVirusFetchedUSATodayByState).length !== 0 &&
           propsCoronaFetchedData.country_name === 'USA'
       "
     >
@@ -46,7 +58,7 @@
                 title="Click Header to Sort"
                 :key="index"
               >
-                {{ col == 'Province' ? 'State' : col }}
+                {{ stateTableColumnNames[index] }}
                 <div
                   class="arrow"
                   v-if="columnName == col"
@@ -58,7 +70,7 @@
           </thead>
 
           <tbody>
-            <tr v-for="state in get_rows()" :key="state.province">
+            <tr v-for="state in get_rows()" :key="state.state">
               <td v-for="col in columns" :key="col">{{ state[col] }}</td>
             </tr>
           </tbody>
@@ -86,7 +98,7 @@
 <script>
 export default {
   name: "DisplayQueryResults",
-  props: ["propsCoronaFetchedData"],
+  props: ["propsCoronaFetchedData", "propscoronaVirusFetchedUSATodayByState"],
   data: function() {
     return {
       visibility: false,
@@ -96,7 +108,26 @@ export default {
       ascending: false,
       sortColumn: "",
       columnName: "",
-      columns: ["province", "active", "confirmed", "deaths", "recovered"]
+      columns: [
+        "state",
+        "totalTestResults",
+        "positive",
+        "hospitalizedCurrently",
+        "inIcuCurrently",
+        "onVentilatorCurrently",
+        "death",
+        "recovered"
+      ],
+      stateTableColumnNames: [
+        "State",
+        "Total Tested",
+        "Confirmed",
+        "Current Hospitalized",
+        "Currently in ICU",
+        "Currently on Ventilator",
+        "Deaths",
+        "Recovered"
+      ]
     };
   },
   computed: {
@@ -109,6 +140,7 @@ export default {
   },
   methods: {
     showStates: function() {
+      // This rotates arrow according to last click
       this.visibility = !this.visibility;
       const el = document.querySelector(".hideTableArrow");
       if (this.visibility) {
@@ -140,7 +172,7 @@ export default {
       let ascending = this.ascending;
       let columnName = this.columnName;
 
-      this.propsCoronaFetchedData[0].provinces.sort(function(a, b) {
+      this.propscoronaVirusFetchedUSATodayByState.sort(function(a, b) {
         if (a[columnName] > b[columnName]) {
           return ascending ? 1 : -1;
         } else if (a[columnName] < b[columnName]) {
@@ -152,7 +184,8 @@ export default {
     },
     num_pages: function() {
       return Math.ceil(
-        this.propsCoronaFetchedData[0].provinces.length / this.elementsPerPage
+        this.propscoronaVirusFetchedUSATodayByState.length /
+          this.elementsPerPage
       );
     },
     get_rows: function() {
@@ -164,7 +197,7 @@ export default {
       everything will update automatically. Isn't Vue nice. Sssswwwweeeettttt */
       let start = (this.currentPage - 1) * this.elementsPerPage;
       let end = start + this.elementsPerPage;
-      return this.propsCoronaFetchedData[0].provinces.slice(start, end);
+      return this.propscoronaVirusFetchedUSATodayByState.slice(start, end);
     },
     change_page: function change_page(page) {
       this.currentPage = page; // Forces a rerender of state table to new page
@@ -210,7 +243,7 @@ table th:not(:last-child) {
 }
 
 table td {
-  text-align: left;
+  text-align: center;
   font-size: 1.2rem;
   font-weight: 600;
   padding: 8px;

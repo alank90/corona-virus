@@ -42,7 +42,7 @@
 
     <h2
       @click="displayGraphs"
-      v-show="dataRetrieved"
+      v-show="usaSelected"
       class="display-graph"
       title="Click to Display Graph"
     >
@@ -53,17 +53,17 @@
       <div class="chart-container">
         <display-graph-totals
           v-if="coronaVirusFetchedUSATodayByState.length > 0"
-          :propscoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
+          :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
         ></display-graph-totals>
       </div>
 
       <!-- <div class="chart-container">
         <display-graph-confirmed
-          v-if="coronaVirusStatsLastWeek.length > 0"
-          :propsCoronaVirusStatsLastWeek="coronaVirusStatsLastWeek"
-          :propsCoronaVirusStatsYesterday="coronaVirusFetchedData"
+          v-if="coronaVirusFetchedUSALastWeekByState.length > 0"
+          :propsCoronaVirusFetchedUSALastWeekByState="coronaVirusFetchedUSALastWeekByState"
+          :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
         ></display-graph-confirmed>
-      </div> -->
+      </div>-->
     </h2>
   </div>
   <!-- ========== End .corona-virus ==================== -->
@@ -96,13 +96,15 @@ export default {
       loading: false,
       dataRetrieved: false,
       networkTrouble: false,
-      showMessage: false
+      showMessage: false,
+      usaSelected: false
     };
   },
   methods: {
     retrieveDataCountryTotal: function() {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there are any
+      if (this.usaSelected === true) this.usaSelected = false; // reset if USA was last chosen country. No display-graph shown.
       const { yesterday, lastWeek, today } = createDates();
 
       // Multiple fetches for stats yesterday and last week
@@ -142,10 +144,12 @@ export default {
           this.coronaVirusStatsLastWeek = data[1].stat_by_country[0];
           // Lastly, handle data retrieved for States from covidtracking.com
           this.coronaVirusFetchedUSATodayByState = data[2];
-          console.log(this.coronaVirusFetchedUSATodayByState);
 
           this.loading = false;
           this.dataRetrieved = true;
+          if (this.selected === "USA") {
+            this.usaSelected = true;
+          }
         })
         .catch(err => {
           console.error("There was problem retrieving data.", err);

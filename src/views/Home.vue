@@ -55,7 +55,6 @@ export default {
       ).then(res => (res.ok && res.json()) || Promise.reject(res))
     ])
       .then(data => {
-        console.log(data);
         // handle data array here from multiple fetches here.
         this.totalWorldWideVirusStats = data[0];
         this.totalUSAVirusStats = data[1].latest_stat_by_country[0];

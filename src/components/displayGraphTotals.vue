@@ -9,15 +9,15 @@ import constructChartDataForGraphTotals from "../modules/constructChartDataForGr
 export default {
   name: "displayGraphTotals",
   extends: Bar,
-  props: ["propscoronaVirusFetchedUSATodayByState"],
+  props: ["propsCoronaVirusFetchedUSATodayByState"],
   data: function() {
     return {};
   },
   computed: {
     // First, create a computed property of the top ten ranked states by deaths
-    // from the propscoronaVirusFetchedUSATodayByState array
+    // from the propsCoronaVirusFetchedUSATodayByState array
     topRankedStates: function() {
-      const states = this.propscoronaVirusFetchedUSATodayByState;
+      const states = this.propsCoronaVirusFetchedUSATodayByState;
       states.sort(function(a, b) {
         return (a.death - b.death) * -1; // sorts descending
       });
@@ -28,8 +28,8 @@ export default {
   mounted: function() {
     const { today, lastWeek } = createDates();
 
-    // The eventbus carries manual search data from Search.vue
-    // back to its parent component Headlines.vue
+    // The "display-graphs" event alerts this component to run the
+    // the constructChartDataForGraphTotals method to render the chart
     EventBus.$on("display-graphs", data => {
       const { chartData, options } = constructChartDataForGraphTotals(
         this.topRankedStates
@@ -39,7 +39,7 @@ export default {
     });
   },
   watch: {
-    propscoronaVirusFetchedUSATodayByState: function(newProps, oldProps) {
+    propsCoronaVirusFetchedUSATodayByState: function(newProps, oldProps) {
       const { chartData, options } = constructChartDataForGraphTotals(
         this.topRankedStates
       );

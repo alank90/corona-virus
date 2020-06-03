@@ -25,60 +25,6 @@ export default {
       // And return top ten entries from the array
       return states.slice(0, 10);
     },
-    topTenHospitalizedStatesLastWeek: function() {
-      // This function constructs an array of topTenHospitalized last week from the
-      // topTenHospitalizedToday computed property
-      let topTenHospitalizedLastWeek = [];
-      //const states = this.propsCoronaVirusFetchedUSALastWeekByState;
-
-      this.topTenHospitalizedToday.forEach(item => {
-        topTenHospitalizedLastWeek.push(item.state);
-      });
-      // Here we iterate thru the hospialized for today and find the
-      // matching element in propsCoronaVirusStatsLastWeek array
-      /* this.topTenHospitalizedToday.forEach(elementYesterday => {
-        states.forEach(elementLastWeek => {
-          // Check if yesterday's element is a match pair for last week's State Confirmed
-          // cases and if so push onto our topTenHospitalizedLastWeek array
-          if (elementLastWeek.state == elementYesterday.state) {
-            topTenHospitalizedLastWeek.push(elementLastWeek);
-          }
-        });
-      }); */
-      return topTenHospitalizedLastWeek;
-    }
   },
-  created() {
-    // Need a promise.all to fetch the top ten hospitalized states from a week ago 
-    // from endpoint covidtracking.com/api/v1/states/{state}/{date}.json
-    console.log('propertyComputed will update, as this.property is now reactive.')
-  }
 };
-
-
-/* ,
-  mounted: function() {
-    // The eventbus carries notification to render chart
-    // from its parent component Coronavirus.vue
-    EventBus.$on("display-graphs", data => {
-      const { chartData, options } = constructChartDataForHospitalizedCases(
-        this.topTenHospitalizedToday,
-        this.topTenHospitalizedStatesLastWeek
-      );
-
-      this.renderChart(chartData, options); 
-    });
-  },
-  watch: {
-    propsCoronaVirusFetchedUSATodayByState: function() {
-      const { chartData, options } = constructChartDataForHospitalizedCases(
-        this.topTenHospitalizedToday,
-        this.topTenHospitalizedStatesLastWeek
-      );
-
-      this.renderChart(chartData, options);
-    }
-  } */
 </script>
-   
-

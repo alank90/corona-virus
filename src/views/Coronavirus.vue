@@ -57,13 +57,12 @@
         ></display-graph-totals>
       </div>
 
-      <!-- <div class="chart-container">
-        <display-graph-confirmed
-          v-if="coronaVirusFetchedUSALastWeekByState.length > 0"
-          :propsCoronaVirusFetchedUSALastWeekByState="coronaVirusFetchedUSALastWeekByState"
+      <div class="chart-container">
+        <display-graph-hospitalized
+          v-if="coronaVirusFetchedUSATodayByState.length > 0"
           :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
-        ></display-graph-confirmed>
-      </div>-->
+        ></display-graph-hospitalized>
+      </div>
     </h2>
   </div>
   <!-- ========== End .corona-virus ==================== -->
@@ -72,7 +71,7 @@
 <script>
 import DisplayQueryResults from "@/components/displayQueryResults.vue";
 import DisplayGraphTotals from "@/components/displayGraphTotals.vue";
-import DisplayGraphConfirmed from "@/components/displayGraphConfirmed.vue";
+import DisplayGraphHospitalized from "@/components/displayGraphHospitalized.vue";
 import createDates from "../modules/createDates.js";
 
 // Import the EventBus.
@@ -83,7 +82,7 @@ export default {
   components: {
     "display-query-results": DisplayQueryResults,
     "display-graph-totals": DisplayGraphTotals,
-    "display-graph-confirmed": DisplayGraphConfirmed
+    "display-graph-hospitalized": DisplayGraphHospitalized
   },
   data: function() {
     return {
@@ -92,7 +91,6 @@ export default {
       coronaVirusFetchedUSATodayByState: { type: Object, default: null },
       coronaVirusFetchedUSALastWeekByState: { type: Object, default: null },
       coronaVirusStatsLastWeek: { type: Object, default: null },
-      countryVirusStatsTotal: { type: Object, default: null },
       loading: false,
       dataRetrieved: false,
       networkTrouble: false,
@@ -137,12 +135,13 @@ export default {
         )
       ])
         .then(data => {
-          // handle data array here. First all data for yesterday put into FetchedData
+          // Handle fetched data array here. First all data for today put into coronaVirusFetchedData
           this.coronaVirusFetchedData = data[0].latest_stat_by_country[0];
           // Next, virus values for last week to be used to compare confirmed cases change from last week
-          // to yesterday. This will be passed to display-graph-confirmed component as a prop.
-          this.coronaVirusStatsLastWeek = data[1].stat_by_country[0];
-          // Lastly, handle data retrieved for States from covidtracking.com
+          // to yesterday. This will be passed to display-graph-hospitalized component as a prop.
+          /* this.coronaVirusStatsLastWeek = data[1].stat_by_country[0];
+          console.log(this.coronaVirusStatsLastWeek); */
+          // Lastly, handle data retrieved for States today from covidtracking.com
           this.coronaVirusFetchedUSATodayByState = data[2];
 
           this.loading = false;

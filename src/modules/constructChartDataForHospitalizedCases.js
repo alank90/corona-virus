@@ -1,7 +1,7 @@
 /* This a native JS module that constructs the data and options object that used in the
-   vue-chart.js renderChart(data, options) call in the display-graph-confirmed component.  */
+   vue-chart.js renderChart(data, options) call in the display-graph-hospitalized component.  */
 
-export default function constructChartDataForConfirmedCases(
+export default function constructChartDataForHospitalizedCases(
   topTenConfirmedStatesYesterday,
   topTenConfirmedStatesLastWeek
 ) {

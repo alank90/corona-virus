@@ -37,15 +37,6 @@ export default {
 
       this.renderChart(chartData, options);
     });
-  },
-  watch: {
-    propsCoronaVirusFetchedUSATodayByState: function(newProps, oldProps) {
-      const { chartData, options } = constructChartDataForGraphTotals(
-        this.topRankedStates
-      );
-
-      this.renderChart(chartData, options);
-    }
   }
 };
 </script>

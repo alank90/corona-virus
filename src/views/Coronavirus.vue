@@ -40,16 +40,13 @@
       :propscoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
     ></display-query-results>
 
-    <h2
-      @click="displayGraphs"
-      v-show="usaSelected"
-      class="display-graph"
-      title="Click to Display Graph"
-    >
-      Display Graph
-      <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
+    <div v-show="usaSelected" class="container-display-graphs">
+      <h2 @click="displayGraphs" class="display-graph" title="Click to Display Graph">
+        Display Graph
+        <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
 
-      <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
+        <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
+      </h2>
       <div class="chart-container">
         <display-graph-totals
           v-if="coronaVirusFetchedUSATodayByState.length > 0"
@@ -63,7 +60,8 @@
           :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
         ></display-graph-hospitalized>
       </div>
-    </h2>
+    </div>
+    <!-- End .container-display-graphs -->
   </div>
   <!-- ========== End .corona-virus ==================== -->
 </template>

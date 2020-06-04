@@ -2,49 +2,49 @@
    vue-chart.js renderChart(data, options) call in the display-graph-hospitalized component.  */
 
 export default function constructChartDataForHospitalizedCases(
-  topTenConfirmedStatesYesterday,
-  topTenConfirmedStatesLastWeek
+  topTenHospitalizedStatesToday,
+  topTenHospitalizedStatesLastWeek
 ) {
   let labels = [];
 
   // Construct two objects for the options of the datasets used by Chart.js to
   // construct the chart. See Chart.js for documentation on options for the object.
-  let topConfirmedCasesYesterday = {
-    label: "Total Confirmed Cases Yesterday",
+  let topHospitalizedCasesToday = {
+    label: "Total Hospitalized Cases Yesterday",
     data: [],
     backgroundColor: "rgba(25, 25, 240, 0.6)",
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
-    maxBarThickness: 30
+    maxBarThickness: 30,
   };
 
-  let topConfirmedCasesLastWeek = {
-    label: "Total Confirmed Cases Last Week",
+  let topHospitalizedCasesLastWeek = {
+    label: "Total Hospitalized Cases Last Week",
     data: [],
     backgroundColor: "rgba(100, 240, 25, 0.6)",
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
-    maxBarThickness: 30
+    maxBarThickness: 30,
   };
 
-  // Construct two datasets from the topTenConfirmedStatesYesterday & topTenConfirmedStatesLastWeek array's
+  // Construct two datasets from the topTenHospitalizedStatesToday & topTenHospitalizedStatesLastWeek array's
   // that were passed into the module
-  topTenConfirmedStatesYesterday.forEach((item) => {
-    labels.push(item.province);
-    topConfirmedCasesYesterday.data.push(item.confirmed);
+  topTenHospitalizedStatesToday.forEach((item) => {
+    labels.push(item.state);
+    topHospitalizedCasesToday.data.push(item.hospitalizedCurrently);
   });
 
-  topTenConfirmedStatesLastWeek.forEach((item) => {
-    topConfirmedCasesLastWeek.data.push(item.confirmed);
+  topTenHospitalizedStatesLastWeek.forEach((item) => {
+    topHospitalizedCasesLastWeek.data.push(item.hospitalizedCurrently);
   });
 
-  // Create an object for use Chart.js using values from above object's we created.
+  // Create an object for use by Chart.js using values from above object's we created.
   // This will be fed into the Chart.js render function to create our chart.
   let chartData = {
     labels: labels,
-    datasets: [topConfirmedCasesYesterday, topConfirmedCasesLastWeek],
+    datasets: [topHospitalizedCasesToday, topHospitalizedCasesLastWeek],
   };
-  // This will also be fed into render function. It is a straight up object
+  // This object will also be fed into render function. It is a straight up object
   // using structure taken from Chart.js site. All property values were manually
   // entered.
   let options = {

@@ -31,7 +31,7 @@ export default {
   created: function retrieveWorldWideTotals() {
     // Multiple fetches for stats for World & USA
     const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
-    
+
     Promise.all([
       fetch(
         "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",

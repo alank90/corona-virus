@@ -130,6 +130,13 @@ a {
   transform: scaleX(1);
 }
 
+.router-link-exact-active {
+  color: #ca0e0e5e;
+}
+
+
+
+
 @media (max-width: 769px) {
   .header,
   .main-nav {

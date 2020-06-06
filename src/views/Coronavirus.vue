@@ -6,7 +6,7 @@
       Select A Country:
       <select class="select-css" v-model="selected" id="countries">
         <option value="USA" selected>United States</option>
-        <option value="UK">United Kingdom</option>
+        <option value="BR">Brazil</option>
         <option value="Canada">Canada</option>
         <option value="China">China</option>
         <option value="France">France</option>
@@ -20,6 +20,7 @@
         <option value="Russia">Russia</option>
         <option value="Spain">Spain</option>
         <option value="Sweden">Sweden</option>
+        <option value="UK">United Kingdom</option>
       </select>
     </label>
 
@@ -117,17 +118,7 @@ export default {
             }
           }
         ).then(res => (res.ok && res.json()) || Promise.reject(res)),
-        fetch(
-          `https://coronavirus-monitor.p.rapidapi.com/coronavirus/history_by_particular_country_by_date.php?country=${this.selected}&date=${lastWeek}`,
-          {
-            method: "GET",
-            headers: {
-              "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-              "x-rapidapi-key": rapid_api_key
-            }
-          }
-        ).then(res => (res.ok && res.json()) || Promise.reject(res)),
-        // Fetch State info from covidtracking.com end point for both yesterday and last week.
+        // Fetch State info from covidtracking.com end point for current day.
         fetch(`https://covidtracking.com/api/v1/states/current.json`).then(
           res => (res.ok && res.json()) || Promise.reject(res)
         )
@@ -135,12 +126,9 @@ export default {
         .then(data => {
           // Handle fetched data array here. First all data for today put into coronaVirusFetchedData
           this.coronaVirusFetchedData = data[0].latest_stat_by_country[0];
-          // Next, virus values for last week to be used to compare confirmed cases change from last week
-          // to yesterday. This will be passed to display-graph-hospitalized component as a prop.
-          /* this.coronaVirusStatsLastWeek = data[1].stat_by_country[0];
-          console.log(this.coronaVirusStatsLastWeek); */
-          // Lastly, handle data retrieved for States today from covidtracking.com
-          this.coronaVirusFetchedUSATodayByState = data[2];
+          // Then, handle data retrieved for States today from covidtracking.com.
+          // This will be passed to display-graph-hospitalized component as a prop.
+          this.coronaVirusFetchedUSATodayByState = data[1];
 
           this.loading = false;
           this.dataRetrieved = true;

@@ -10,9 +10,6 @@ export default {
   name: "displayGraphTotals",
   extends: Bar,
   props: ["propsCoronaVirusFetchedUSATodayByState"],
-  data: function() {
-    return {};
-  },
   computed: {
     // First, create a computed property of the top ten ranked states by deaths
     // from the propsCoronaVirusFetchedUSATodayByState array

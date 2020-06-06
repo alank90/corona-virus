@@ -3,7 +3,7 @@
     <h1>List of Coronavirus Resources</h1>
     <ul>
       <li>
-        <a href="#https://coronavirus.jhu.edu/map.html" target="_blank">John Hopkins Resource Center</a>
+        <a href="https://coronavirus.jhu.edu/map.html" target="_blank">John Hopkins Resource Center</a>
       </li>
       <li>
         <a

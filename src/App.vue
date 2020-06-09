@@ -108,8 +108,8 @@ a {
   text-transform: uppercase;
   margin-top: 5px;
 }
-.router-link:hover {
-  color: #ca0e0e5e;
+.router-link:hover:not(.router-link-exact-active) {
+  color: #d60404f5;
 }
 
 .router-link:before {
@@ -125,17 +125,17 @@ a {
   transition: all 0.3s ease-in-out 0s;
 }
 
-.router-link:hover:before {
+.router-link:not(.router-link-exact-active):hover:before {
   visibility: visible;
   transform: scaleX(1);
 }
 
 .router-link-exact-active {
-  color: #ca0e0e5e;
+  color: #fff;
+  background-color: #a90302;
+  border-radius: 5px;
+  cursor: none;
 }
-
-
-
 
 @media (max-width: 769px) {
   .header,

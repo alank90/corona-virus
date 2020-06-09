@@ -5,36 +5,38 @@
         {{ propsCoronaFetchedData.country_name }} Corona Virus Stats as of
         {{ propsCoronaFetchedData.record_date_pure }}
       </h2>
-      <table id="corona-virus-table">
-        <thead>
-          <tr>
-            <th>New Cases</th>
-            <th>Active Cases</th>
-            <th>Total Cases</th>
-            <th>Total Cases/Million</th>
-            <th>Total Tests/Million</th>
-            <th>Critical Patients</th>
-            <th>New Deaths</th>
-            <th>Deaths</th>
-            <th>Deaths/ Million</th>
-            <th>Total Recovered</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ propsCoronaFetchedData.new_cases }}</td>
-            <td>{{ propsCoronaFetchedData.active_cases }}</td>
-            <td>{{ propsCoronaFetchedData.total_cases }}</td>
-            <td>{{ propsCoronaFetchedData.total_cases_per1m }}</td>
-            <td>{{ propsCoronaFetchedData.total_tests_per1m }}</td>
-            <td>{{ propsCoronaFetchedData.serious_critical }}</td>
-            <td>{{ propsCoronaFetchedData.new_deaths }}</td>
-            <td>{{ propsCoronaFetchedData.total_deaths }}</td>
-            <td>{{ propsCoronaFetchedData.deaths_per1m }}</td>
-            <td>{{ propsCoronaFetchedData.total_recovered }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="corona-virus-table">
+        <table>
+          <thead>
+            <tr>
+              <th>New Cases</th>
+              <th>Active Cases</th>
+              <th>Total Cases</th>
+              <th>Total Cases/Million</th>
+              <th>Total Tests/Million</th>
+              <th>Critical Patients</th>
+              <th>New Deaths</th>
+              <th>Deaths</th>
+              <th>Deaths/ Million</th>
+              <th>Total Recovered</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ propsCoronaFetchedData.new_cases }}</td>
+              <td>{{ propsCoronaFetchedData.active_cases }}</td>
+              <td>{{ propsCoronaFetchedData.total_cases }}</td>
+              <td>{{ propsCoronaFetchedData.total_cases_per1m }}</td>
+              <td>{{ propsCoronaFetchedData.total_tests_per1m }}</td>
+              <td>{{ propsCoronaFetchedData.serious_critical }}</td>
+              <td>{{ propsCoronaFetchedData.new_deaths }}</td>
+              <td>{{ propsCoronaFetchedData.total_deaths }}</td>
+              <td>{{ propsCoronaFetchedData.deaths_per1m }}</td>
+              <td>{{ propsCoronaFetchedData.total_recovered }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div v-else-if="propsCoronaFetchedData.active === 0">No Active Cases</div>
 
@@ -48,33 +50,35 @@
       <div @click="showStates" class="hideTableArrow" title="Click to See Breakdown by State">&#187;</div>
 
       <div v-if="visibility">
-        <table id="corona-virus-table">
-          <thead>
-            <tr @click="sortTable">
-              <th
-                v-for="(col, index) in columns"
-                :data-col-num="index"
-                :data-col-name="col"
-                title="Click Header to Sort"
-                :key="index"
-              >
-                {{ stateTableColumnNames[index] }}
-                <div
-                  class="arrow"
-                  v-if="columnName == col"
-                  v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
-                ></div>
-              </th>
-              <!-- === End v-for === -->
-            </tr>
-          </thead>
+        <div class="corona-virus-table">
+          <table>
+            <thead>
+              <tr @click="sortTable">
+                <th
+                  v-for="(col, index) in columns"
+                  :data-col-num="index"
+                  :data-col-name="col"
+                  title="Click Header to Sort"
+                  :key="index"
+                >
+                  {{ stateTableColumnNames[index] }}
+                  <div
+                    class="arrow"
+                    v-if="columnName == col"
+                    v-bind:class="ascending ? 'arrow_up' : 'arrow_down'"
+                  ></div>
+                </th>
+                <!-- === End v-for === -->
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr v-for="state in get_rows()" :key="state.state">
-              <td v-for="col in columns" :key="col">{{ state[col] }}</td>
-            </tr>
-          </tbody>
-        </table>
+            <tbody>
+              <tr v-for="state in get_rows()" :key="state.state">
+                <td v-for="col in columns" :key="col">{{ state[col] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <!-- ======= Pagination Markup ===== -->
         <div class="pagination">
@@ -219,6 +223,10 @@ h2 {
   margin: 25px 5px 25px 5px;
 }
 
+.corona-virus-table {
+  overflow-x: auto;
+}
+
 table {
   border-collapse: collapse;
   border: 3px solid #44475c;
@@ -313,5 +321,11 @@ p {
   background-repeat: no-repeat;
   background-size: contain;
   background-position-y: bottom;
+}
+
+@media (max-width: 800px) {
+  table {
+    width: 300px;
+  }
 }
 </style>

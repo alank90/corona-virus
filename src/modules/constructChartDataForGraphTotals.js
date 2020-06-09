@@ -11,7 +11,7 @@ export default function constructChartDataForGraphTotals(topRankedStates) {
     backgroundColor: "rgba(240, 255, 25, 0.6)",
     borderColor: "rgba(33, 5, 1, 1)",
     borderWidth: 1,
-    yAxisID: "y-axis-hospialized",
+    yAxisID: "y-axis-hospitalized",
     maxBarThickness: 30,
   };
 
@@ -55,7 +55,7 @@ export default function constructChartDataForGraphTotals(topRankedStates) {
     scales: {
       yAxes: [
         {
-          id: "y-axis-hospialized",
+          id: "y-axis-hospitalized",
           type: "linear",
           position: "left",
         },

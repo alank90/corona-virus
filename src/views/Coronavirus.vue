@@ -53,9 +53,7 @@
           v-if="coronaVirusFetchedUSATodayByState.length > 0"
           :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
         ></display-graph-totals>
-      </div>
 
-      <div class="chart-container">
         <display-graph-hospitalized
           v-if="coronaVirusFetchedUSATodayByState.length > 0"
           :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
@@ -172,9 +170,10 @@ h2.display-graph {
   font-size: 1.4rem;
 }
 .chart-container {
-  width: 1000px;
-  height: 800px;
   margin-bottom: -30%;
+  position: relative;
+  height: 40vh;
+  width: 80vw;
 }
 
 label {

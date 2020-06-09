@@ -323,9 +323,4 @@ p {
   background-position-y: bottom;
 }
 
-@media (max-width: 800px) {
-  table {
-    width: 300px;
-  }
-}
 </style>

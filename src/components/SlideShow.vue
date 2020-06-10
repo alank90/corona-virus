@@ -42,12 +42,12 @@ export default {
         {
           image: require("@/assets/img/carousel/couple.jpg"),
           caption:
-            "A couple wearing masks kiss in a shopping area in downtown Shanghai, China, on February 16, 2020."
+            "A couple wearing masks kiss in a shopping area in downtown Shanghai, China."
         },
         {
           image: require("@/assets/img/carousel/dogs.jpg"),
           caption:
-            "Dogs wearing masks are seen in a shopping area in downtown Shanghai on February 16, 2020."
+            "Dogs wearing masks are seen in a shopping area in downtown Shanghai."
         },
         {
           image: require("@/assets/img/carousel/family.jpg"),

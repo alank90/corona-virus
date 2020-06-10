@@ -14,29 +14,43 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: function() {
+      return import(/* webpackChunkName: "home" */ "../views/Home.vue");
+    },
   },
   {
     path: "/coronavirus",
     name: "Coronavirus",
-    component: Coronavirus,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: function() {
+      return import(
+        /* webpackChunkName: "coronavirus" */ "../views/Coronavirus.vue"
+      );
+    },
   },
   {
     path: "/headlines",
     name: "Headlines",
-    component: Headlines,
+    component: function() {
+      return import(
+        /* webpackChunkName: "headlines" */ "../views/Headlines.vue"
+      );
+    },
   },
   {
     path: "/resources",
     name: "Resources",
-    component: Resources,
+    component: function() {
+      return import(
+        /* webpackChunkName: "resources" */ "../views/Resources.vue"
+      );
+    },
   },
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: function() {
       return import(/* webpackChunkName: "about" */ "../views/About.vue");
     },

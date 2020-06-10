@@ -11,6 +11,7 @@
           <router-link class="router-link" to="/coronavirus">Stats by Country</router-link>
           <router-link class="router-link" to="/headlines">Latest Headlines</router-link>
           <router-link class="router-link" to="/resources">Resources</router-link>
+          <router-link class="router-link" to="/about">About</router-link>
         </div>
       </nav>
     </header>

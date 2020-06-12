@@ -57,7 +57,8 @@ export default {
     const excludeDomains = "foxnews.com,fox.com";
     const myHeaders = {
       method: "GET",
-      referrer: "no-referrer"
+      referrer: "no-referrer",
+      mode: "cors"
     };
 
     const url = `https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;

@@ -7,6 +7,6 @@
   status = 200
 
 [build]
-  command = "yarn build && cd functions/node-fetch && yarn"
+  command = "npm build && cd functions/node-fetch && npm"
   functions = "functions" # netlify dev uses this directory to scaffold and serve your functions
   publish = "dist"

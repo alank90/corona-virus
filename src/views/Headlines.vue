@@ -55,17 +55,15 @@ export default {
     const domains =
       "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
     const excludeDomains = "foxnews.com,fox.com";
-    const myInit = {
+    const myHeaders = {
       method: "GET",
-      mode: "cors",
-      referrer: "no-referrer",
-      referrerPolicy: "same-origin"
+      referrer: "no-referrer"
     };
 
     const url = `https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
     // Just a little  different way of implementing fetch()
     const req = new Request(url);
-    fetch(req, myInit)
+    fetch(req, myHeaders)
       .then(response => {
         return response.json();
       })

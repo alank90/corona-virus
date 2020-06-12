@@ -8,11 +8,14 @@ the virus
 ```
 npm install
 ```
+
 You will also need to add an .env file in the root of the project and add your API keys. Seeing as we use vue-cli3 no need for dotenv, just add api keys to .env in the format:
+
 ```
 VUE_APP_SOME_KEY_FOR_NEWS=MY_API_KEY
 VUE_APP_SOME_OTHER_KEY_FOR_STATS=MY_OTHER_KEY
 ```
+
 [See Vue-cli3 page on Environment Variables](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)
 
 ### Compiles and hot-reloads for development
@@ -28,6 +31,14 @@ npm run build
 ```
 
 ## Notes
+***Important!***
+
+On Deployment to *Netlify*:
+
+Must set **referrer: "no-referrer"** when sending API *fetch* command to newsapi.org unless
+you will get a CORS error.
+
+You also need the **netlify.toml** file configured as you see in the project. This eneable back/forward and refresh capabilities for the SPA in the browser
 
 To use Google Fonts:
 When using VueJS, either just add a link in head section of /public/index.html or you can import the font with Google Fonts Webpack Plugin this way:

@@ -57,7 +57,7 @@ export default {
     const excludeDomains = "foxnews.com,fox.com";
     //const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
 
-    const url = `https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
+    const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
     // Just a little  different way of implementing fetch()
     const req = new Request(url);
     fetch(req)
@@ -97,7 +97,7 @@ export default {
         "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
       const excludeDomains = "foxnews.com,fox.com";
 
-      const url = `https://newsapi.org/v2/everything?q=${queryString}&page=${page}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=b7fb08c9f94f4898ae24c81664e9ae7c`;
+      const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&page=${page}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=b7fb08c9f94f4898ae24c81664e9ae7c`;
       // Just a little  different way of implementing fetch()
       const req = new Request(url);
       fetch(req)

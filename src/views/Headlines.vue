@@ -22,7 +22,9 @@
         v-bind:class="[i == currentPage ? 'active' : '']"
         @click="changePage(i)"
         :key="i"
-      >{{ i }}</div>
+      >
+        {{ i }}
+      </div>
     </div>
     <!-- === End Pagination === -->
   </div>
@@ -37,14 +39,14 @@ import { EventBus } from "../main.js";
 export default {
   name: "Headlines",
   components: {
-    search
+    search,
   },
   data: function() {
     return {
       articles: [],
       currentPage: 1,
       totalResults: 0,
-      pageSize: 15
+      pageSize: 15,
     };
   },
   created: function retrieveHeadlines() {
@@ -61,10 +63,10 @@ export default {
     // Just a little  different way of implementing fetch()
     const req = new Request(url);
     fetch(req)
-      .then(response => {
+      .then((response) => {
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         const { articles, totalResults } = data;
         this.articles = articles;
         if (totalResults > 100) {
@@ -77,7 +79,7 @@ export default {
   mounted: function manualSearchEvent() {
     // The eventbus carries manual search data from Search.vue
     // back to its parent component Headlines.vue
-    EventBus.$on("searchResults", manualSearch => {
+    EventBus.$on("searchResults", (manualSearch) => {
       this.articles = manualSearch.articles;
       if (manualSearch.totalResults > 100) {
         this.totalResults = 100;
@@ -101,15 +103,15 @@ export default {
       // Just a little  different way of implementing fetch()
       const req = new Request(url);
       fetch(req)
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           const { articles, totalResults } = data;
           this.articles = articles;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

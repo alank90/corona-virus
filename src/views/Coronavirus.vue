@@ -24,7 +24,9 @@
       </select>
     </label>
 
-    <button class="myButton" @click="retrieveDataCountryTotal">Get Case Summary</button>
+    <button class="myButton" @click="retrieveDataCountryTotal">
+      Get Case Summary
+    </button>
 
     <div class="loading" v-show="loading">
       <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>
@@ -33,30 +35,46 @@
     <div
       v-if="Object.keys(coronaVirusFetchedData).length === 0"
       class="no-responses"
-    >Sorry. No Results Available.</div>
+    >
+      Sorry. No Results Available.
+    </div>
     <display-query-results
       v-else-if="Object.keys(coronaVirusFetchedData).length > 0"
       v-show="dataRetrieved"
       :propsCoronaFetchedData="coronaVirusFetchedData"
-      :propscoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
+      :propscoronaVirusFetchedUSATodayByState="
+        coronaVirusFetchedUSATodayByState
+      "
     ></display-query-results>
 
     <div v-show="usaSelected" class="container-display-graphs">
-      <h2 @click="displayGraphs" class="display-graph" title="Click to Display Graph">
+      <h2
+        @click="displayGraphs"
+        class="display-graph"
+        title="Click to Display Graph"
+      >
         Display Graph
-        <i class="fa fa-bar-chart" style="font-size:36px" aria-hidden="true"></i>
+        <i
+          class="fa fa-bar-chart"
+          style="font-size:36px"
+          aria-hidden="true"
+        ></i>
 
         <div v-show="showMessage">Sorry. Can't Draw Graph.</div>
       </h2>
       <div class="chart-container">
         <display-graph-totals
           v-if="coronaVirusFetchedUSATodayByState.length > 0"
-          :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
+          :propsCoronaVirusFetchedUSATodayByState="
+            coronaVirusFetchedUSATodayByState
+          "
         ></display-graph-totals>
 
         <display-graph-hospitalized
           v-if="coronaVirusFetchedUSATodayByState.length > 0"
-          :propsCoronaVirusFetchedUSATodayByState="coronaVirusFetchedUSATodayByState"
+          :propsCoronaVirusFetchedUSATodayByState="
+            coronaVirusFetchedUSATodayByState
+          "
         ></display-graph-hospitalized>
       </div>
     </div>
@@ -69,7 +87,6 @@
 import DisplayQueryResults from "@/components/displayQueryResults.vue";
 import DisplayGraphTotals from "@/components/displayGraphTotals.vue";
 import DisplayGraphHospitalized from "@/components/displayGraphHospitalized.vue";
-import createDates from "../modules/createDates.js";
 
 // Import the EventBus.
 import { EventBus } from "../main.js";
@@ -79,7 +96,7 @@ export default {
   components: {
     "display-query-results": DisplayQueryResults,
     "display-graph-totals": DisplayGraphTotals,
-    "display-graph-hospitalized": DisplayGraphHospitalized
+    "display-graph-hospitalized": DisplayGraphHospitalized,
   },
   data: function() {
     return {
@@ -92,7 +109,7 @@ export default {
       dataRetrieved: false,
       networkTrouble: false,
       showMessage: false,
-      usaSelected: false
+      usaSelected: false,
     };
   },
   methods: {
@@ -100,10 +117,9 @@ export default {
       this.loading = true;
       if (this.dataRetrieved) this.dataRetrieved = false; // clear out previous results if there are any
       if (this.usaSelected === true) this.usaSelected = false; // reset if USA was last chosen country. No display-graph shown.
-      const { yesterday, lastWeek, today } = createDates();
 
       // Multiple fetches for stats yesterday and last week
-      const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
+      const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY; // eslint-disable-line no-undef
 
       Promise.all([
         fetch(
@@ -112,16 +128,16 @@ export default {
             method: "GET",
             headers: {
               "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-              "x-rapidapi-key": rapid_api_key
-            }
+              "x-rapidapi-key": rapid_api_key,
+            },
           }
-        ).then(res => (res.ok && res.json()) || Promise.reject(res)),
+        ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
         // Fetch State info from covidtracking.com end point for current day.
         fetch(`https://covidtracking.com/api/v1/states/current.json`).then(
-          res => (res.ok && res.json()) || Promise.reject(res)
-        )
+          (res) => (res.ok && res.json()) || Promise.reject(res)
+        ),
       ])
-        .then(data => {
+        .then((data) => {
           // Handle fetched data array here. First all data for today put into coronaVirusFetchedData
           this.coronaVirusFetchedData = data[0].latest_stat_by_country[0];
           // Then, handle data retrieved for States today from covidtracking.com.
@@ -134,7 +150,7 @@ export default {
             this.usaSelected = true;
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error("There was problem retrieving data.", err);
           this.loading = false;
           this.networkTrouble = true;
@@ -143,8 +159,8 @@ export default {
     displayGraphs: function() {
       EventBus.$emit("display-graphs", "clicked");
       if (this.coronaVirusFetchedData.length === 0) this.showMessage = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

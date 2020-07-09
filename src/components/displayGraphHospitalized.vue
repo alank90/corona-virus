@@ -12,7 +12,8 @@ export default {
   data: function() {
     return {
       topHospitalizedStates: [],
-      topTenHospitalizedLastWeek: { type: Object, default: null }
+      topTenHospitalizedLastWeek: { type: Object, default: null },
+      topTenHospitalizedTwoWeeksAgo: { type: Object, default: null },
     };
   },
   computed: {
@@ -27,57 +28,89 @@ export default {
 
       // And return top ten entries from the array
       return states.slice(0, 10);
-    }
+    },
   },
   created() {
     // Need a promise.all to fetch the top ten hospitalized states from a week ago.
     // This is based on the states in the array topTenHospitalizedToday object.
     // We grab the data from endpoint covidtracking.com/api/v1/states/{state}/{date}.json
 
-    let { lastWeek } = createDates();
+    let { lastWeek, twoWeeksAgo } = createDates();
     lastWeek = lastWeek.replace(/-/g, ""); // remove hyphens in date for endpoint
-    let requests = [];
+    let requestsLastWeek = [];
+    twoWeeksAgo = twoWeeksAgo.replace(/-/g, "");
+
+    // eslint-disable-next-line no-unused-vars
+    let requestsTwoWeeksAgo = [];
 
     // Create an array of the top ten state abbreviations
-    this.topTenHospitalizedToday.forEach(item => {
+    this.topTenHospitalizedToday.forEach((item) => {
       this.topHospitalizedStates.push(item.state);
     });
 
     // Create an array of fetch() commands for the Promise.all statement
-    this.topHospitalizedStates.forEach(state => {
+    // for last week's data
+    this.topHospitalizedStates.forEach((state) => {
       state = state.toLowerCase();
-      requests.push(
+      requestsLastWeek.push(
         fetch(
           `https://covidtracking.com/api/v1/states/${state}/${lastWeek}.json`
         )
       );
     });
 
-    // Send the array requests[] off to covidtracking.com via Promise.all
+    // Create another array of fetch() commands for the Promise.all statement
+    // for data from two week's ago
+    this.topHospitalizedStates.forEach((state) => {
+      state = state.toLowerCase();
+      requestsTwoWeeksAgo.push(
+        fetch(
+          `https://covidtracking.com/api/v1/states/${state}/${twoWeeksAgo}.json`
+        )
+      );
+    });
+
+    // Send the array requestsLastWeek[] off to covidtracking.com via Promise.all
     // to get data from last week
-    Promise.all(requests)
+    Promise.all(requestsLastWeek)
       // map array of responses into an array of response.json() to read their content
-      .then(responses => Promise.all(responses.map(r => r.json())))
+      .then((responses) => Promise.all(responses.map((r) => r.json())))
       // all JSON answers are parsed: data is the array of fetched responses
-      .then(data => {
+      .then((data) => {
         // store data in vue property
         this.topTenHospitalizedLastWeek = data;
       })
-      .catch(err => {
+      .catch((err) => {
+        console.error("There was problem retrieving data.", err);
+      });
+
+    // Send the array requestsTwoWeeksAgo[] off to covidtracking.com via Promise.all
+    // to get data from two weeks ago
+    Promise.all(requestsTwoWeeksAgo)
+      // map array of responses into an array of response.json() to read their content
+      .then((responses) => Promise.all(responses.map((r) => r.json())))
+      // all JSON answers are parsed: data is the array of fetched responses
+      .then((data) => {
+        // store data in vue property
+        this.topTenHospitalizedTwoWeeksAgo = data;
+      })
+      .catch((err) => {
         console.error("There was problem retrieving data.", err);
       });
   },
   mounted() {
     // The "display-graphs" event alerts this component to run the
     // the constructChartDataForGraphTotals method to render the chart
-    EventBus.$on("display-graphs", data => {
+    // eslint-disable-next-line no-unused-vars
+    EventBus.$on("display-graphs", (data) => {
       const { chartData, options } = constructChartDataForHospitalizedCases(
         this.topTenHospitalizedToday,
-        this.topTenHospitalizedLastWeek
+        this.topTenHospitalizedLastWeek,
+        this.topTenHospitalizedTwoWeeksAgo
       );
 
       this.renderChart(chartData, options);
     });
-  }
+  },
 };
 </script>

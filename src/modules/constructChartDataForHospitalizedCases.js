@@ -3,7 +3,8 @@
 
 export default function constructChartDataForHospitalizedCases(
   topTenHospitalizedStatesToday,
-  topTenHospitalizedStatesLastWeek
+  topTenHospitalizedStatesLastWeek,
+  topTenHospitalizedStatesTwoWeeksAgo
 ) {
   let labels = [];
 
@@ -27,7 +28,16 @@ export default function constructChartDataForHospitalizedCases(
     maxBarThickness: 30,
   };
 
-  // Construct two datasets from the topTenHospitalizedStatesToday & topTenHospitalizedStatesLastWeek array's
+  let topHospitalizedCasesTwoWeeksAgo = {
+    label: "Total Hospitalized Cases Two Weeks Ago",
+    data: [],
+    backgroundColor: "rgba(226, 216, 9, 0.6)",
+    borderColor: "rgba(33, 5, 1, 1)",
+    borderWidth: 1,
+    maxBarThickness: 30,
+  };
+
+  // Construct three datasets from the topTenHospitalizedStatesToday & topTenHospitalizedStatesLastWeek array's
   // that were passed into the module
   topTenHospitalizedStatesToday.forEach((item) => {
     labels.push(item.state);
@@ -38,11 +48,19 @@ export default function constructChartDataForHospitalizedCases(
     topHospitalizedCasesLastWeek.data.push(item.hospitalizedCurrently);
   });
 
+  topTenHospitalizedStatesTwoWeeksAgo.forEach((item) => {
+    topHospitalizedCasesTwoWeeksAgo.data.push(item.hospitalizedCurrently);
+  });
+
   // Create an object for use by Chart.js using values from above object's we created.
   // This will be fed into the Chart.js render function to create our chart.
   let chartData = {
     labels: labels,
-    datasets: [topHospitalizedCasesToday, topHospitalizedCasesLastWeek],
+    datasets: [
+      topHospitalizedCasesToday,
+      topHospitalizedCasesLastWeek,
+      topHospitalizedCasesTwoWeeksAgo,
+    ],
   };
   // This object will also be fed into render function. It is a straight up object
   // using structure taken from Chart.js site. All property values were manually

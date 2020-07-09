@@ -47,7 +47,13 @@
           propsCoronaFetchedData.country_name === 'USA'
       "
     >
-      <div @click="showStates" class="hideTableArrow" title="Click to See Breakdown by State">&#187;</div>
+      <div
+        @click="showStates"
+        class="hideTableArrow"
+        title="Click to See Breakdown by State"
+      >
+        &#187;
+      </div>
 
       <div v-if="visibility">
         <div class="corona-virus-table">
@@ -88,7 +94,9 @@
             v-bind:class="[i == currentPage ? 'active' : '']"
             v-on:click="change_page(i)"
             :key="i"
-          >{{ i }}</div>
+          >
+            {{ i }}
+          </div>
         </div>
         <!-- === End Pagination === -->
       </div>
@@ -120,7 +128,7 @@ export default {
         "inIcuCurrently",
         "onVentilatorCurrently",
         "death",
-        "recovered"
+        "recovered",
       ],
       stateTableColumnNames: [
         "State",
@@ -130,8 +138,8 @@ export default {
         "Currently in ICU",
         "Currently on Ventilator",
         "Deaths",
-        "Recovered"
-      ]
+        "Recovered",
+      ],
     };
   },
   computed: {
@@ -140,7 +148,7 @@ export default {
       let dateObj = new Date();
       dateObj = dateObj.toISOString().substring(0, 10);
       return dateObj;
-    }
+    },
   },
   methods: {
     showStates: function() {
@@ -162,6 +170,7 @@ export default {
     sortTable: function(e) {
       e.preventDefault;
       const el = e.target;
+      // eslint-disable-next-line no-unused-vars
       const columnNumber = el.dataset.colNum;
       this.columnName = el.dataset.colName;
 
@@ -205,8 +214,8 @@ export default {
     },
     change_page: function change_page(page) {
       this.currentPage = page; // Forces a rerender of state table to new page
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -225,6 +234,8 @@ h2 {
 
 .corona-virus-table {
   overflow-x: auto;
+  background-color: rgba(89, 13, 8, 0.3);
+  box-shadow: 4px 7px 15px 1px #c82d2d;
 }
 
 table {
@@ -322,5 +333,4 @@ p {
   background-size: contain;
   background-position-y: bottom;
 }
-
 </style>

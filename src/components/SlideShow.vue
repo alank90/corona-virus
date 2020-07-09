@@ -5,13 +5,19 @@
     <transition name="fade">
       <figure class="slide" v-if="show">
         <img :src="imgSource" alt="Slide Picture" />
-        <caption>{{ figCaption }}</caption>
+        <caption>
+          {{
+            figCaption
+          }}
+        </caption>
       </figure>
     </transition>
   </div>
 </template>
 
 <script>
+/* eslint-disable no-undef */
+
 export default {
   name: "slideShow",
   mounted: function() {
@@ -30,7 +36,7 @@ export default {
         this.imgSource = this.slides[this.currentSlide].image;
         this.figCaption = this.slides[this.currentSlide].caption;
       }
-    }
+    },
   },
   data() {
     return {
@@ -42,45 +48,45 @@ export default {
         {
           image: require("@/assets/img/carousel/couple.jpg"),
           caption:
-            "A couple wearing masks kiss in a shopping area in downtown Shanghai, China."
+            "A couple wearing masks kiss in a shopping area in downtown Shanghai, China.",
         },
         {
           image: require("@/assets/img/carousel/dogs.jpg"),
           caption:
-            "Dogs wearing masks are seen in a shopping area in downtown Shanghai."
+            "Dogs wearing masks are seen in a shopping area in downtown Shanghai.",
         },
         {
           image: require("@/assets/img/carousel/family.jpg"),
-          caption: "Family wave from Balcony"
+          caption: "Family wave from Balcony",
         },
         {
           image: require("@/assets/img/carousel/hospital_workers.jpg"),
-          caption: "Hospital Workers attending a patient"
+          caption: "Hospital Workers attending a patient",
         },
         {
           image: require("@/assets/img/carousel/stock_market.jpg"),
           caption:
-            "A trader puts on his vest on an empty floor at the New York Stock Exchange after the closing bell on Wall Street in New York City on March 20."
+            "A trader puts on his vest on an empty floor at the New York Stock Exchange after the closing bell on Wall Street in New York City on March 20.",
         },
         {
           image: require("@/assets/img/carousel/nyc.jpg"),
-          caption: "Street in NYC during Pandemic"
+          caption: "Street in NYC during Pandemic",
         },
         {
           image: require("@/assets/img/carousel/pope.jpg"),
-          caption: "Pope Says Mass Alone in St. Peters Square"
+          caption: "Pope Says Mass Alone in St. Peters Square",
         },
         {
           image: require("@/assets/img/carousel/volunteers.jpg"),
-          caption: "Volunteers spray city during pandemic"
+          caption: "Volunteers spray city during pandemic",
         },
         {
           image: require("@/assets/img/carousel/shopper.jpg"),
-          caption: "Shopper waits behind line at checkout"
-        }
-      ]
+          caption: "Shopper waits behind line at checkout",
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
@@ -91,6 +97,7 @@ these make the slideshow work
 */
 
 h2 {
+  color: #000;
   font-size: 1.8rem;
   margin: 20px 0;
   text-align: center;
@@ -124,7 +131,7 @@ caption {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 3.5s;
+  transition: opacity 3.5s ease-out;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;

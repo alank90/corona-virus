@@ -30,6 +30,7 @@ export default {
   },
   created: function retrieveWorldWideTotals() {
     // Multiple fetches for stats for World & USA
+    // eslint-disable-next-line no-undef
     const rapid_api_key = process.env.VUE_APP_RAPID_API_KEY;
 
     Promise.all([

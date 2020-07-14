@@ -27,7 +27,7 @@ export default {
     playSlides() {
       this.imgSource = this.slides[this.currentSlide].image;
       this.figCaption = this.slides[this.currentSlide].caption;
-      let slideInterval = setInterval(nextSlide.bind(this), 3500); // setInterval time should match css
+      setInterval(nextSlide.bind(this), 3500); // setInterval time should match css
       // transition time to avoid slide from jumping on change
 
       function nextSlide() {
@@ -106,8 +106,6 @@ h2 {
 .slide {
   position: relative;
   max-width: 100vw;
-  height: auto;
-  max-height: 500px;
   margin: 0 auto;
   overflow: hidden;
 }

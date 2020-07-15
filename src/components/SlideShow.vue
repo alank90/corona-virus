@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>Life In The Age of Coronavirus</h2>
 
     <transition name="fade">
@@ -95,6 +95,10 @@ export default {
 essential styles:
 these make the slideshow work
 */
+.container {
+  width: 100%;
+  height: 500px;
+}
 
 h2 {
   color: #000;

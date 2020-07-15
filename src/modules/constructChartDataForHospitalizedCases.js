@@ -57,9 +57,9 @@ export default function constructChartDataForHospitalizedCases(
   let chartData = {
     labels: labels,
     datasets: [
-      topHospitalizedCasesToday,
-      topHospitalizedCasesLastWeek,
       topHospitalizedCasesTwoWeeksAgo,
+      topHospitalizedCasesLastWeek,
+      topHospitalizedCasesToday,
     ],
   };
   // This object will also be fed into render function. It is a straight up object

@@ -5,25 +5,33 @@
       <search></search>
     </h1>
 
-    <ul>
-      <li v-for="(article, index) in articles" :key="article.index">
-        <span class="source">{{ article.source.name }}</span>
-        {{ article.title }}
-        <img :src="article.urlToImage" alt="Article Photo" />
-        <a :href="article.url" target="_blank">{{ article.url }}</a>
-      </li>
-    </ul>
+    <p v-if="show" class="error-message">
+      Google is too cheap to allow Developers access to their NewsApi. Try using
+      Firefox instead.
+    </p>
 
-    <!-- ======= Pagination Markup ===== -->
-    <div class="pagination">
-      <div
-        class="number"
-        v-for="i in num_pages()"
-        v-bind:class="[i == currentPage ? 'active' : '']"
-        @click="changePage(i)"
-        :key="i"
-      >
-        {{ i }}
+    <div v-else>
+      <ul>
+        <!-- eslint-disable-next-line vue/no-unused-vars -->
+        <li v-for="(article, index) in articles" :key="article.index">
+          <span class="source">{{ article.source.name }}</span>
+          {{ article.title }}
+          <img :src="article.urlToImage" alt="Article Photo" />
+          <a :href="article.url" target="_blank">{{ article.url }}</a>
+        </li>
+      </ul>
+
+      <!-- ======= Pagination Markup ===== -->
+      <div class="pagination">
+        <div
+          class="number"
+          v-for="i in num_pages()"
+          v-bind:class="[i == currentPage ? 'active' : '']"
+          @click="changePage(i)"
+          :key="i"
+        >
+          {{ i }}
+        </div>
       </div>
     </div>
     <!-- === End Pagination === -->
@@ -47,12 +55,14 @@ export default {
       currentPage: 1,
       totalResults: 0,
       pageSize: 15,
+      show: false,
     };
   },
   created: function retrieveHeadlines() {
     // This function() runs on page render and populates page on initial view
     const queryString = "coronavirus covid-19";
     const { lastWeek } = createDates();
+    // eslint-disable-next-line no-undef
     const news_api_key = process.env.VUE_APP_NEWS_API_KEY;
     const domains =
       "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
@@ -64,7 +74,10 @@ export default {
     const req = new Request(url);
     fetch(req)
       .then((response) => {
-        return response.json();
+        console.log(response.status);
+        if (response.status === 426) {
+          this.show = true;
+        } else return response.json();
       })
       .then((data) => {
         const { articles, totalResults } = data;
@@ -107,6 +120,7 @@ export default {
           return response.json();
         })
         .then((data) => {
+          // eslint-disable-next-line no-unused-vars
           const { articles, totalResults } = data;
           this.articles = articles;
         });
@@ -178,6 +192,11 @@ img {
   float: right;
   max-width: 10%;
   height: auto;
+}
+
+.error-message {
+  text-align: center;
+  font-size: 1.7rem;
 }
 
 /* Pagination Stylings */

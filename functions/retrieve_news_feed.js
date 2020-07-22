@@ -1,5 +1,5 @@
 /* eslint-disable-next-line no-undef, no-unused-vars */
-exports.handler = (event) => {
+exports.handler = async (event) => {
   /* eslint-disable-next-line no-undef */
   const newsAPIKey = process.env.news_app_api_key;
 

@@ -5,6 +5,6 @@ exports.handler = (event) => {
 
   return {
     statusCode: 200,
-    body: `The API key is: ${newsAPIKey}`,
+    body: `The API key is: test,,,`,
   };
 };

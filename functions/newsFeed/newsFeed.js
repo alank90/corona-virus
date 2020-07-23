@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 /* eslint-disable-next-line no-undef, no-unused-vars */
 exports.handler = async (event, context, callback) => {
   /* eslint-disable-next-line no-undef */
@@ -14,8 +16,8 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    console.log(queryString);
-    let response = await fetch(
+    console.log(lastWeek);
+    let response = await axios.get(
       `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${newsAPIKey}`
     );
 

@@ -1,3 +1,4 @@
+/* eslint-disable-next-line no-undef */
 const fetch = require("node-fetch");
 
 /* eslint-disable-next-line no-undef */
@@ -11,28 +12,18 @@ const excludeDomains = "foxnews.com,fox.com";
 
 //const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${newsAPIKey}`;
 const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${newsAPIKey}`;
+const API_ENDPOINT = "https://jsonplaceholder.typicode.com/posts/5";
+// This is the lambda callback function. The callback will be what your Netlify function will return
+// when you run it. This is where you handle success/failure and any response that you might need.
+// In this instance it is called in the try/catch and returns the NewsAPI data. The data will be stringified
+// and returned to our program.
 /* eslint-disable-next-line no-undef, no-unused-vars */
-exports.handler = async (event, context, callback) => {
-  // This is the lambda callback function. The callback will be what your Netlify function will return
-  // when you run it. This is where you handle success/failure and any response that you might need.
-  // In this instance it is called in the try/catch and returns the NewsAPI data. The data will be stringified
-  // and returned to our program.
-  fetch("https://jsonplaceholder.typicode.com/posts/3")
+exports.handler = async (event, context) => {
+  return fetch(API_ENDPOINT, { headers: { Accept: "application/json" } })
     .then((response) => response.json())
-    .then((json) => {
-      callback(null, {
-        statusCode: 200,
-        body: console.log(json),
-      });
-    })
+    .then((data) => ({
+      statusCode: 200,
+      body: JSON.stringify(data),
+    }))
     .catch((error) => ({ statusCode: 422, body: String(error) }));
-
-  /* fetch(url, { headers: { Origin: "localhost" } })
-    .then((response) => response.json())
-    .then((res) => {
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify(res.data),
-      });
-    }) */
 };

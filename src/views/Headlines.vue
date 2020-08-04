@@ -60,36 +60,17 @@ export default {
   },
   created: function retrieveHeadlines() {
     // This function() runs on page render and populates page on initial view
+    const { lastWeek } = createDates();
 
     // Here is code to invoke netlify serverless function newsFeed.js
     // that will retrieve data from newsAPI endpoint
-    fetch("/.netlify/functions/newsFeed")
+    console.log(lastWeek);
+    fetch(`/.netlify/functions/newsFeed?date=${lastWeek}`)
       .then((response) => {
         return response.json();
       })
-      .then((data) => console.log(data));
-
-    // ==== End of newsFeed.js serverless call ======== //
-
-    const queryString = "coronavirus covid-19";
-    const { lastWeek } = createDates();
-    // eslint-disable-next-line no-undef
-    const news_api_key = process.env.VUE_APP_NEWS_API_KEY;
-    const domains =
-      "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
-    const excludeDomains = "foxnews.com,fox.com";
-    //const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
-
-    const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/everything?q=${queryString}&from=${lastWeek}&pageSize=${this.pageSize}&domains=${domains}&excludeDomains=${excludeDomains}&language=en&sortBy=publishedAt&apiKey=${news_api_key}`;
-    // Just a little  different way of implementing fetch()
-    const req = new Request(url);
-    fetch(req)
-      .then((response) => {
-        if (response.status === 426) {
-          this.show = true;
-        } else return response.json();
-      })
       .then((data) => {
+        console.log(data);
         const { articles, totalResults } = data;
         this.articles = articles;
         if (totalResults > 100) {
@@ -98,6 +79,8 @@ export default {
           this.totalResults = totalResults;
         }
       });
+
+    // ==== End of newsFeed.js serverless call ======== //
   },
   mounted: function manualSearchEvent() {
     // The eventbus carries manual search data from Search.vue

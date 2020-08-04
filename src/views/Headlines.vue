@@ -5,12 +5,7 @@
       <search></search>
     </h1>
 
-    <p v-if="show" class="error-message">
-      Google is too cheap to allow Developers access to their NewsApi. Try using
-      Firefox instead.
-    </p>
-
-    <div v-else>
+    <div>
       <ul>
         <!-- eslint-disable-next-line vue/no-unused-vars -->
         <li v-for="(article, index) in articles" :key="article.index">
@@ -55,22 +50,19 @@ export default {
       currentPage: 1,
       totalResults: 0,
       pageSize: 15,
-      show: false,
     };
   },
   created: function retrieveHeadlines() {
-    // This function() runs on page render and populates page on initial view
+    // This function() runs on page render and populates initial view
     const { lastWeek } = createDates();
 
-    // Here is code to invoke netlify serverless function newsFeed.js
+    // Here is code to invoke Netlify serverless function newsFeed.js
     // that will retrieve data from newsAPI endpoint
-    console.log(lastWeek);
     fetch(`/.netlify/functions/newsFeed?date=${lastWeek}`)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         const { articles, totalResults } = data;
         this.articles = articles;
         if (totalResults > 100) {
@@ -79,7 +71,6 @@ export default {
           this.totalResults = totalResults;
         }
       });
-
     // ==== End of newsFeed.js serverless call ======== //
   },
   mounted: function manualSearchEvent() {
@@ -185,11 +176,6 @@ img {
   float: right;
   max-width: 10%;
   height: auto;
-}
-
-.error-message {
-  text-align: center;
-  font-size: 1.7rem;
 }
 
 /* Pagination Stylings */

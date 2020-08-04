@@ -9,14 +9,9 @@ const domains =
   "nytimes.com,washingtonpost.com,cnn.com,cdc.gov,who.int,coronavirus.jhu.edu,vox.com";
 const excludeDomains = "foxnews.com,fox.com";
 
-/* if (response.status === 426) {
-  this.show = true;
-} else return response.json(); */
-
-// This is the lambda callback function. The callback will be what your Netlify function will return
-// when you run it. This is where you handle success/failure and any response that you might need.
-// In this instance it is called in the try/catch and returns the NewsAPI data. The data will be stringified
-// and returned to our program.
+// This is the lambda callback function. It is run in a node.js environment as basically an http server.
+// It will run some middleware (a fetch to the newsAPI site) and then return the response to Headline.vue
+// as an http response. Note: The response body must be returned stringified.
 /* eslint-disable-next-line no-undef, no-unused-vars */
 exports.handler = async (event, context) => {
   const lastWeekDate = event.queryStringParameters; // grab lastweek's date from the lambda query string

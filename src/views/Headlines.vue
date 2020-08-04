@@ -60,6 +60,17 @@ export default {
   },
   created: function retrieveHeadlines() {
     // This function() runs on page render and populates page on initial view
+
+    // Here is code to invoke netlify serverless function newsFeed.js
+    // that will retrieve data from newsAPI endpoint
+    fetch("/.netlify/functions/newsFeed")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => console.log(data));
+
+    // ==== End of newsFeed.js serverless call ======== //
+
     const queryString = "coronavirus covid-19";
     const { lastWeek } = createDates();
     // eslint-disable-next-line no-undef
@@ -74,7 +85,6 @@ export default {
     const req = new Request(url);
     fetch(req)
       .then((response) => {
-        console.log(response.status);
         if (response.status === 426) {
           this.show = true;
         } else return response.json();

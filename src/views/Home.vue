@@ -3,10 +3,10 @@
   <div class="home">
     <ul>
       <li class="title">Global:</li>
-      <li>Total {{ totalWorldWideVirusStats.total_cases }}</li>
-      <li>Deaths {{ totalWorldWideVirusStats.total_deaths }}</li>
+      <li>Total Cases: {{ totalWorldWideVirusStats.total_cases }}</li>
+      <li>Deaths: {{ totalWorldWideVirusStats.total_deaths }}</li>
       <li class="title">United States:</li>
-      <li>Total: {{ totalUSAVirusStats.total_cases }}</li>
+      <li>Total Cases: {{ totalUSAVirusStats.total_cases }}</li>
       <li>Deaths: {{ totalUSAVirusStats.total_deaths }}</li>
     </ul>
 

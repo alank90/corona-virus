@@ -78,7 +78,7 @@ export default function constructChartDataForGraphTotals(topRankedStates) {
           ticks: {
             beginAtZero: true,
             fontSize: 18,
-            fontColor: "rgb(77,255,77)",
+            fontColor: "rgb(97,89,1)",
           },
         },
       ],

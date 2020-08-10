@@ -249,7 +249,7 @@ table th {
   text-transform: uppercase;
   text-align: left;
   background: #44475c;
-  color: #fff;
+  color: #f5c9c9;
   padding: 8px;
   min-width: 30px;
 }
@@ -263,6 +263,7 @@ table th:not(:last-child) {
 
 table td {
   text-align: center;
+  color: #fff;
   font-size: 1.2rem;
   font-weight: 600;
   padding: 8px;

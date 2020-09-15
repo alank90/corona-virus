@@ -19,16 +19,24 @@ VUE_APP_SOME_OTHER_KEY_FOR_STATS=MY_OTHER_KEY
 [See Vue-cli3 page on Environment Variables](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)
 
 ### Compiles and hot-reloads for development
+Because we are using Netlify functions we must launch the Netlify dev server:
+```
+netlify dev
+```
+and goto **localhost:8888**
+
+## Compiles and minifies for production
 
 ```
-npm run serve
+netlify build
 ```
+(Beta) Build on your local machine
 
-### Compiles and minifies for production
+```
+netlify  deploy
+``` 
+Create a new deploy from the contents of a folder 
 
-```
-npm run build
-```
 
 ## Notes
 ***Important!***

@@ -33,7 +33,7 @@ export default {
   created() {
     // Need a promise.all to fetch the top ten hospitalized states from a week ago.
     // This is based on the states in the array topTenHospitalizedToday object.
-    // We grab the data from endpoint covidtracking.com/api/v1/states/{state}/{date}.json
+    // We grab the data from endpoint api.covidtracking.com/api/v1/states/{state}/{date}.json
 
     let { lastWeek, twoWeeksAgo } = createDates();
     lastWeek = lastWeek.replace(/-/g, ""); // remove hyphens in date for endpoint
@@ -54,7 +54,7 @@ export default {
       state = state.toLowerCase();
       requestsLastWeek.push(
         fetch(
-          `https://covidtracking.com/api/v1/states/${state}/${lastWeek}.json`
+          `https://api.covidtracking.com/api/v1/states/${state}/${lastWeek}.json`
         )
       );
     });
@@ -65,12 +65,12 @@ export default {
       state = state.toLowerCase();
       requestsTwoWeeksAgo.push(
         fetch(
-          `https://covidtracking.com/api/v1/states/${state}/${twoWeeksAgo}.json`
+          `https://api.covidtracking.com/api/v1/states/${state}/${twoWeeksAgo}.json`
         )
       );
     });
 
-    // Send the array requestsLastWeek[] off to covidtracking.com via Promise.all
+    // Send the array requestsLastWeek[] off to api.covidtracking.com via Promise.all
     // to get data from last week
     Promise.all(requestsLastWeek)
       // map array of responses into an array of response.json() to read their content
@@ -84,7 +84,7 @@ export default {
         console.error("There was problem retrieving data.", err);
       });
 
-    // Send the array requestsTwoWeeksAgo[] off to covidtracking.com via Promise.all
+    // Send the array requestsTwoWeeksAgo[] off to api.covidtracking.com via Promise.all
     // to get data from two weeks ago
     Promise.all(requestsTwoWeeksAgo)
       // map array of responses into an array of response.json() to read their content

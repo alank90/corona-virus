@@ -133,7 +133,7 @@ export default {
           }
         ).then((res) => (res.ok && res.json()) || Promise.reject(res)),
         // Fetch State info from covidtracking.com end point for current day.
-        fetch(`https://covidtracking.com/api/v1/states/current.json`).then(
+        fetch(`https://api.covidtracking.com/api/v1/states/current.json`).then(
           (res) => (res.ok && res.json()) || Promise.reject(res)
         ),
       ])

@@ -9,3 +9,4 @@
   # Allows functions in netlify
   [build]
   functions = "./functions"
+ 
